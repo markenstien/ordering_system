@@ -350,7 +350,9 @@ class CI_Loader {
 		}
 
 		$this->_ci_models[] = $name;
+		
 		$CI->$name = new $model();
+
 		return $this;
 	}
 

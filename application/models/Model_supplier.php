@@ -1,37 +1,32 @@
 <?php 
-
-class Model_supplier extends CI_Model
-{	
-	public $_fillables = [];
-
-	public function __construct()
-	{
-		parent::__construct();
-	}
+	
+	class Model_supplier extends Model_adapter
+	{	
+		public $_table_name = 'suppliers';
 
 
-	public function create($data)
-	{
-		$allowed_fields = [
-			'name',
-			'product',
-			'phone',
-			'email',
-			'contact_name',
-			'website',
+		public $_fillables = [
+			'name' , 'product',
+			'phone' , 'email',
+			'contact_name' , 'website'
 		];
 
-		if($data) 
+		public function getAll($where = [])
 		{
-			$dataToInsert = [];
-				
+			return $this->getRowArray();
+		}
 
-			foreach($allowed_fields as $field) {
-				$dataToInsert[$field] = $data[$field];
-			}
+		public function update($data , $id)
+		{
+			$_fillables = $this->getFillablesOnly($data);
+			
+			return parent::update($_fillables , $id);
+		}
 
-			$insert = $this->db->insert('suppliers', $dataToInsert);
-			return ($insert == true) ? true : false;
+		public function create($data)
+		{
+			$_fillables = $this->getFillablesOnly($data);
+
+			return parent::create($_fillables);
 		}
 	}
-}

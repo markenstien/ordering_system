@@ -62,6 +62,20 @@
             </li>
           <?php endif; ?>
 
+          <li class="treeview" id="supplyNav">
+            <a href="#">
+              <i class="fa fa-cube"></i>
+              <span>Supplies</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+               <li id="supplierNav"><a href="<?php echo base_url('supplier/index') ?>"><i class="fa fa-circle-o"></i> Supplier </a></li>
+               <li id="supplierNav"><a href="<?php echo base_url('supplyOrder/index') ?>"><i class="fa fa-circle-o"></i> Supply Order </a></li>
+            </ul>
+          </li>
+
           <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
             <li id="categoryNav">
               <a href="<?php echo base_url('category/') ?>">

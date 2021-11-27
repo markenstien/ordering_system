@@ -15,7 +15,7 @@ class Admin_Controller extends MY_Controller
 	public function __construct() 
 	{
 		parent::__construct();
-
+		
 		$group_data = array();
 		if(empty($this->session->userdata('logged_in'))) {
 			$session_data = array('logged_in' => FALSE);
@@ -54,6 +54,8 @@ class Admin_Controller extends MY_Controller
 		$this->load->view('templates/header_menu',$data);
 		$this->load->view('templates/side_menubar',$data);
 		$this->load->view($page, $data);
+
+		f_clean();
 		$this->load->view('templates/footer',$data);
 	}
 
