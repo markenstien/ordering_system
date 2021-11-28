@@ -110,15 +110,16 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                <?php if(in_array('createProduct', $user_permission)): ?>
-                  <li id="addProductNav"><a href="<?php echo base_url('products/create') ?>"><i class="fa fa-circle-o"></i> Add Product</a></li>
-                <?php endif; ?>
-                <?php if(in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
-                <li id="manageProductNav"><a href="<?php echo base_url('products') ?>"><i class="fa fa-circle-o"></i> Manage Products</a></li>
-                <?php endif; ?>
+                <li id="addProductNav"><a href="<?php echo base_url('products/index') ?>"><i class="fa fa-circle-o"></i>Products</a></li>
+                <li id="addProductNav"><a href="<?php echo base_url('ProductBundle/index') ?>"><i class="fa fa-circle-o"></i> Bundles</a></li>
               </ul>
             </li>
           <?php endif; ?>
+          <li id="storeNav">
+            <a href="<?php echo base_url('stocks/') ?>">
+              <i class="fa fa-files-o"></i> <span>Stocks</span>
+            </a>
+          </li>
 
 
           <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>

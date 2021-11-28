@@ -41,6 +41,17 @@
 		EOF;
 	}
 
+	function f_number($name , $inputValue = null , $attributes = null)
+	{
+		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
+		$value = f_val($name , $inputValue);
+
+		return <<<EOF
+			<input type="number" name="{$name}"
+				value="$value" $attributes>
+		EOF;
+	}
+
 
 	function f_checkbox($name , $value = null, $attributes = null)
 	{
@@ -175,7 +186,7 @@
 		EOF;
 	}
 
-	function f_hidden($name , $inputValue = null , $attributes = null)
+	function f_hidden($name , $value = null , $attributes = null)
 	{
 		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
 

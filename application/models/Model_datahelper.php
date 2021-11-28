@@ -83,7 +83,7 @@
 
 		public function dbdelete($tableName , $where)
 		{
-			$sql = "DELETE FROM $tableName where $where";
+			$sql = "DELETE FROM $tableName WHERE {$where}";
 			$delete = $this->ci->db->query($sql);
 			return ($delete == true) ? true : false;
 		}

@@ -11,6 +11,8 @@ class Model_adapter extends Model_datahelper
 	public $_order_by;
 	public $_primary_key;
 
+	public $_messages = [];
+	public $_errors = [];
 
 	public function __construct()
 	{
@@ -34,7 +36,7 @@ class Model_adapter extends Model_datahelper
 		return $this->dbrow( $this->_table_name , $this->conditionConvert(['id' => $id]));
 	}
 
-	public function getRow($condition , $orderby)
+	public function getRow($condition , $orderby = null)
 	{
 		return $this->dbrow($this->_table_name, $this->conditionConvert($condition) );
 	}
@@ -175,5 +177,53 @@ class Model_adapter extends Model_datahelper
 				$return[$key] = $row;
 		}
 		return $return;
+	}	
+
+	public function addMessage($message)
+	{
+		array_push($this->_messages, $message);
+	}
+
+	public function getMessages()
+	{
+		return $this->_messages;
+	}
+
+	public function getMessageString()
+	{
+		$html = '';
+
+		foreach ($this->_messages as $message){
+			$html.= "<div>{$message}</div>";
+		}
+
+		return $html;
+	}
+
+	public function addError($error){
+		array_push( $this->_errors , $error);
+	}
+
+	public function getErrors()
+	{
+		return $this->_errors;
+	}
+
+	public function getErrorString()
+	{
+		$html = '';
+
+		foreach ($this->_errors as $error){
+			$html.= "<div>{$error}</div>";
+		}
+
+		return $html;
+	}
+
+	public function injectModels($models = [] ){
+
+		foreach($models as $model_name => $model) {
+			$this->$model_name = $model;
+		}
 	}
 }

@@ -16,7 +16,7 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-8 col-xs-8">
           <?php flash()?>
           <div class="box">
             <div class="box-header">
@@ -53,6 +53,13 @@
                   </thead>
                 </table>
               </div>
+              <?php
+                __([
+                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit'),
+                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
+                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times'),
+                ])
+              ?>
             </div>
           </div>
 
@@ -71,24 +78,36 @@
                     <thead>
                       <th>#</th>
                       <th>Product</th>
+                      <th>SKU</th>
                       <th>Quantity</th>
+                      <th>Price</th>
                       <th>Action</th>
                     </thead>
 
                     <tbody>
+                      <?php $total = 0?>
                       <?php foreach( $order_items as $key => $item) :?>
+                        <?php $total += $item['price']?>
                         <tr>
                           <td><?php echo ++$key?></td>
                           <td><?php echo $item['name']?></td>
+                          <td><?php echo strtoupper($item['sku'])?></td>
                           <td><?php echo $item['quantity']?></td>
+                          <td><?php echo $item['price']?></td>
                           <td>
-                            #
+                            <?php
+                              __([
+                                btnLink('supplyOrderItem/edit/'.$item['id'],'Edit' , 'edit'),
+                                btnLink('supplyOrderItem/delete/'.$item['id'],'Delete' , 'delete')
+                              ])
+                            ?>
                           </td>
                         </tr>
                       <?php endforeach?>
                     </tbody>
                   </table>
                 </div>
+                <h4>Total : <?php echo $total?></h4>
               <?php endif?>
             </div>
           </div>

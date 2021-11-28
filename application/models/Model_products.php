@@ -2,23 +2,64 @@
 
 class Model_products extends CI_Model
 {
+	public $_table_name = 'products';
+
 	public function __construct()
 	{
 		parent::__construct();
+	}
+
+
+	public function getAll( $params = [])
+	{
+		$where = null;
+		$orderby = null;
+
+		if( isset($params['where']) )
+			$where = " WHERE ". $params['where'];
+
+		if( isset($params['orderby']) )
+			$orderby = " ORDER BY {$params['orderby']} ";
+
+		$query = $this->db->query(
+			"SELECT product.* , 
+				(SELECT ifnull(sum(quantity) , 0) 
+					FROM stocks as stock 
+					WHERE stock.product_id = product.id
+					GROUP BY product_id 
+				) as quantity
+				FROM {$this->_table_name} as product
+
+				{$where} {$orderby}
+			"
+		);
+
+		return $query->result_array();
+	}
+
+	public function getTotalAmount( $products )
+	{
+		$total = 0;
+		foreach($products as $product) {
+			$total += $products->price;
+		}
+
+		return $total;
 	}
 
 	/* get the brand data */
 	public function getProductData($id = null)
 	{
 		if($id) {
-			$sql = "SELECT * FROM products where id = ?";
-			$query = $this->db->query($sql, array($id));
-			return $query->row_array();
+			return $this->getAll([
+				'where' => " product.id = '{$id}' "
+			])[0] ?? false;
 		}
 
-		$sql = "SELECT * FROM products ORDER BY id DESC";
-		$query = $this->db->query($sql);
-		return $query->result_array();
+		return $this->getAll([
+			'where' => " product.id = '{$id}' ",
+			'orderby' => 'id desc'
+		]);
 	}
 
 	public function getActiveProductData()

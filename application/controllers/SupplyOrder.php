@@ -30,6 +30,11 @@
 				$post = $_POST;
 
 				$res = $this->model_supply_order->create($post);
+
+				if($res) {
+					flash_set("Supply Order created");
+					return redirect("SupplyOrder/show/".$res);
+				}
 			}
 
 			return $this->render_template('supply_order/create' , $this->data);
@@ -52,7 +57,14 @@
 			{
 				$post = $_POST;
 
-				$this->model_supply_order->update($post, $id);
+				$res = $this->model_supply_order->update($post, $id);
+
+				if($res) {
+					flash_set('Supply Order updated');
+					return redirect('SupplyOrder/show/'.$id);
+				}
+
+				flash_set('update failed!');
 			}
 
 			$supplier_order = $this->model_supply_order->get($id);

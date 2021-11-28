@@ -53,7 +53,6 @@
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Qty</th>
-                <th>Store</th>
                 <th>Availability</th>
                 <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
@@ -61,6 +60,29 @@
               </tr>
               </thead>
 
+              <tbody>
+                <?php foreach($products as $row):?>
+                  <?php $stock_link = "<a href='".base_url('Stocks/create?product_id='.$row['id'])."'> (0) Add Stock Now </a>"?>
+                  <tr>
+                    <td><img src="<?php echo base_url($row['image'])?>" alt="<?php echo $row['name']?>" 
+                        class="img-circle" width="50" height="50" /></td>
+
+                    <td><?php echo strtoupper($row['sku'])?></td>
+                    <td><?php echo strtoupper($row['name'])?></td>
+                    <td><?php echo strtoupper($row['price'])?></td>
+                    <td><?php echo is_null($row['quantity']) ? $stock_link : strtoupper($row['quantity']) ?></td>
+                    <td><?php echo strtoupper($row['availability'])?></td>
+                    <td>
+                      <?php
+                        __(
+                          btnLink('products/update/'.$row['id'], "Edit", "edit"),
+                          btnLink('products/show/'.$row['id'], "View", "view"),
+                        )
+                      ?>
+                    </td>
+                  </tr>
+                <?php endforeach?>
+              </tbody>
             </table>
           </div>
           <!-- /.box-body -->
@@ -102,68 +124,3 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php endif; ?>
-
-
-
-<script type="text/javascript">
-var manageTable;
-var base_url = "<?php echo base_url(); ?>";
-
-$(document).ready(function() {
-
-  $("#mainProductNav").addClass('active');
-
-  // initialize the datatable 
-  manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'products/fetchProductData',
-    'order': []
-  });
-
-});
-
-// remove functions 
-function removeFunc(id)
-{
-  if(id) {
-    $("#removeForm").on('submit', function() {
-
-      var form = $(this);
-
-      // remove the text-danger
-      $(".text-danger").remove();
-
-      $.ajax({
-        url: form.attr('action'),
-        type: form.attr('method'),
-        data: { product_id:id }, 
-        dataType: 'json',
-        success:function(response) {
-
-          manageTable.ajax.reload(null, false); 
-
-          if(response.success === true) {
-            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-            '</div>');
-
-            // hide the modal
-            $("#removeModal").modal('hide');
-
-          } else {
-
-            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-            '</div>'); 
-          }
-        }
-      }); 
-
-      return false;
-    });
-  }
-}
-
-
-</script>

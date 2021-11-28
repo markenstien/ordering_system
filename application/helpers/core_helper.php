@@ -1,7 +1,7 @@
 <?php
      
 
-     function flast_set($message , $type = 'success', $name = 'flash')
+     function flash_set($message , $type = 'success', $name = 'flash')
      {
           $_SESSION['flash_message'] = $message;
           $_SESSION['flash_type'] = $type;
@@ -76,17 +76,32 @@
      *View
      *Submit
      */
-     function btnLink( $href , $text , $type = '')
+     function btnLink( $href , $text , $type = '' , $icon_param = null)
      {
           $icon = '';
           $color = '';
 
           switch ( strtolower($type) ) {
                case 'edit':
+               case 'primary':
                     $icon = 'pencil';
                     $color = 'primary';
                     break;
+
+               case 'create':
+                    $icon = 'plus';
+                    $color = 'primary';
+                    break;
+
+               case 'warning':
+                    $icon = 'return';
+                    $color = 'warning';
+                    break;
+
+
                case 'delete':
+               case 'cancel':
+               case 'danger':
                     $icon = 'trash';
                     $color = 'danger';
                     break;
@@ -98,6 +113,12 @@
                     $icon = 'list';
                     $color = 'primary';
                     break;
+
+               case 'success':
+               case 'confirmed':
+                    $icon = 'checked';
+                    $color = 'success';
+                    break;
                default:
                     $icon = '';
                     $color = 'primary';
@@ -105,8 +126,15 @@
           }
 
           $href = base_url($href);
+
+          if( !is_null($icon_param) ){
+               $icon = $icon_param;
+          }else{
+               $icon = 'fa fa-'.$icon;
+          }
+
           print <<<EOF
-           <a href="{$href}" class="btn btn-{$color}"><i class="fa fa-{$icon}"></i> {$text}</a>
+           <a href="{$href}" class="btn btn-{$color}"><i class="{$icon}"></i> {$text}</a>
           EOF;
      }
 
