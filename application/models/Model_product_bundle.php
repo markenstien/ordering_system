@@ -89,4 +89,21 @@
 
 			return true;
 		}
+
+		public function getAllWithItems( $params = [] )
+		{
+			$bundles = $this->getAll( $params  );
+
+			$ret_val = [];
+
+			foreach($bundles as $row) 
+			{
+				$bundle = $row;
+				$bundle['items'] = $this->model_bundle_item->getByBundle($row['id']);
+
+				$ret_val[] = $row; 
+			}
+
+			return $ret_val;
+		}
 	}

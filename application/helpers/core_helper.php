@@ -1,5 +1,30 @@
 <?php
      
+     function paypal($key = null)
+     {
+        $items = [
+          'sandbox_account' => 'sb-0knjy3991047@business.example.com',
+          'client_id'  => 'AeTxGYye5QLyXZokGiE4hhND5GEeu3dxePRXiqa921Sv0z3fz3dWdOCfjF9ChHOd0ldZLq45zxp8f4B4',
+          'secret' => 'ENCFd2oWwgazJZyWO3EIqyv_gcU9_yLiSRTyU1_N9u4uzDA2FBN6I-Djciq-e9eAHzuL6L3jlDOM5_Fd'
+        ];
+
+        return is_null($key) ? $items : $items[$key];
+     }          
+
+     function generateRandomString($length = 10) {
+         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+         $charactersLength = strlen($characters);
+         $randomString = '';
+         for ($i = 0; $i < $length; $i++) {
+             $randomString .= $characters[rand(0, $charactersLength - 1)];
+         }
+         return $randomString;
+     }
+
+     function amountHTML($amount)
+     {
+          echo number_format($amount , 2);
+     }     
 
      function flash_set($message , $type = 'success', $name = 'flash')
      {
@@ -16,10 +41,10 @@
                $type = $_SESSION['flash_type'];
 
                print <<<EOF
-                    <div class="alert alert-{$type} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {$message}
-                      </div>
+                    <div class="alert alert-dismissible alert-{$type}">
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      {$message}
+                    </div>
                EOF;
 
                unset($_SESSION['flash_message']);

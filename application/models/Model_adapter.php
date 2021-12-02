@@ -51,6 +51,11 @@ class Model_adapter extends Model_datahelper
 		return $this->dbdelete( $this->_table_name , $this->conditionConvert(['id' => $id]) );
 	}
 
+	public function deleteKeyPair($keyPair = [])
+	{
+		return $this->dbdelete( $this->_table_name , $this->conditionConvert($keyPair));
+	}
+
 	public function update($data , $id)
 	{
 		return $this->dbupdate( $this->_table_name , $data , $this->conditionConvert(['id' => $id]));
@@ -168,8 +173,11 @@ class Model_adapter extends Model_datahelper
 		return $WHERE;
 	}
 		
-	public function getFillablesOnly($datas)
+	public function getFillablesOnly($datas = [])
 	{
+		if( empty($datas) )
+			return false;
+		
 		$return = [];
 
 		foreach($datas as $key => $row) {

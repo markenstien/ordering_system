@@ -58,9 +58,15 @@
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" autocomplete="off" />
                 </div>
 
-                <div class="form-group">
-                  <label for="qty">Qty</label>
-                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
+                <div class="row form-group">
+                  <div class="col-md-6">
+                    <label for="qty">Min Stocks</label>
+                    <input type="text" class="form-control" id="min_stock" name="min_stock" placeholder="Enter Qty" autocomplete="off" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="qty">Max Stocks</label>
+                    <input type="text" class="form-control" id="max_stock" name="max_stock" placeholder="Enter Qty" autocomplete="off" />
+                  </div>
                 </div>
 
                 <div class="form-group">

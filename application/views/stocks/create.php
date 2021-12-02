@@ -16,7 +16,7 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-6 col-xs-12">
           <?php flash()?>
           <div class="box">
             <div class="box-header">

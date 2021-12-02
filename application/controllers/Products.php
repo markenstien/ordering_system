@@ -115,7 +115,9 @@ class Products extends Admin_Controller
         		'description' => $this->input->post('description'),
         		'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
         		'category_id' => json_encode($this->input->post('category')),
-        		'availability' => $this->input->post('availability'),
+                'availability' => $this->input->post('availability'),
+                'min_stock' => $this->input->post('min_stock'),
+        		'max_stock' => $this->input->post('max_stock'),
         	);
 
         	$create = $this->model_products->create($data);

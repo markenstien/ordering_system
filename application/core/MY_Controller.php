@@ -14,6 +14,8 @@ class Admin_Controller extends MY_Controller
 
 	public function __construct() 
 	{
+		$this->data['company_name'] = 'E-Kahon';
+		
 		parent::__construct();
 		
 		$group_data = array();
@@ -57,6 +59,14 @@ class Admin_Controller extends MY_Controller
 
 		f_clean();
 		$this->load->view('templates/footer',$data);
+	}
+
+	public function view_public($page = null , $data = array() )
+	{
+		$this->load->view('templates/public_header',$data);
+		$this->load->view($page, $data);
+		f_clean();
+		$this->load->view('templates/public_footer',$data);
 	}
 
 	public function company_currency()

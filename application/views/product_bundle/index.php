@@ -18,6 +18,8 @@
       <div class="row">
         <div class="col-md-12 col-xs-12">
         	<?php flash()?>
+          <a href="<?php echo base_url('productBundle/create') ?>" class="btn btn-primary">Add Bundle</a>
+          <br><br>
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Product Bundles</h3>
