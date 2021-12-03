@@ -56,7 +56,7 @@
               <?php
                 __([
                   btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit'),
-                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
+                  btnLink("supplyOrder/delivered/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
                   btnLink("supplyOrder/edit/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times'),
                 ])
               ?>

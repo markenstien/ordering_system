@@ -53,15 +53,6 @@
             </li>
           <?php endif; ?>
 
-
-          <?php if(in_array('createBrand', $user_permission) || in_array('updateBrand', $user_permission) || in_array('viewBrand', $user_permission) || in_array('deleteBrand', $user_permission)): ?>
-            <li id="brandNav">
-              <a href="<?php echo base_url('brands/') ?>">
-                <i class="glyphicon glyphicon-tags"></i> <span>Brands</span>
-              </a>
-            </li>
-          <?php endif; ?>
-
           <li class="treeview" id="supplyNav">
             <a href="#">
               <i class="fa fa-cube"></i>
@@ -85,11 +76,11 @@
           <?php endif; ?>
 
           <?php if(in_array('createStore', $user_permission) || in_array('updateStore', $user_permission) || in_array('viewStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
-            <li id="storeNav">
+            <!-- <li id="storeNav">
               <a href="<?php echo base_url('stores/') ?>">
                 <i class="fa fa-files-o"></i> <span>Stores</span>
               </a>
-            </li>
+            </li> -->
           <?php endif; ?>
 
           <?php if(in_array('createAttribute', $user_permission) || in_array('updateAttribute', $user_permission) || in_array('viewAttribute', $user_permission) || in_array('deleteAttribute', $user_permission)): ?>
@@ -115,8 +106,9 @@
               </ul>
             </li>
           <?php endif; ?>
-          <li id="storeNav">
-            <a href="<?php echo base_url('stocks/') ?>">
+
+          <li id="idStockNav">
+            <a href="<?php echo base_url('stocks/index') ?>">
               <i class="fa fa-files-o"></i> <span>Stocks</span>
             </a>
           </li>

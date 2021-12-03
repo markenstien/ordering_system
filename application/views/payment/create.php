@@ -228,6 +228,7 @@ hr {
                                       <span class="text-150 text-success-d3 opacity-2">PHP <?php amountHTML($total) ?></span>
                                       <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $total?>">
                                       <input type="hidden" name="bill_id" id="bill_id" value="<?php echo $order['id']?>">
+                                      <input type="hidden" name="user_id" id="bill_id" value="<?php echo $user_data['id']?>">
                                   </div>
                               </div>
                           </div>
@@ -265,7 +266,6 @@ hr {
         let amount = parseInt(document.getElementById('total_amount').value);
         let bill_id = $('#bill_id').val();
         let user_id = $('#user_id').val();
-        let method = $("#method").val();
 
         console.log(url);
 
@@ -290,7 +290,7 @@ hr {
                         method :'post',
                         data : {
                             amount:amount,
-                            method:method,
+                            method:'online',
                             reference: orderData.id,
                             acc_name : payer.name.given_name + ' ' + payer.name.surname,
                             email : payer.email_address,
@@ -307,8 +307,7 @@ hr {
                         }
                     }).done( function() 
                     {
-                      console.log('pinesed');
-                      // window.location = "<?php echo $thank_you_url?>";
+                      window.location = "<?php echo $thank_you_url?>?payment_ID="+orderData.id;
                     });
                 });
             },

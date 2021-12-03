@@ -73,4 +73,9 @@
 
 			return $this->render_template('supply_order/edit' , $this->data);
 		}
+
+		public function delivered($supply_order_id)
+		{
+			echo '<h1> UNDER DEVELOPMENT </h1>';
+		}
 	}

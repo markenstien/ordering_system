@@ -8,14 +8,20 @@
 			'id' , 'reference','amount',
 			'method' , 'notes', 'org',
 			'external_reference' , 'acc_no',
-			'acc_name' , 'bill_id' , 'created_by'
+			'acc_name' , 'order_id' , 'created_by'
 		];
 
 		public function createPayment($payment_data)
 		{
-
 			$_fillables = $this->getFillablesOnly($payment_data);
 
-			return $this->create($_fillables);
+			$res = $this->create($_fillables);
+
+			if($res) {
+				//pdate order
+				$this->dbupdate('orders', ['paid_status' => 1], $this->conditionConvert(['id' => $payment_data['order_id']]));
+			}
+
+			return $res;
 		}
 	}

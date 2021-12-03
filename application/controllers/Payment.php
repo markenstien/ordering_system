@@ -29,6 +29,8 @@
 			}
 
 			$this->data['order'] = $order;
+
+
 			return $this->view_public('payment/create' , $this->data);
 		}
 
@@ -46,6 +48,6 @@
 
 		public function thank_you_page()
 		{
-
+			echo '<h1> THANK YOU FOR YOUR PAYMENT , UNDERDEVELOPMENT </h1>'; 
 		}
 	}

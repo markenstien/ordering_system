@@ -176,6 +176,8 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
 
+		$net_amount_value = $this->input->post('net_amount_value');
+
     	$data = array(
     		'bill_no' => $bill_no,
     		'customer_name' => $this->input->post('customer_name'),
@@ -187,7 +189,7 @@ class Model_orders extends CI_Model
     		'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
     		'vat_charge_rate' => $this->input->post('vat_charge_rate'),
     		'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-    		'net_amount' => $this->input->post('net_amount_value'),
+    		'net_amount' => $net_amount_value,
     		'discount' => $this->input->post('discount'),
     		'paid_status' => 1,
     		'user_id' => $user_id
@@ -218,6 +220,18 @@ class Model_orders extends CI_Model
 
 
     		$this->model_products->update($update_product, $this->input->post('product')[$x]);
+    	}
+
+    	/*create-payment*/
+
+    	if($order_id) 
+    	{
+    		$this->db->insert('payments' , [
+    			'reference' => generateRandomString(10),
+    			'amount'    => $net_amount_value,
+    			'method'    => 'cash',
+    			'order_id'  => $order_id
+    		]);
     	}
 
 		return ($order_id) ? $order_id : false;

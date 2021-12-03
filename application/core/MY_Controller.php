@@ -19,14 +19,20 @@ class Admin_Controller extends MY_Controller
 		parent::__construct();
 		
 		$group_data = array();
-		if(empty($this->session->userdata('logged_in'))) {
+		if(empty($this->session->userdata('logged_in'))) 
+		{
 			$session_data = array('logged_in' => FALSE);
 			$this->session->set_userdata($session_data);
 		}
-		else {
-			$user_id = $this->session->userdata('id');
+		else 
+		{
+			$user_data = $this->session->userdata();
+			$this->data['user_data'] = $user_data;
+			$user_id = $user_data['id'];
+			
 			$this->load->model('model_groups');
 			$group_data = $this->model_groups->getUserGroupByUserId($user_id);
+			
 			
 			$this->data['user_permission'] = unserialize($group_data['permission']);
 			$this->permission = unserialize($group_data['permission']);

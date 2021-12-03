@@ -101,8 +101,8 @@ class Orders extends Admin_Controller
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
-        if ($this->form_validation->run() == TRUE) {        	
-        	
+        if ($this->form_validation->run() == TRUE) 
+        {        	
         	$order_id = $this->model_orders->create();
         	
         	if($order_id) {

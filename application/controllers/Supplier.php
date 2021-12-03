@@ -42,10 +42,10 @@ class Supplier extends Admin_Controller
 			$res = $this->model_supplier->create($post);
 
 			if( $res ){
-				flast_set('Supplier Created' , 'success');
+				flash_set('Supplier Created' , 'success');
 				return redirect('supplier/index');
 			} 
-			flast_set('Supplier create failed' , 'danger');
+			flash_set('Supplier create failed' , 'danger');
 			
 			return redirect('supplier/create');
 		}
