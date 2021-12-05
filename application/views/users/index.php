@@ -1,5 +1,4 @@
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -36,14 +35,12 @@
                   <th>Phone</th>
                   <th>Type</th>
                   <th>Verification</th>
-                  <?php if(in_array('updateUser', $user_permission) || in_array('deleteUser', $user_permission)): ?>
                   <th>Action</th>
-                  <?php endif; ?>
                 </tr>
                 </thead>
                 <tbody>
-                  <?php if($user_data): ?>                  
-                    <?php foreach ($user_data as $key => $row): ?>
+                  <?php if($users): ?>                  
+                    <?php foreach ($users as $key => $row): ?>
                       <tr>
                         <td><?php echo $row['username']?></td>
                         <td><?php echo $row['email']?></td>
@@ -52,8 +49,7 @@
                         <td><?php echo $row['user_type']?></td>
                         <td><?php echo $row['verification_status']?></td>
                         <td>
-                          <a href="#">Edit</a>
-                          <a href="#">Show</a>
+                          <?php echo btnLink('users/edit/'.$row['id'] , 'Edit' , 'edit')?>
                         </td>
                       </tr>
                     <?php endforeach ?>

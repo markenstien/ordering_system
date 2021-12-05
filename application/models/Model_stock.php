@@ -45,15 +45,18 @@
 			$total_stock = parent::queryResultSingle(
 				"SELECT sum(quantity) as total_stock
 					FROM {$this->_table_name} 
-					WHERE product_id = '{$product_id}' "
+					WHERE product_id = '{$product_id}'
+					GROUP BY product_id "
 			);
 
-			if( $total_stock->total_stock ?? 0 < $quantity){
-				$this->addError("Not enough stocks for your orders");
-				return false;
-			}
+			$total_stock = $total_stock['total_stock'] ?? 0;
 
-			return true;
+			if( intval($total_stock) >= $quantity )
+				return true;
+
+			
+			$this->addError("Not enough stocks for your orders");
+				return false;
 		}
 
 		public function getAll( $params = [])

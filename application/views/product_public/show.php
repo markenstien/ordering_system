@@ -86,9 +86,7 @@
             <div class="card-footer">
               <h4>Total : <?php echo amountHTML($total)?></h4>
               <hr>
-              <form>
-                <input type="submit" name="" value="Check out" class="btn btn-primary">
-              </form>
+              <a href="<?php echo base_url('cart/checkout')?>" class="btn btn-primary">Checkout</a>
             </div>
           </div>
         <?php endif?>

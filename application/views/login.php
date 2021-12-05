@@ -68,6 +68,8 @@
         </div>
         <!-- /.col -->
       </div>
+
+      <a href="<?php echo base_url('users/register')?>">No Account yet? Click to register</a>
     </form>
 
   </div>

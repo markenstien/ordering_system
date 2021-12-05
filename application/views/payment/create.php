@@ -184,13 +184,13 @@ hr {
                       <div class="text-95 text-secondary-d3">
                         <?php $total = 0 ?>
                         <?php foreach( $order['items'] as $row) :?>
-                          <?php $total += $row['order_item_total_amount']?>
+                          <?php $total += $row['amount']?>
                           <div class="row mb-2 mb-sm-0 py-25">
                               <div class="d-none d-sm-block col-1">1</div>
                               <div class="col-9 col-sm-5"><?php echo $row['name']?></div>
-                              <div class="d-none d-sm-block col-2"><?php echo $row['order_qty']?></div>
+                              <div class="d-none d-sm-block col-2"><?php echo $row['qty']?></div>
                               <div class="d-none d-sm-block col-2 text-95"><?php echo $row['rate']?></div>
-                              <div class="col-2 text-secondary-d2"><?php echo $row['order_item_total_amount']?></div>
+                              <div class="col-2 text-secondary-d2"><?php echo $row['amount']?></div>
                           </div>
                         <?php endforeach?>
                       <div class="row border-b-2 brc-default-l2"></div>

@@ -31,11 +31,9 @@
 			$item_data['session'] = $token;
 
 			$_fillables = $this->getFillablesOnly($item_data);
-
-
 			//check if has stock
 
-			if( !$this->stock->canSupplyOrderQuantity($item_data['product_id'], $item_data['quantity']) ){
+			if( !$this->stock->canSupplyOrderQuantity($_fillables['product_id'], $_fillables['quantity']) ){
 				$this->addError($this->stock->getErrorString());
 				return false;
 			}

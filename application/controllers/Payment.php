@@ -49,6 +49,7 @@
 
 			$this->data['order'] = $order;
 
+			// dd($this->data['order']);
 
 			return $this->view_public('payment/create' , $this->data);
 		}
@@ -67,6 +68,10 @@
 
 		public function thank_you_page()
 		{
-			echo '<h1> THANK YOU FOR YOUR PAYMENT , UNDERDEVELOPMENT </h1>'; 
+			if( $this->data['user_data']['logged_in'] ){
+				flash_set("Payment sent!");
+				return redirect('orders/');
+			}
+			echo '<h1>Thank you for your purchase , order details has been sent to your email.</h1>'; 
 		}
 	}

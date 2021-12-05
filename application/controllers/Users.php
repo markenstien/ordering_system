@@ -16,13 +16,9 @@ class Users extends Admin_Controller
 	
 	public function index()
 	{
-		if(!in_array('viewUser', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
+		$users = $this->model_users->getAll();
 
-		$user_data = $this->model_users->getAll();
-
-		$this->data['user_data'] = $user_data;
+		$this->data['users'] = $users;
 
 		$this->render_template('users/index', $this->data);
 	}
@@ -97,7 +93,7 @@ class Users extends Admin_Controller
 			if($res) {
 				flash_set("You are now registered , please verify your account by clicking the verification
 					link which is sent to your email '{$_POST['email']}' ");
-				return redirect('users/login');
+				return redirect('auth/login');
 			}else{
 				flash_set( $this->model_users->getErrorString() , 'danger');
 				return redirect('users/register');
@@ -111,10 +107,6 @@ class Users extends Admin_Controller
 
 	public function delete($id)
 	{
-		if(!in_array('deleteUser', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		if($id) {
 			if($this->input->post('confirm')) {
 					$delete = $this->model_users->delete($id);
@@ -148,10 +140,6 @@ class Users extends Admin_Controller
 
 	public function setting()
 	{	
-		if(!in_array('updateSetting', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$id = $this->session->userdata('id');
 
 		if($id) {
