@@ -228,7 +228,7 @@ hr {
                                       <span class="text-150 text-success-d3 opacity-2">PHP <?php amountHTML($total) ?></span>
                                       <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $total?>">
                                       <input type="hidden" name="bill_id" id="bill_id" value="<?php echo $order['id']?>">
-                                      <input type="hidden" name="user_id" id="bill_id" value="<?php echo $user_data['id']?>">
+                                      <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_data['id'] ?? 0?>">
                                   </div>
                               </div>
                           </div>
@@ -291,7 +291,7 @@ hr {
                         data : {
                             amount:amount,
                             method:'online',
-                            reference: orderData.id,
+                            external_reference: orderData.id,
                             acc_name : payer.name.given_name + ' ' + payer.name.surname,
                             email : payer.email_address,
                             order_id: bill_id,

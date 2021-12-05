@@ -30,7 +30,7 @@
 			{
 				$this->data['product'] = $this->model_products->getProductData($id);
 			}
-
+			
 			return $this->view_public('product_public/show' , $this->data);
 		}
 	}

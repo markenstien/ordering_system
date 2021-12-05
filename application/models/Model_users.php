@@ -1,87 +1,102 @@
 <?php 
 
-class Model_users extends CI_Model
-{
-	public function __construct()
+	class Model_users extends Model_adapter
 	{
-		parent::__construct();
-	}
+		public $_table_name = 'users';
 
-	public function getUserData($userId = null) 
-	{
-		if($userId) {
-			$sql = "SELECT * FROM users WHERE id = ?";
-			$query = $this->db->query($sql, array($userId));
-			return $query->row_array();
+		public $_fillables = [
+			'id',
+			'username',
+			'password',
+			'email',
+			'firstname',
+			'lastname', 
+			'phone' ,
+			'gender',
+			'user_type', 
+			'is_verified',
+			'address'
+		];
+
+		public function create($user_data)
+		{
+			$_fillables = $this->getFillablesOnly($user_data);
+
+			if( isset( $_fillables['password'] ))
+				$_fillables['password'] = $this->password_hash($_fillables['password']);
+
+
+			//check if username already exists and email
+
+			if( $this->getByKey('username' , $_fillables['username'] ) ){
+				$this->addError("Username already exists please user anotherone, account create failed");
+				return false;
+			}
+
+			if( $this->getByKey('email' , $_fillables['email'] ) ){
+				$this->addError("Email already exists please user anotherone, account create failed");
+				return false;
+			}
+
+			return parent::create($_fillables);
 		}
 
-		$sql = "SELECT * FROM users WHERE id != ?";
-		$query = $this->db->query($sql, array(1));
-		return $query->result_array();
-	}
+		public function update($user_data , $id)
+		{
+			$_fillables = $this->getFillablesOnly($user_data);
 
-	public function getUserGroup($userId = null) 
-	{
-		if($userId) {
-			$sql = "SELECT * FROM user_group WHERE user_id = ?";
-			$query = $this->db->query($sql, array($userId));
-			$result = $query->row_array();
+			if( empty($_fillables['password']) ){
+				unset($_fillables['password']);
+			}else{
+				$_fillables['password'] = $this->password_hash($_fillables['password']);
+			}
 
-			$group_id = $result['group_id'];
-			$g_sql = "SELECT * FROM groups WHERE id = ?";
-			$g_query = $this->db->query($g_sql, array($group_id));
-			$q_result = $g_query->row_array();
-			return $q_result;
+			//reset auth mo
+			$res = parent::update($_fillables , $id);
+
+			if($res) {
+				$this->login = parent::get($id);
+			}
+			return $res;
 		}
-	}
+		public function password_hash( $password )
+		{
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			return $password;
+		}
 
-	public function create($data = '', $group_id = null)
-	{
+		public function getByKey($key , $value)
+		{
+			return parent::getRowArray(["{$key}" => $value]);
+		}
 
-		if($data && $group_id) {
-			$create = $this->db->insert('users', $data);
+		public function getAll( $params = [])
+		{
+			$where = null;
+			$order = null;
 
-			$user_id = $this->db->insert_id();
+			if( isset($params['where']) )
+				$where = " WHERE ".$this->conditionConvert( $params['where'] );
 
-			$group_data = array(
-				'user_id' => $user_id,
-				'group_id' => $group_id
+			if( isset($params['order']) )
+				$order = " ORDER BY ".$params['order'];
+
+
+			return $this->queryResultArray(
+				"SELECT * ,
+					CASE WHEN is_verified = true THEN 'verified'
+						ELSE 'unverified' END as verification_status
+
+					FROM {$this->_table_name}
+					{$where} {$order}"
 			);
+		}
 
-			$group_data = $this->db->insert('user_group', $group_data);
-
-			return ($create == true && $group_data) ? true : false;
+		public function countTotalUsers()
+		{
+			return parent::queryResultSingle(
+				"SELECT count(id) as total
+					FROM {$this->_table_name}"
+			)['total'] ?? 0;
 		}
 	}
-
-	public function edit($data = array(), $id = null, $group_id = null)
-	{
-		$this->db->where('id', $id);
-		$update = $this->db->update('users', $data);
-
-		if($group_id) {
-			// user group
-			$update_user_group = array('group_id' => $group_id);
-			$this->db->where('user_id', $id);
-			$user_group = $this->db->update('user_group', $update_user_group);
-			return ($update == true && $user_group == true) ? true : false;	
-		}
-			
-		return ($update == true) ? true : false;	
-	}
-
-	public function delete($id)
-	{
-		$this->db->where('id', $id);
-		$delete = $this->db->delete('users');
-		return ($delete == true) ? true : false;
-	}
-
-	public function countTotalUsers()
-	{
-		$sql = "SELECT * FROM users";
-		$query = $this->db->query($sql);
-		return $query->num_rows();
-	}
-	
-}

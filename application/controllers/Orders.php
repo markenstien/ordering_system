@@ -15,6 +15,10 @@ class Orders extends Admin_Controller
 		$this->load->model('model_orders');
 		$this->load->model('model_products');
 		$this->load->model('model_company');
+
+		$this->load->model('model_stock');
+		$this->load->model('model_delivery');
+		$this->load->model('model_payment');
 	}
 
 	/* 
@@ -22,12 +26,39 @@ class Orders extends Admin_Controller
 	*/
 	public function index()
 	{
-		if(!in_array('viewOrder', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
 		$this->data['page_title'] = 'Manage Orders';
+
+		if( isEqual($this->data['user_data']['user_type'] , 'customer') )
+		{
+			$this->data['orders'] = $this->model_orders->getAll([
+				'where' => [
+					'user_id' => $this->data['user_data']['id']
+				],
+				'order' => ' id desc '
+			]);
+		}else{
+			$this->data['orders'] = $this->model_orders->getAll([
+				'order' => ' id desc '
+			]);
+		}
+		
 		$this->render_template('orders/index', $this->data);		
+	}
+
+	public function show( $id )
+	{
+		$order = $this->model_orders->getOrderWithItems($id);
+
+		$delivery = $this->model_delivery->getByOrder($id);
+
+		$this->data['order'] = $order;
+		$this->data['items'] = $order['items'];
+
+		$this->data['payment'] = $this->model_payment->getAll(['payment.order_id' => $id])[0] ?? false;
+		$this->data['delivery'] = $delivery;
+
+
+		return $this->render_template('orders/show' , $this->data);
 	}
 
 	/*
@@ -63,6 +94,9 @@ class Orders extends Admin_Controller
 				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
+			if( $value['origin'] == 'online' )
+				$buttons .= ' <a href="'.base_url('delivery/create/'.$value['id']).'" class="btn btn-default"><i class="fa fa-truck"></i></a>';
+
 			if($value['paid_status'] == 1) {
 				$paid_status = '<span class="label label-success">Paid</span>';	
 			}
@@ -78,6 +112,7 @@ class Orders extends Admin_Controller
 				$count_total_item,
 				$value['net_amount'],
 				$paid_status,
+				$value['origin'],
 				$buttons
 			);
 		} // /foreach
@@ -92,10 +127,6 @@ class Orders extends Admin_Controller
 	*/
 	public function create()
 	{
-		if(!in_array('createOrder', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
 		$this->data['page_title'] = 'Add Order';
 
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
@@ -159,12 +190,49 @@ class Orders extends Admin_Controller
 	*/
 	public function update($id)
 	{
-		if(!in_array('updateOrder', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
 		if(!$id) {
 			redirect('dashboard', 'refresh');
+		}
+
+		if( isSubmitted() )
+		{
+			$items = [];
+
+			if( !isset($_POST['product']) || empty($_POST['product']) )
+			{
+				flash_set("Invalid Order");
+				return redirect('orders/update/'.$id);
+			}
+
+			foreach($_POST['product'] as $index => $prd)
+			{
+				array_push($items, [
+					'product_id' => $_POST['product'][$index],
+					'qty'  => $_POST['qty'][$index],
+					'rate' => $_POST['rate_value'][$index],
+					'amount' => $_POST['amount_value'][$index]
+				]);
+			}
+
+			$this->model_orders->injectModels([
+				'model_stock' => $this->model_stock
+			]);
+
+			$res = $this->model_orders->updateWithItems([
+				'id'   => $id,
+				'customer_name' => $_POST['customer_name'],
+				'customer_address' => $_POST['customer_address'],
+				'customer_phone' => $_POST['customer_phone'],
+				'net_amount' => $_POST['net_amount_value'],
+			] , $items);
+
+			if($res) {
+				flash_set( $this->model_orders->getMessageString() );
+				return redirect('orders/update/'.$id);
+			}else{
+				flash_set( $this->model_orders->getErrorString() , 'danger');
+				return redirect('orders/udpate/'.$id);
+			}
 		}
 
 		$this->data['page_title'] = 'Update Order';
@@ -172,42 +240,26 @@ class Orders extends Admin_Controller
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
-        if ($this->form_validation->run() == TRUE) {        	
-        	
-        	$update = $this->model_orders->update($id);
-        	
-        	if($update == true) {
-        		$this->session->set_flashdata('success', 'Successfully updated');
-        		redirect('orders/update/'.$id, 'refresh');
-        	}
-        	else {
-        		$this->session->set_flashdata('errors', 'Error occurred!!');
-        		redirect('orders/update/'.$id, 'refresh');
-        	}
-        }
-        else {
-            // false case
-        	$company = $this->model_company->getCompanyData(1);
-        	$this->data['company_data'] = $company;
-        	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
-        	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
+        $company = $this->model_company->getCompanyData(1);
+    	$this->data['company_data'] = $company;
+    	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
+    	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
-        	$result = array();
-        	$orders_data = $this->model_orders->getOrdersData($id);
+    	$result = array();
+    	$orders_data = $this->model_orders->getOrdersData($id);
 
-    		$result['order'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['id']);
+		$result['order'] = $orders_data;
+		$orders_item = $this->model_orders->getOrdersItemData($orders_data['id']);
 
-    		foreach($orders_item as $k => $v) {
-    			$result['order_item'][] = $v;
-    		}
+		foreach($orders_item as $k => $v) {
+			$result['order_item'][] = $v;
+		}
 
-    		$this->data['order_data'] = $result;
+		$this->data['order_data'] = $result;
 
-        	$this->data['products'] = $this->model_products->getActiveProductData();      	
+    	$this->data['products'] = $this->model_products->getActiveProductData();      	
 
-            $this->render_template('orders/edit', $this->data);
-        }
+        $this->render_template('orders/edit', $this->data);
 	}
 
 	/*
@@ -248,10 +300,6 @@ class Orders extends Admin_Controller
 	*/
 	public function printDiv($id)
 	{
-		if(!in_array('viewOrder', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-        
 		if($id) {
 			$order_data = $this->model_orders->getOrdersData($id);
 			$orders_items = $this->model_orders->getOrdersItemData($id);

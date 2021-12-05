@@ -1,3 +1,6 @@
+  <?php
+    $type = e_user_type($this->data['user_data']);
+  ?>  
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -18,8 +21,10 @@
       <div class="row">
         <div class="col-md-12 col-xs-12">
         	<?php flash()?>
-          <a href="<?php echo base_url('productBundle/create') ?>" class="btn btn-primary">Add Bundle</a>
-          <br><br>
+          <?php if(isEqual($type , 'admin')) :?>
+            <a href="<?php echo base_url('productBundle/create') ?>" class="btn btn-primary">Add Bundle</a>
+            <br><br>
+          <?php endif?>
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Product Bundles</h3>
@@ -47,10 +52,9 @@
                         <td><?php echo $row['description']?></td>
                         <td>
                           <?php
-                            __([
-                              btnLink('productBundle/show/'.$row['id'] ,'View' , 'view'),
-                              btnLink('productBundle/edit/'.$row['id'] ,'Edit' , 'edit'),
-                            ]);
+                            if(isEqual($type , 'admin'))
+                              echo btnLink('productBundle/edit/'.$row['id'] ,'Edit' , 'edit');
+                            echo btnLink('productBundle/show/'.$row['id'] ,'View' , 'view');
                           ?>
                         </td>
                       </tr>

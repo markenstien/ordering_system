@@ -58,7 +58,9 @@
 
 		public function index()
 		{
-			$stocks = $this->model_stock->getAll();
+			$stocks = $this->model_stock->getAll([
+				'order' => 'id desc'
+			]);
 
 			$this->data['stocks'] = $stocks;
 

@@ -7,8 +7,11 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto">
+        <?php if( isset($this->data['user_data']) ):?>
+          <li><a class="nav-link" href="<?php echo base_url('users/profile')?>">Profile</a></li>
+        <?php endif?>
         <li class="nav-item">
-          <a class="nav-link active" href="<?php echo base_url('landing/index')?>">Home
+          <a class="nav-link" href="<?php echo base_url('landing/index')?>">Home
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
@@ -20,9 +23,6 @@
             <a class="nav-link" href="<?php echo base_url('cart/index')?>">Cart</a>
           </li>
         <?php endif?>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
         <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
           <div class="dropdown-menu">
@@ -35,7 +35,7 @@
         </li> -->
       </ul>
       <form class="d-flex">
-        <input class="form-control me-sm-2" type="text" placeholder="Search">
+        <input class="form-control me-sm-2" type="text" placeholder="Search" name="key_word">
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>

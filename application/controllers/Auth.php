@@ -37,9 +37,12 @@ class Auth extends Admin_Controller
            				'id' => $login['id'],
 				        'username'  => $login['username'],
 				        'email'     => $login['email'],
+				        'phone'     => $login['phone'],
 				        'firstname' => $login['firstname'],
 				        'lastname' => $login['lastname'],
 				        'address'  => $login['address'],
+				        'user_type'  => $login['user_type'],
+				        'is_verified'  => $login['is_verified'],
 				        'logged_in' => TRUE
 					);
 

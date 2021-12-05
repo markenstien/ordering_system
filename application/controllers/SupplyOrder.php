@@ -12,6 +12,8 @@
 			$this->load->model('model_supply_order');
 			$this->load->model('model_supply_order_item');
 
+			$this->load->model('model_stock');
+
 			$this->data['suppliers'] = $this->model_supplier->getAll();
 		}
 
@@ -74,8 +76,34 @@
 			return $this->render_template('supply_order/edit' , $this->data);
 		}
 
+		//this is an action
 		public function delivered($supply_order_id)
+		{	
+			/*get supply order*/
+
+			$this->model_supply_order->injectModels([
+				'model_supply_order_item' => $this->model_supply_order_item,
+				'model_stock' =>  $this->model_stock
+			]);
+
+			$res = $this->model_supply_order->migrateToStocks( $supply_order_id );
+
+			if($res) {
+				flash_set( $this->model_supply_order->getMessageString() );
+				return redirect('stocks/index');
+			}else{
+				flash_set($this->model_supply_order->getErrorString() , 'danger');
+			}
+		}
+
+		public function cancel($supply_order_id)
 		{
-			echo '<h1> UNDER DEVELOPMENT </h1>';
+			$this->model_supply_order->update([
+				'status' => 'cancelled'
+			] , $supply_order_id);
+
+			flash_set("Supply cancelled");
+
+			return redirect('supplyOrder/show/'.$supply_order_id);
 		}
 	}

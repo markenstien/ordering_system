@@ -13,7 +13,8 @@
 			'payment_status',
 			'description',
 			'title',
-			'budget'
+			'budget',
+			'reference'
 		];
 
 
@@ -25,6 +26,8 @@
 		public function create( $data )
 		{
 			$_fillables = $this->getFillablesOnly($data);
+
+			$_fillables['reference'] = $this->generateReference();
 
 			return parent::create($_fillables);
 		}
@@ -63,5 +66,45 @@
 
 			return $order[0] ?? false;
 		}
-	}
 
+		public function migrateToStocks($id)
+		{
+			$migrated = false;
+
+			$supply_order = $this->get($id);
+
+			//injected model
+			$items = $this->model_supply_order_item->getByOrder($id);
+
+			if(!$items){
+				$this->addError("No Items to be migrated!");
+				return false;
+			}
+			foreach($items as $item) 
+			{
+				$stock_added = $this->model_stock->addStock([
+					'product_id' => $item['id'],
+					'quantity'   => $item['quantity'],
+					'description' => 'From Supply Order #'.$supply_order['reference'],
+					'type'  => 'add',
+					'purchase_order_id' => $supply_order['id'],
+					'date' => $supply_order['date']
+				]);
+
+				$migrated = $stock_added;
+			}
+
+			if(!$migrated) {
+				$this->addError("Unable to migrate items");
+				return false;
+			}
+
+			$this->addMessage("Stocks added!");
+			return true;
+		}
+
+		public function generateReference()
+		{
+			return strtoupper(generateRandomString(12));
+		}
+	}

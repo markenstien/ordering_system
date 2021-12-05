@@ -29,6 +29,7 @@
               <div class="table-responsive">
                 <table class="table table-bordered dataTable">
                   <thead>
+                    <th>#</th>
                     <th>Title</th>
                     <th>Supplier</th>
                     <th>Budget</th>
@@ -40,6 +41,7 @@
                   <tbody>
                     <?php foreach($supply_orders as $row) :?>
                       <tr>
+                        <td><?php echo $row['reference']?></td>
                         <td><?php echo $row['title']?></td>
                         <td><?php echo $row['supplier']?></td>
                         <td><?php echo $row['budget']?></td>

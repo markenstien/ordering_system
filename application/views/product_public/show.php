@@ -34,6 +34,9 @@
                     <input type="hidden" name="user_id" value="<?php echo $this->session->userdata('id')?>">
                   <?php endif?>
                   <div class="row">
+                    <?php if( is_null($product['stock_quantity']) || $product['stock_quantity'] <= $product['min_stock']) :?>
+                      <p>No Stocks Available</p>
+                    <?php else:?>
                     <div class="col-md-5">
                       <input type="number" name="quantity" class="form-control"
                         value="<?php echo isset($item) ? $item['quantity'] : 1?>">
@@ -42,6 +45,7 @@
                       <input type="submit" name="" class="btn btn-primary" 
                         value="<?php echo isset($item) ? 'Update Cart Item' : 'Add to Cart'?>">
                     </div>
+                    <?php endif?>
                   </div>
                 </form>
               </div>

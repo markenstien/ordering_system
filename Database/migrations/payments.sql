@@ -1,3 +1,4 @@
+drop table if exists payments;
 CREATE TABLE `payments` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `reference` varchar(100) DEFAULT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE `payments` (
   `external_reference` varchar(100) DEFAULT NULL,
   `acc_no` varchar(100) DEFAULT NULL,
   `acc_name` varchar(100) DEFAULT NULL,
+  `user_id` int(10),
   `order_id` int(10) DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),

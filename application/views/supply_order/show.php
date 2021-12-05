@@ -27,6 +27,11 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
+                      <td>Reference</td>
+                      <th>#<?php echo $supply_order['reference']?></th>
+                    </tr>
+
+                    <tr>
                       <td>Title</td>
                       <th><?php echo $supply_order['title']?></th>
                     </tr>
@@ -54,11 +59,14 @@
                 </table>
               </div>
               <?php
-                __([
-                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit'),
-                  btnLink("supplyOrder/delivered/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
-                  btnLink("supplyOrder/edit/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times'),
-                ])
+                  $buttons = [btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit')];
+
+                  if(!isEqual($supply_order['status'] , 'cancelled')){
+                    array_push($buttons , [
+                      btnLink("supplyOrder/delivered/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
+                      btnLink("supplyOrder/cancel/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times')
+                    ]);
+                  }
               ?>
             </div>
           </div>

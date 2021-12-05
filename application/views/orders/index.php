@@ -1,4 +1,7 @@
 
+<?php
+  $type = e_user_type($this->data['user_data']);
+?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -21,20 +24,9 @@
       <div class="col-md-12 col-xs-12">
 
         <div id="messages"></div>
+        <?php flash()?>
 
-        <?php if($this->session->flashdata('success')): ?>
-          <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <?php echo $this->session->flashdata('success'); ?>
-          </div>
-        <?php elseif($this->session->flashdata('error')): ?>
-          <div class="alert alert-error alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <?php echo $this->session->flashdata('error'); ?>
-          </div>
-        <?php endif; ?>
-
-        <?php if(in_array('createOrder', $user_permission)): ?>
+        <?php if( isEqual($type , 'admin')): ?>
           <a href="<?php echo base_url('orders/create') ?>" class="btn btn-primary">Add Order</a>
           <br /> <br />
         <?php endif; ?>
@@ -48,18 +40,34 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
+                <th>#</th>
                 <th>Bill no</th>
                 <th>Customer Name</th>
                 <th>Customer Phone</th>
                 <th>Date Time</th>
-                <th>Total Products</th>
                 <th>Total Amount</th>
                 <th>Paid status</th>
-                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                  <th>Action</th>
-                <?php endif; ?>
+                <th>Origin</th>
+                <th>Action</th>
               </tr>
               </thead>
+
+              <tbody>
+                <?php foreach($orders as $key => $row) :?>
+                  <tr>
+                    <td><?php echo ++$key?></td>
+                    <td><?php echo $row['bill_no']?></td>
+                    <td><?php echo $row['customer_name']?></td>
+                    <td><?php echo $row['customer_phone']?></td>
+                    <td><?php echo date('Y-m-d' , $row['date_time'])?></td>
+                    <td><?php echo $row['net_amount']?></td>
+                    <td><?php echo $row['paid_status'] == 1 ? 'PAID' : 'UNPAID'?></td>
+                    <td><?php echo $row['origin']?></td>
+                    <td>
+                      <?php echo btnLink('orders/show/'.$row['id'], 'View', 'view')?>
+                    </td>
+                <?php endforeach?>
+              </tbody>
 
             </table>
           </div>
@@ -77,7 +85,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<?php if(in_array('deleteOrder', $user_permission)): ?>
+<?php if( isEqual($type , 'admin')): ?>
 <!-- remove brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
   <div class="modal-dialog" role="document">
@@ -106,22 +114,6 @@
 
 
 <script type="text/javascript">
-var manageTable;
-var base_url = "<?php echo base_url(); ?>";
-
-$(document).ready(function() {
-
-  $("#mainOrdersNav").addClass('active');
-  $("#manageOrdersNav").addClass('active');
-
-  // initialize the datatable 
-  manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'orders/fetchOrdersData',
-    'order': []
-  });
-
-});
-
 // remove functions 
 function removeFunc(id)
 {

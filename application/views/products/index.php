@@ -1,5 +1,5 @@
 
-
+<?php $type = e_user_type($this->data['user_data'])?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -21,7 +21,7 @@
       <div class="col-md-12 col-xs-12">
          <?php flash()?>
          
-        <?php if(in_array('createProduct', $user_permission)): ?>
+        <?php if( isEqual( $type , 'admin') ): ?>
           <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
           <br /> <br />
         <?php endif; ?>
@@ -41,7 +41,7 @@
                 <th>Price</th>
                 <th>Qty</th>
                 <th>Availability</th>
-                <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
+                <?php if( isEqual( $type , 'admin') ): ?>
                   <th>Action</th>
                 <?php endif; ?>
               </tr>
@@ -57,14 +57,23 @@
                     <td><?php echo strtoupper($row['sku'])?></td>
                     <td><?php echo strtoupper($row['name'])?></td>
                     <td><?php echo strtoupper($row['price'])?></td>
-                    <td><?php echo is_null($row['quantity']) ? $stock_link : strtoupper($row['quantity']) ?></td>
+                    <td>
+                      (<?php echo is_null($row['stock_quantity']) ? $stock_link : strtoupper($row['stock_quantity']) ?>)
+                      <?php if( !is_null($row['stock_quantity']) && $row['stock_quantity'] <= $row['min_stock'] ):?>
+                        <label class="text-danger">Less than Minimum Stock Level</label>
+                      <?php endif?>
+
+                      <?php if( !is_null($row['stock_quantity']) && $row['stock_quantity'] > $row['max_stock'] ):?>
+                        <label class="text-warning">Over Maximum Stock Level</label>
+                      <?php endif?>
+                    </td>
                     <td><?php echo strtoupper($row['availability'])?></td>
                     <td>
                       <?php
-                        __(
-                          btnLink('products/update/'.$row['id'], "Edit", "edit"),
-                          btnLink('products/show/'.$row['id'], "View", "view"),
-                        )
+                          if( isEqual($type , 'admin'))
+                            echo btnLink('products/update/'.$row['id'], "Edit", "edit");
+
+                          echo btnLink('products/show/'.$row['id'], "View", "view");
                       ?>
                     </td>
                   </tr>

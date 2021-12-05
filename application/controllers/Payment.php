@@ -13,11 +13,30 @@
 			$this->load->model('model_payment');
 		}
 
+		public function index()
+		{
+			if( isEqual($this->data['user_data']['user_type'] , 'customer') ){
+				$this->data['payments'] = $this->model_payment->getAll([
+					'where' => [
+						'payment.user_id' => $this->data['user_data']['id']
+					],
+					'order' => ' payment.id desc'
+				]);
+			}else{
+				$this->data['payments'] = $this->model_payment->getAll([
+					'order' => 'payment.id desc'
+				]);
+			}
+			
+
+			return $this->render_template('payment/index' , $this->data);
+		}
+
 		public function create( $order_id = null )
 		{
 			if( isSubmitted() )
 			{
-				$res = $this->model_payment->create($_POST);
+				$res = $this->model_payment->createAndDeductStock($_POST);
 				return dd($res);
 			}
 

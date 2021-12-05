@@ -24,10 +24,6 @@ class Products extends Admin_Controller
     */
 	public function index()
 	{
-        if(!in_array('viewProduct', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
         $products = $this->model_products->getAll();
 
         $this->data['products'] = $products;
@@ -93,9 +89,6 @@ class Products extends Admin_Controller
     */
 	public function create()
 	{
-		if(!in_array('createProduct', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
 
 		$this->form_validation->set_rules('product_name', 'Product name', 'trim|required');
 		$this->form_validation->set_rules('sku', 'SKU', 'trim|required');
@@ -119,7 +112,7 @@ class Products extends Admin_Controller
                 'min_stock' => $this->input->post('min_stock'),
         		'max_stock' => $this->input->post('max_stock'),
         	);
-
+            
         	$create = $this->model_products->create($data);
         	if($create == true) {
         		$this->session->set_flashdata('success', 'Successfully created');
@@ -192,11 +185,7 @@ class Products extends Admin_Controller
     * and it stores the operation message into the session flashdata and display on the manage product page
     */
 	public function update($product_id)
-	{      
-        if(!in_array('updateProduct', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
+	{    
         if(!$product_id) {
             redirect('dashboard', 'refresh');
         }
@@ -205,6 +194,7 @@ class Products extends Admin_Controller
         $this->form_validation->set_rules('sku', 'SKU', 'trim|required');
         $this->form_validation->set_rules('price', 'Price', 'trim|required');
         $this->form_validation->set_rules('availability', 'Availability', 'trim|required');
+
 
         if ($this->form_validation->run() == TRUE) {
             // true case
@@ -217,6 +207,8 @@ class Products extends Admin_Controller
                 'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
                 'category_id' => json_encode($this->input->post('category')),
                 'availability' => $this->input->post('availability'),
+                'max_stock' => $this->input->post('max_stock'),
+                'min_stock' => $this->input->post('min_stock'),
             );
             
             if($_FILES['product_image']['size'] > 0) {

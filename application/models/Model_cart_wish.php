@@ -32,6 +32,13 @@
 
 			$_fillables = $this->getFillablesOnly($item_data);
 
+
+			//check if has stock
+
+			if( !$this->stock->canSupplyOrderQuantity($item_data['product_id'], $item_data['quantity']) ){
+				$this->addError($this->stock->getErrorString());
+				return false;
+			}
 			return $this->create( $_fillables );
 		}
 

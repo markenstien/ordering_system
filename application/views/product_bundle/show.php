@@ -1,3 +1,4 @@
+  <?php $type = e_user_type($this->data['user_data']) ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -68,7 +69,9 @@
                   </tr>
                 </table>
               </div>
-              <?php __(btnLink('productBundle/edit/'.$bundle['id'] , 'Edit' , 'edit')) ?>
+              <?php if( isEqual($type , 'admin')) :?>
+                <?php __(btnLink('productBundle/edit/'.$bundle['id'] , 'Edit' , 'edit')) ?>
+              <?php endif?>
             </div>
           </div>
           <!-- /.box -->
@@ -81,7 +84,9 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Bundle Items</h3>
-              <div><?php echo btnLink('ProductBundleItem/add/'.$bundle['id'], ' Add Item ' , 'create')?></div>
+              <?php if( isEqual($type , 'admin')) :?>
+                <div><?php echo btnLink('ProductBundleItem/add/'.$bundle['id'], ' Add Item ' , 'create')?></div>
+              <?php endif?>
             </div>
 
             <div class="box-body">
@@ -93,7 +98,9 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>On-Stocks</th>
-                    <th>Action</th>
+                    <?php if( isEqual($type , 'admin')) :?>
+                      <th>Action</th>
+                    <?php endif?>
                   </thead>
 
                   <tbody>
@@ -106,6 +113,7 @@
                         <td><?php echo $row['quantity']?></td>
                         <td><?php echo $row['price']?></td>
                         <td><?php echo $row['stocks']?></td>
+                        <?php if( isEqual($type , 'admin')) :?>
                         <td>
                           <?php
                             __([
@@ -114,6 +122,7 @@
                             ])
                           ?>
                         </td>
+                        <?php endif?>
                       </tr>
                     <?php endforeach?>
                   </tbody>

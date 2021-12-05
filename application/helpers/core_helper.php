@@ -1,5 +1,32 @@
 <?php
      
+     function sort_items($items , $sort_on , $type = 'DESC')
+     {
+          $ret_val = array_column((array) $items, $sort_on);
+
+          array_multisort($ret_val, $type == 'DESC' ? SORT_DESC : SORT_ASC , $items);
+
+          return $ret_val;
+     }     
+     function e_user_type($user_data)
+     {
+        $type = null;
+        switch($user_data['user_type'])
+        {
+          case 'employee'://cashier
+            $type = 'cashier';
+            break;
+          case 'admin':
+            $type = 'admin';
+            break;
+          case 'customer':
+            $type = 'customer';
+            break;
+        }
+
+        return $type;
+     }    
+
      function paypal($key = null)
      {
         $items = [

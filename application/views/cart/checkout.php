@@ -48,10 +48,13 @@
 
           
           <form method="post" action="<?php echo base_url('cart/checkout')?>" class="needs-validation">
+            <?php if( isset($user) ) :?>
+              <input type="hidden" name="user_id" value="<?php echo $user['id']?>">
+            <?php endif?>
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Full Name') , f_text('customer_name' , '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe']) )
+                  f_col( f_label('Full Name') , f_text('customer_name' , $user['firstname'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe']) )
                 );
               ?>
             </div>
@@ -59,7 +62,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Phone') , f_text('customer_phone' , '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx']) )
+                  f_col( f_label('Phone') , f_text('customer_phone' , $user['phone'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx']) )
                 );
               ?>
             </div>
@@ -67,7 +70,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Email') , f_text('customer_email' , '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com']) )
+                  f_col( f_label('Email') , f_text('customer_email' , $user['email'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com']) )
                 );
               ?>
             </div>
@@ -75,7 +78,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Address') , f_textarea('customer_address' , '' , 
+                  f_col( f_label('Address') , f_textarea('customer_address' , $user['address'] ?? '' , 
                     ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3]) )
                 );
               ?>

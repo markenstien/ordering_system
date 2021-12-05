@@ -38,6 +38,17 @@
                   ?>
                 </div>
 
+                <div class="row form-group">
+                  <div class="col-md-6">
+                    <label for="qty">Min Stocks</label>
+                    <input type="text" class="form-control" id="min_stock" name="min_stock" placeholder="Enter Qty" autocomplete="off" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="qty">Max Stocks</label>
+                    <input type="text" class="form-control" id="max_stock" name="max_stock" placeholder="Enter Qty" autocomplete="off" />
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <?php
                     __(f_col('discount' , f_text('discount' , $bundle['discount'] ,['class' => 'form-control'])));

@@ -1,6 +1,7 @@
 drop table supply_orders;
 create table supply_orders(
 	id int(10) not null primary key auto_increment,
+	reference varchar(100),
 	title varchar(100),
 	supplier_id int(10),
 	date date,

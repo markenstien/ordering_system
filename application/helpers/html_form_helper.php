@@ -66,7 +66,7 @@
 	{
 		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
 
-		$value = f_val($name , $inputValue);
+		$value = f_val($name , $value);
 
 		return <<<EOF
 			<input type="email" name="{$name}"
@@ -78,7 +78,7 @@
 	{
 		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
 
-		$value = f_val($name , $inputValue);
+		$value = f_val($name , $value);
 
 		if(!$preservePassword)
 			$value = '';

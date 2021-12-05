@@ -10,6 +10,7 @@
 			$this->data['title'] = 'Cart Items';
 
 			$this->load->model('model_cart_wish');
+			$this->load->model('model_stock');
 
 			//if user is logged-in
 			if( $this->session->userdata('logged_in') ) 
@@ -24,6 +25,8 @@
 			if( isSubmitted() )
 			{
 				$user = $this->session->userdata();
+
+				$this->model_cart_wish->injectModels(['stock' => $this->model_stock]);
 
 				$res = $this->model_cart_wish->addItem( $_POST );
 
@@ -72,7 +75,8 @@
 				$this->load->model('model_orders');
 
 				$this->model_orders->injectModels([
-					'cart_model' => $this->model_cart_wish
+					'cart_model' => $this->model_cart_wish,
+					'model_stock' => $this->model_stock
 				]);
 
 				$res = $this->model_orders->createFromCart( $_POST );

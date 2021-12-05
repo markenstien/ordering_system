@@ -16,10 +16,10 @@
 
     <!-- Main content -->
     <section class="content">
+      <?php flash()?>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-md-12 col-xs-12">
-          
           <?php if($this->session->flashdata('success')): ?>
             <div class="alert alert-success alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -37,48 +37,53 @@
               <h3 class="box-title">Add User</h3>
             </div>
             <form role="form" action="<?php base_url('users/create') ?>" method="post">
+              <input type="hidden" name="is_verified" value='1'>
               <div class="box-body">
-
                 <?php echo validation_errors(); ?>
-
                 <div class="form-group">
-                  <label for="groups">Groups</label>
-                  <select class="form-control" id="groups" name="groups">
-                    <option value="">Select Groups</option>
-                    <?php foreach ($group_data as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['group_name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="username">Username*</label>
+                      <input type="text" class="form-control" id="username" 
+                        name="username" placeholder="Username" autocomplete="off"
+                        required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="username">Type*</label>
+                      <?php echo f_select('user_type' , ['employee' , 'admin'] , '' , ['class' => 'form-control' , 'required' => true])?>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username" autocomplete="off">
+                  <label for="email">Email*</label>
+                  <input type="email" class="form-control" id="email" 
+                  name="email" placeholder="Email" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off">
+                  <label for="password">Password*</label>
+                  <input type="text" class="form-control" id="password" 
+                  name="password" placeholder="Password" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
+                  <label for="cpassword">Confirm password*</label>
+                  <input type="password" class="form-control" id="cpassword" 
+                  name="cpassword" placeholder="Confirm Password" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                  <label for="cpassword">Confirm password</label>
-                  <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password" autocomplete="off">
+                  <label for="fname">First name*</label>
+                  <input type="text" class="form-control" id="fname" 
+                  name="firstname" placeholder="First name" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                  <label for="fname">First name</label>
-                  <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label for="lname">Last name</label>
-                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" autocomplete="off">
+                  <label for="lname">Last name*</label>
+                  <input type="text" class="form-control" id="lname" 
+                  name="lastname" placeholder="Last name" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">

@@ -28,14 +28,6 @@ class Admin_Controller extends MY_Controller
 		{
 			$user_data = $this->session->userdata();
 			$this->data['user_data'] = $user_data;
-			$user_id = $user_data['id'];
-			
-			$this->load->model('model_groups');
-			$group_data = $this->model_groups->getUserGroupByUserId($user_id);
-			
-			
-			$this->data['user_permission'] = unserialize($group_data['permission']);
-			$this->permission = unserialize($group_data['permission']);
 		}
 	}
 
@@ -73,6 +65,14 @@ class Admin_Controller extends MY_Controller
 		$this->load->view($page, $data);
 		f_clean();
 		$this->load->view('templates/public_footer',$data);
+	}
+
+	public function render_clean_template($page = null , $data = array())
+	{
+		$this->load->view('templates/clean_header',$data);
+		$this->load->view('clean/'.$page, $data);
+		f_clean();
+		$this->load->view('templates/clean_footer',$data);
 	}
 
 	public function company_currency()

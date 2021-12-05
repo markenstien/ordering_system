@@ -27,7 +27,7 @@
             <h3 class="box-title">Edit Product</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('users/update') ?>" method="post" enctype="multipart/form-data">
+          <form role="form" action="<?php base_url('products/update/'.$product_data['id']) ?>" method="post" enctype="multipart/form-data">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -61,6 +61,19 @@
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" value="<?php echo $product_data['price']; ?>" autocomplete="off" />
                 </div>
 
+                <div class="row form-group">
+                  <div class="col-md-6">
+                    <label for="qty">Min Stocks</label>
+                    <input type="text" class="form-control" id="min_stock" name="min_stock" 
+                    placeholder="Enter Qty" autocomplete="off" value="<?php echo $product_data['min_stock']?>" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="qty">Max Stocks</label>
+                    <input type="text" class="form-control" id="max_stock" name="max_stock" 
+                    placeholder="Enter Qty" autocomplete="off" value="<?php echo $product_data['max_stock']?>" />
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <label for="qty">Qty</label>
                   <input type="text" class="form-control" 
@@ -92,10 +105,16 @@
 
                 <div class="form-group">
                   <label for="category">Category</label>
-                  <?php $category_data = json_decode($product_data['category_id']); ?>
+
+                  <?php
+                    $category_data = [];
+                    if( !is_null($product_data['category_id']) )
+                      $category_data = json_decode($product_data['category_id']); 
+                  ?>
+
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($v['id'], $category_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      <option <?php echo isEqual($v['id'] , $category_data) ? 'selected' : ''?>><?php echo $v['name']?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
