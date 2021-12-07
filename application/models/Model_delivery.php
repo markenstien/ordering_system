@@ -27,9 +27,16 @@
 			$_fillables = $this->getFillablesOnly($delivery_data);
 
 			$_fillables['reference'] = $this->reference();
-			$_fillables['status'] = 'pending';
+			$_fillables['status'] = 'for-delivery';
 
-			return parent::create($_fillables);
+			$res = parent::create($_fillables);
+
+			if($res) {
+
+				$this->model_orders->updateDeliveryStatus($_fillables['status'], $delivery_data['order_id']);
+			}
+
+			return $res;
 		}
 
 		public function getComplete($id)
@@ -46,7 +53,9 @@
 
 		public function getByOrder($order_id)
 		{
-			return $this->getAll(['delivery.order_id' => $order_id])[0] ?? false;
+			return $this->getAll([
+				'where' => ['delivery.order_id' => $order_id]
+			])[0] ?? false;
 		}
 
 		public function getAll($params = [])
@@ -78,13 +87,15 @@
 		{
 			$_fillables = $this->getFillablesOnly($status_data);
 
+			$delivery = $this->getRow(['id' => $id]);
 			//update orders
 			$res = parent::update($_fillables , $id);
 
 			if($res) 
 			{	
+				$this->order_id = $delivery['order_id'];
+				
 				$delivery = parent::get($id);
-
 				$this->model_order->updateDeliveryStatus($_fillables['status'], $delivery['order_id']);
 			}
 

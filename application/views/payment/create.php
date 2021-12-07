@@ -137,7 +137,10 @@ hr {
                       <div class="col-sm-6">
                           <div>
                               <span class="text-sm text-grey-m2 align-middle">To:</span>
-                              <span class="text-600 text-110 text-blue align-middle"><?php echo $order['customer_name']?></span>
+                              <span class="text-600 text-110 text-blue align-middle">
+                                <?php echo $order['customer_name']?>
+                                <input type="hidden" id="cx_name" value="<?php echo $order['customer_name']?>">        
+                            </span>
                           </div>
                           <div class="text-grey-m2">
                               <div class="my-1">
@@ -267,8 +270,6 @@ hr {
         let bill_id = $('#bill_id').val();
         let user_id = $('#user_id').val();
 
-        console.log(url);
-
         paypal.Buttons({
             // Set up the transaction
             createOrder: function(data, actions) {
@@ -292,7 +293,7 @@ hr {
                             amount:amount,
                             method:'online',
                             external_reference: orderData.id,
-                            acc_name : payer.name.given_name + ' ' + payer.name.surname,
+                            acc_name : $("#cx_name").val(),
                             email : payer.email_address,
                             order_id: bill_id,
                             user_id: user_id

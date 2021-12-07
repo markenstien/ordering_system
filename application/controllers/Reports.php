@@ -83,8 +83,6 @@ class Reports extends Admin_Controller
 			if( !isEqual($post['order_group'] , 'NO GROUP') )
 				$this->data['orders_grouped'] = $this->model_reports->customize_by_report_type( $this->model_reports->orders , $post['order_group']);
 
-			// dd($this->data['orders_grouped']);
-
 			return $this->render_clean_template('sales_report' , $this->data);
 		}
 

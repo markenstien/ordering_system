@@ -10,6 +10,10 @@
 
 			$this->load->model('model_delivery');
 			$this->load->model('model_orders');
+
+			$this->model_delivery->injectModels([
+				'model_orders' => $this->model_orders
+			]);
 		}	
 
 		public function index()
@@ -29,7 +33,7 @@
 
 				if($res) {
 					flash_set("Delivery created!");
-					return redirect('delivery/show/'.$res);
+					return redirect('orders/show/'.$_POST['order_id']);
 				}
 			}
 
@@ -81,7 +85,7 @@
 					}
 				}
 
-				return redirect('delivery/show/'.$delivery_id);
+				return redirect('orders/show/'.$this->model_delivery->order_id);
 			}
 		}
 	}

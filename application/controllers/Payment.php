@@ -11,6 +11,12 @@
 
 			$this->load->model('model_orders');
 			$this->load->model('model_payment');
+			$this->load->model('model_stock');
+
+			$this->model_payment->injectModels([
+				'model_orders' => $this->model_orders,
+				'model_stock'  => $this->model_stock
+			]);
 		}
 
 		public function index()
@@ -57,7 +63,8 @@
 		public function submit_payment()
 		{
 			if( isSubmitted() )
-			{
+			{	
+
 				$res = $this->model_payment->createPayment($_POST);
 				print_r($_POST);
 			}else{

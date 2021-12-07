@@ -75,16 +75,11 @@ class Model_reports extends Model_adapter
 		/*get orders within dates*/
 
 		$orders = $this->model_order->getAll([
-			'where' => [
-				'date_time' => [
-					'condition' => 'between',
-					'value'   => [strtotime($start_date) , strtotime($end_date)]
-				],
-				'paid_status' => 1
-			],
+			'where' => " date_time > ". strtotime($start_date) . " and paid_status = 1",
 			'order' => 'date_time desc'
 		]);
 
+		
 		$this->orders = $orders;
 
 		return $this->summarizeOrders($orders);

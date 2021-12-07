@@ -82,10 +82,6 @@ class Category extends Admin_Controller
 	*/
 	public function create()
 	{
-		if(!in_array('createCategory', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$response = array();
 
 		$this->form_validation->set_rules('category_name', 'Category name', 'trim|required');
@@ -126,10 +122,6 @@ class Category extends Admin_Controller
 	*/
 	public function update($id)
 	{
-
-		if(!in_array('updateCategory', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
 
 		$response = array();
 
@@ -175,11 +167,7 @@ class Category extends Admin_Controller
 	* and returns the json format operation messages
 	*/
 	public function remove()
-	{
-		if(!in_array('deleteCategory', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-		
+	{		
 		$category_id = $this->input->post('category_id');
 
 		$response = array();

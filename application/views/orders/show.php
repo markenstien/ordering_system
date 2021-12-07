@@ -103,11 +103,12 @@
             </div>
 
             <div class="box-body">
+              <?php if($delivery) :?>
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <tr>
                     <td>Delivery Reference.</td>
-                    <td><?php echo $delivery['reference']?></td>
+                    <td><?php echo $delivery['reference'] . ' - ' .$delivery['id']?></td>
                   </tr>
                   <tr>
                     <td>Status</td>
@@ -147,15 +148,22 @@
                   <?php endif?>
                 </table>
               </div>
+                <?php if( isEqual($delivery['status'] , 'pending')) :?>
+                  <a href="#" class="btn btn-primary">For Delivery</a>
+                <?php endif?>
 
-              <?php if( isEqual($delivery['status'] , 'pending')) :?>
-                <a href="#" class="btn btn-primary">For Delivery</a>
+                <?php if( isEqual($delivery['status'] ,'for-delivery') ) :?>
+                  <a href="#" class="btn btn-primary delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="delivered">Delivered</a>
+                  <a href="#" class="btn btn-danger delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="cancelled">Cancelled</a>
+                <?php endif?>
+              <?php else:?>
+                <p>No delivery information</p>
               <?php endif?>
 
-              <?php if( isEqual($delivery['status'] ,'for-delivery') ) :?>
-                <a href="#" class="btn btn-primary delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="delivered">Delivered</a>
-                <a href="#" class="btn btn-danger delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="cancelled">Cancelled</a>
+              <?php if(!$delivery) :?>
+                <a href="<?php echo base_url('delivery/create/'.$order['id']) ?>" class="btn btn-primary">For Delivery</a>
               <?php endif?>
+              
             </div>
           </div>
 
@@ -197,15 +205,6 @@
                     <?php endif?>
                   </table>
                 </div>
-
-                <?php if( isEqual($delivery['status'] , 'pending')) :?>
-                  <a href="#" class="btn btn-primary">For Delivery</a>
-                <?php endif?>
-
-                <?php if( isEqual($delivery['status'] ,'for-delivery') ) :?>
-                  <a href="#" class="btn btn-primary delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="delivered">Delivered</a>
-                  <a href="#" class="btn btn-danger delivery-action" data-toggle="modal" data-target="#exampleModal" data-type="cancelled">Cancelled</a>
-                <?php endif?>
               </div>
             </div>
           <?php endif?>
@@ -220,6 +219,7 @@
   </div>
   <!-- /.content-wrapper -->
 
+ <?php if($delivery) :?>
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -251,6 +251,7 @@
       </div>
     </div>
   </div>
+<?php endif?>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -282,3 +283,32 @@
   });
 </script>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#companyNav").addClass('active');
+    $("#message").wysihtml5();
+
+
+    $(".delivery-action").click( function(e) 
+    {
+      let status = $(this).data('type');
+      let form_status  = $("#id_delivery_status_input");
+      let form_remarks = $("#id_remarks");
+
+      switch(status)
+      {
+        case 'cancelled':
+          $("#updateDeliveryModalLabel").html('Order Cancelled');
+          form_status.val('cancelled');
+          form_remarks.attr('placeholder' , 'Reason for cancellation , required');
+        break;
+
+        case 'delivered':
+          $("#updateDeliveryModalLabel").html('Order Delivered');
+          form_status.val('delivered');
+          form_remarks.attr('placeholder' , 'Notes');
+        break;
+      }
+    });
+  });
+</script>

@@ -50,12 +50,7 @@
                   <label for="product_name">Product name</label>
                   <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" value="<?php echo $product_data['name']; ?>"  autocomplete="off"/>
                 </div>
-
-                <div class="form-group">
-                  <label for="sku">SKU</label>
-                  <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter sku" value="<?php echo $product_data['sku']; ?>" autocomplete="off" />
-                </div>
-
+                
                 <div class="form-group">
                   <label for="price">Price</label>
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" value="<?php echo $product_data['price']; ?>" autocomplete="off" />

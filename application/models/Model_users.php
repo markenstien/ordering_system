@@ -92,6 +92,14 @@
 			);
 		}
 
+		public function getUserData($id)
+		{
+			if( $id )
+				return $this->getAll($id)[0];
+
+			return $this->getAll();
+		}
+
 		public function countTotalUsers()
 		{
 			return parent::queryResultSingle(

@@ -59,12 +59,14 @@
                 </table>
               </div>
               <?php
-                  $buttons = [btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit')];
+                  $buttons = [];
 
-                  if(!isEqual($supply_order['status'] , 'cancelled')){
+                  if(!isEqual($supply_order['status'] , ['cancelled' , 'delivered']))
+                  {
                     array_push($buttons , [
                       btnLink("supplyOrder/delivered/".$supply_order['id'] , 'Delivered' , 'success' , 'fa fa-truck'),
-                      btnLink("supplyOrder/cancel/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times')
+                      btnLink("supplyOrder/cancel/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times'),
+                      btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit')
                     ]);
                   }
               ?>
@@ -74,7 +76,9 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Supply Items</h3>
+              <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
               <div><?php __( btnLink('supplyOrderItem/add/'.$supply_order['id'], " Add Item ", 'create')) ?></div>
+              <?php endif?>
             </div>
 
             <div class="box-body">
@@ -89,7 +93,9 @@
                       <th>SKU</th>
                       <th>Quantity</th>
                       <th>Price</th>
-                      <th>Action</th>
+                      <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
+                        <th>Action</th>
+                      <?php endif?>
                     </thead>
 
                     <tbody>
@@ -103,12 +109,14 @@
                           <td><?php echo $item['quantity']?></td>
                           <td><?php echo $item['price']?></td>
                           <td>
-                            <?php
-                              __([
-                                btnLink('supplyOrderItem/edit/'.$item['id'],'Edit' , 'edit'),
-                                btnLink('supplyOrderItem/delete/'.$item['id'],'Delete' , 'delete')
-                              ])
-                            ?>
+                            <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
+                              <?php
+                                __([
+                                  btnLink('supplyOrderItem/edit/'.$item['id'],'Edit' , 'edit'),
+                                  btnLink('supplyOrderItem/delete/'.$item['id'],'Delete' , 'delete')
+                                ])
+                              ?>
+                            <?php endif?>
                           </td>
                         </tr>
                       <?php endforeach?>

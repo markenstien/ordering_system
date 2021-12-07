@@ -21,10 +21,7 @@ class Company extends Admin_Controller
     * validation for each input field is successfully valid
     */
 	public function index()
-	{  
-        if(!in_array('updateCompany', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
+	{ 
         
 		$this->form_validation->set_rules('company_name', 'Company name', 'trim|required');
 		$this->form_validation->set_rules('service_charge_value', 'Charge Amount', 'trim|integer');

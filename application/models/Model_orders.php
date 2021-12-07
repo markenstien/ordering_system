@@ -135,7 +135,61 @@ class Model_orders extends Model_adapter
 
 	public function create($order_data)
 	{
-		dd($order_data);
+		if( !isset($order_data['product']) || empty($order_data['product']) )
+		{
+			$this->addError("No order items to migrate");
+			return false;
+		}
+
+
+		$datetime = strtotime(date('Y-m-d h:i:s a'));
+		$bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+
+		$_fillables = $this->getFillablesOnly($order_data);
+		$_fillables['date_time'] = $datetime;
+		$_fillables['bill_no'] = $bill_no;
+
+		$res = parent::create($_fillables);
+
+		if($res) 
+		{
+			foreach($order_data['product'] as $index => $product) 
+			{
+				$qty = $order_data['qty'][$index];
+				$rate = $order_data['rate_value'][$index];
+				$amount = $order_data['amount_value'][$index];
+
+				$order_item_data =  [
+					'order_id' => $res,
+					'product_id' => $product,
+					'qty' => $qty,
+					'rate'  => $rate,
+					'amount' => $amount
+				];
+
+				$insert_item = $this->dbinsert('orders_item',$order_item_data);
+
+				//deduct from stocks
+
+				$deduct_stock = $this->model_stock->addStock([
+					'quantity' => $qty,
+					'type'     => 'deduct',
+					'product_id' => $product,
+					'description' => ' Order from '.$bill_no,
+					'date' => date('Y-m-d H:i:s')
+				]);
+			}
+
+			//CREATE PAMYNETS
+
+			$this->model_payment->createBasic([
+				'amount' => $_fillables['net_amount'],
+				'method' => 'cash',
+				'order_id' => $res
+			]);
+			return $res;
+		}
+		return false;
 	}
 
 	public function createFromCart($order_data)

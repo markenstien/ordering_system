@@ -80,6 +80,7 @@
 				$this->addError("No Items to be migrated!");
 				return false;
 			}
+
 			foreach($items as $item) 
 			{
 				$stock_added = $this->model_stock->addStock([
@@ -98,6 +99,10 @@
 				$this->addError("Unable to migrate items");
 				return false;
 			}
+
+			$this->update([
+				'status' => 'delivered'
+			], $id );
 
 			$this->addMessage("Stocks added!");
 			return true;

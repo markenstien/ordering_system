@@ -19,7 +19,17 @@ class Orders extends Admin_Controller
 		$this->load->model('model_stock');
 		$this->load->model('model_delivery');
 		$this->load->model('model_payment');
+
+		$this->model_orders->injectModels([
+			'model_stock' => $this->model_stock,
+			'model_payment' => $this->model_payment
+		]);
 	}
+
+	// public function forDelivery($order_id)
+	// {
+		
+	// }
 
 	/* 
 	* It only redirects to the manage order page
@@ -54,7 +64,7 @@ class Orders extends Admin_Controller
 		$this->data['order'] = $order;
 		$this->data['items'] = $order['items'];
 
-		$this->data['payment'] = $this->model_payment->getAll(['payment.order_id' => $id])[0] ?? false;
+		$this->data['payment'] = $this->model_payment->getAll(['where' => ['payment.order_id' => $id]])[0] ?? false;
 		$this->data['delivery'] = $delivery;
 
 
@@ -133,9 +143,12 @@ class Orders extends Admin_Controller
 		
 	
         if ($this->form_validation->run() == TRUE) 
-        {        	
+        {   
+
+        	$_POST['net_amount'] = $_POST['net_amount_value'];
+
         	$order_id = $this->model_orders->create( $_POST  );
-        	
+
         	if($order_id) {
         		$this->session->set_flashdata('success', 'Successfully created');
         		redirect('orders/update/'.$order_id, 'refresh');

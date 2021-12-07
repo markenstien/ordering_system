@@ -23,8 +23,11 @@
 
 			foreach($order['items'] as $row) 
 			{
+				if( $row['qty'] <= 0 )
+					continue;
+
 				$this->model_stock->addStock([
-					'quantity' => $row['quantity'],
+					'quantity' => $row['qty'],
 					'type'    => 'deduct',
 					'product_id' => $row['product_id'],
 					'date'     => $date,
@@ -35,14 +38,40 @@
 			return $payment_id;
 		}
 
-		public function createPayment($payment_data)
+
+		public function createBasic($payment_data)
 		{
 			$_fillables = $this->getFillablesOnly($payment_data);
 			$_fillables['reference'] = $this->getRefence();
 
 			$res = $this->create($_fillables);
 
-			if($res) {
+			return $res;
+		}
+		public function createPayment($payment_data)
+		{
+			$res = $this->createBasic($payment_data);
+
+			if($res) 
+			{
+				$order = $this->model_orders->getOrderWithItems( $payment_data['order_id'] );
+				$bill_no = $order['bill_no'];
+				$date = date('Y-m-d' , $order['date_time']);
+
+				foreach($order['items'] as $row) 
+				{
+					if( $row['qty'] <= 0 )
+						continue;
+
+					$this->model_stock->addStock([
+						'quantity' => $row['qty'],
+						'type'    => 'deduct',
+						'product_id' => $row['product_id'],
+						'date'     => $date,
+						'description' => " ORDERS FROM {$bill_no}"
+					]);
+				}
+
 				//pdate order
 				$this->dbupdate('orders', ['paid_status' => 1], $this->conditionConvert(['id' => $payment_data['order_id']]));
 			}
