@@ -20,10 +20,6 @@ class Attributes extends Admin_Controller
 	*/
 	public function index()
 	{
-		if(!in_array('viewAttribute', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$this->render_template('attributes/index', $this->data);	
 	}
 
@@ -75,10 +71,6 @@ class Attributes extends Admin_Controller
 	*/
 	public function create()
 	{
-		if(!in_array('createAttribute', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$response = array();
 
 		$this->form_validation->set_rules('attribute_name', 'Attribute name', 'trim|required');
@@ -117,10 +109,6 @@ class Attributes extends Admin_Controller
 	*/
 	public function update($id)
 	{
-		if(!in_array('updateAttribute', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$response = array();
 
 		if($id) {
@@ -165,10 +153,6 @@ class Attributes extends Admin_Controller
 	*/
 	public function remove()
 	{
-		if(!in_array('deleteAttribute', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$attribute_id = $this->input->post('attribute_id');
 
 		$response = array();

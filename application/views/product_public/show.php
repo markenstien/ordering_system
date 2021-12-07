@@ -10,48 +10,77 @@
       </div>
 
       <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title"><?php echo $product['name']?></h4>
-            <label>Delivery Boxes</label>
-          </div>
+        <form method="post" action="<?php echo isset($item) ? base_url('cart/updateItem/'.$item['id']) : base_url('cart/addItem') ?>">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title"><?php echo $product['name']?></h4>
+              <label>Delivery Boxes</label>
+            </div>
 
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <img src="<?php echo base_url($product['image'])?>"
-                alt="<?php echo $product['name']?>" class="img-circle" width="100%"/>
-              </div>
-              <div class="col-md-6">
-                <h5>PHP <?php amountHTML($product['price']) ?></h5>
-                <div><?php echo $product['description']?></div>
-                <br>
-                <form method="post" action="<?php echo isset($item) ? base_url('cart/updateItem/'.$item['id']) : base_url('cart/addItem') ?>">
-                  <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
-                  <input type="hidden" name="product_type" value="single">
-                  <input type="hidden" name="cart_type" value="cart">
-                  <?php if($this->session->userdata('logged_in')) :?>
-                    <input type="hidden" name="user_id" value="<?php echo $this->session->userdata('id')?>">
-                  <?php endif?>
-                  <div class="row">
-                    <?php if( is_null($product['stock_quantity']) || $product['stock_quantity'] <= $product['min_stock']) :?>
-                      <p>No Stocks Available</p>
-                    <?php else:?>
-                    <div class="col-md-5">
-                      <input type="number" name="quantity" class="form-control"
-                        value="<?php echo isset($item) ? $item['quantity'] : 1?>">
-                    </div>
-                    <div class="col-md-7">
-                      <input type="submit" name="" class="btn btn-primary" 
-                        value="<?php echo isset($item) ? 'Update Cart Item' : 'Add to Cart'?>">
-                    </div>
-                    <?php endif?>
+            <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <img src="<?php echo base_url($product['image'])?>"
+                    alt="<?php echo $product['name']?>" class="img-circle" width="100%"/>
                   </div>
-                </form>
-              </div>
+                  <div class="col-md-6">
+                    <h5>PHP <?php amountHTML($product['price']) ?></h5>
+                    <div><?php echo $product['description']?></div>
+                    <br>
+                      <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
+                      <input type="hidden" name="product_type" value="single">
+                      <input type="hidden" name="cart_type" value="cart">
+                      <?php if($this->session->userdata('logged_in')) :?>
+                        <input type="hidden" name="user_id" value="<?php echo $this->session->userdata('id')?>">
+                      <?php endif?>
+                      <div class="row">
+                        <?php if( is_null($product['stock_quantity']) || $product['stock_quantity'] <= $product['min_stock']) :?>
+                          <p>No Stocks Available</p>
+                        <?php else:?>
+
+                        <?php if(!empty($product['category_extracted'])) :?>
+                          <div class="form-group">
+                            <label>Categories</label> :
+                            <?php foreach($product['category_extracted'] as $row) :?>
+                              <span class="badge badge-primary"><?php echo $row['name']?></span>
+                            <?php endforeach?>
+                          </div>
+                        <?php endif?>
+
+                        <?php if(!empty($product['attr_extracted'])) :?>
+                          <div class="form-group">
+                            <?php foreach($product['attr_extracted'] as $attributes) :?>
+                              <div class="form-group">
+                                <label><?php echo $attributes['attribute']['name']?></label>
+                                <div style="border: 2px solid #eee; padding: 5px;" class="mb-2 mt-2">
+                                  <?php foreach($attributes['values'] as $row) :?>
+                                    <label>
+                                      <input type="radio" name="attr[<?php echo $row['attribute_parent_id']?>][]" value="<?php echo $row['id']?>">
+                                      <?php echo $row['value']?>
+                                    </label>
+                                  <?php endforeach?>
+                                </div>
+                              </div>
+                            <?php endforeach?>
+                          </div>
+                        <?php endif?>
+
+
+                        <div class="col-md-5">
+                          <input type="number" name="quantity" class="form-control"
+                            value="<?php echo isset($item) ? $item['quantity'] : 1?>">
+                        </div>
+                        <div class="col-md-7">
+                          <input type="submit" name="" class="btn btn-primary" 
+                            value="<?php echo isset($item) ? 'Update Cart Item' : 'Add to Cart'?>">
+                        </div>
+                        <?php endif?>
+                      </div>
+                  </div>
+                </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
 
       <div class="col-md-3">

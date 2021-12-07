@@ -5,9 +5,12 @@
 
 		protected $ci;
 
+		protected $database;
+
 		public function __construct()
 		{
 			$this->ci = new CI_Model();
+			$this->database = $this->ci->db;
 		}
 		public function dbinsert($tableName , $fieldsAndValues)
 		{

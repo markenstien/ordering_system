@@ -20,10 +20,6 @@ class Supplier extends Admin_Controller
     */
 	public function index()
 	{
-		if(!in_array('viewStore', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$this->data['suppliers'] = $this->model_supplier->getAll();
 		
 		$this->render_template('supplier/index', $this->data);
@@ -49,11 +45,7 @@ class Supplier extends Admin_Controller
 			
 			return redirect('supplier/create');
 		}
-
-		if(!in_array('viewStore', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
+		
 		$this->render_template('supplier/create', $this->data);	
 	}
 

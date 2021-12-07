@@ -77,7 +77,7 @@ class Admin_Controller extends MY_Controller
 
 	public function company_currency()
 	{
-		$this->load->model('model_company');
+		/*$this->load->model('model_company');
 		$company_currency = $this->model_company->getCompanyData(1);
 		$currencies = $this->currency();
 			
@@ -88,8 +88,9 @@ class Admin_Controller extends MY_Controller
 			}
 		}
 
-		return $currency;
+		return $currency;*/
 
+		return 'PHP';
 	}
 
 	

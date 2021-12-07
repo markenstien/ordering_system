@@ -25,6 +25,7 @@
 			{
 				$this->model_stock->addStock([
 					'quantity' => $row['quantity'],
+					'type'    => 'deduct',
 					'product_id' => $row['product_id'],
 					'date'     => $date,
 					'description' => " ORDERS FROM {$bill_no}"

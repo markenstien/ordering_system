@@ -72,6 +72,15 @@
 			if( isSubmitted() )
 			{
 
+				if( !isset($this->data['user_data']) )
+				{
+
+					$anchor = anchor('auth/login' , 'Click here to login and continue shopping');
+					flash_set("You must have an account to login ." . $anchor);
+
+					return redirect('cart/checkout');
+				}
+
 				$this->load->model('model_orders');
 
 				$this->model_orders->injectModels([

@@ -11,7 +11,7 @@ class Model_products extends Model_adapter
 		'description' , 'attribute_value_id','category_id',
 		'availability' , 'min_stock' , 'max_stock'
 	];
-	
+
 	public function getAll( $params = [])
 	{
 		$where = null;
@@ -35,7 +35,6 @@ class Model_products extends Model_adapter
 				{$where} {$orderby}
 			"
 		);
-
 	}
 
 	public function getTotalAmount( $products )
@@ -51,16 +50,94 @@ class Model_products extends Model_adapter
 	/* get the brand data */
 	public function getProductData($id = null)
 	{
-		if($id) {
-			return $this->getAll([
+		if($id) 
+		{
+			$product = $this->getAll([
 				'where' => " product.id = '{$id}' "
 			])[0] ?? false;
+
+			//get attributes
+
+			$attributes = $this->extractAttributes($product['attribute_value_id']);
+			$categories = $this->extractCategories($product['category_id']);
+
+
+			$product['category_extracted'] = $categories;
+			$product['attr_extracted'] = $attributes;
+			
+			return $product;
 		}
 
 		return $this->getAll([
 			'where' => " product.id = '{$id}' ",
 			'orderby' => 'id desc'
 		]);
+	}
+
+	public function extractCategories($categories)
+	{
+		if( $categories )
+		{
+			$category_extracted = [];
+
+			$categories = json_decode($categories);
+
+			if(!$categories)
+				return [];
+			
+			foreach($categories as $cat_id)
+			{
+				$cat_exists = $this->dbrow('categories', $this->conditionConvert([
+					'id' => $cat_id
+				]));
+
+				if($cat_exists)
+					array_push($category_extracted ,   $cat_exists);
+			}
+
+			return $category_extracted;
+		}
+
+		return [];
+	}
+
+	public function extractAttributes($attributes)
+	{
+		if( $attributes ) 
+		{
+			$attr_extracted = [];
+
+			$attributes = json_decode($attributes);	
+
+			if(!$attributes)
+				return [];
+
+			foreach($attributes as $key => $attr_id) 
+			{
+				$attribute = $this->dbrow('attribute_value' , $this->conditionConvert([
+					'id' => $attr_id
+				]));
+
+				if( $attribute )
+				{
+					if(!isset($attr_extracted[$attribute['attribute_parent_id']]) ){
+						$attr_extracted[$attribute['attribute_parent_id']] = ['values' => [] , 'attribute' => null];
+					}
+					array_push($attr_extracted[$attribute['attribute_parent_id']]['values'] , $attribute);
+				}
+			}
+			//key is the parent
+			foreach($attr_extracted as $key=> $attr) 
+			{
+				$attr_extracted[$key]['attribute'] = $this->dbrow('attributes' , $this->conditionConvert([
+					'id' => $key
+				]));
+			}
+
+			return $attr_extracted;
+		}
+
+		return [];
 	}
 
 	public function getActiveProductData()
@@ -73,6 +150,7 @@ class Model_products extends Model_adapter
 	public function create($data)
 	{
 		$_fillables = $this->getFillablesOnly($data);
+		$_fillables['sku'] = $this->generateSku();
 
 		return parent::create($_fillables);
 	}
@@ -92,6 +170,25 @@ class Model_products extends Model_adapter
 	public function countTotalProducts()
 	{
 		return parent::queryResultSingle("SELECT count(id) as total FROM products")['total'] ?? 0;
+	}
+
+	public function generateSku()
+	{
+		$sku = null;
+
+		while( is_null($sku) )
+		{
+			$sku = strtoupper("SKU-".generateRandomString(5));
+			//check if sku exists
+			$is_exists = parent::getRow([
+				'sku' => $sku
+			]);
+
+			if($is_exists)
+				$sku = null;//reset
+		}
+
+		return $sku;
 	}
 
 }

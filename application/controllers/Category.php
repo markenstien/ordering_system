@@ -20,11 +20,6 @@ class Category extends Admin_Controller
 	*/
 	public function index()
 	{
-
-		if(!in_array('viewCategory', $this->permission)) {
-			redirect('dashboard', 'refresh');
-		}
-
 		$this->render_template('category/index', $this->data);	
 	}	
 

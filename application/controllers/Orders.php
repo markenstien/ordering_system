@@ -134,7 +134,7 @@ class Orders extends Admin_Controller
 	
         if ($this->form_validation->run() == TRUE) 
         {        	
-        	$order_id = $this->model_orders->create();
+        	$order_id = $this->model_orders->create( $_POST  );
         	
         	if($order_id) {
         		$this->session->set_flashdata('success', 'Successfully created');

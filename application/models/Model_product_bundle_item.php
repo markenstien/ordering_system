@@ -51,7 +51,9 @@
 		{
 			$_fillables = $this->getFillablesOnly($bundle_item_data);
 
-			if(  $this->getByProduct($bundle_item_data['product_id']) ){
+			$product = $this->getByProduct($bundle_item_data['product_id']);
+
+			if( $product && isEqual( $product->bundle_id, $bundle_item_data['bundle_id']) ){
 				$this->addError("Product Already exists");
 				return false;
 			}
@@ -61,7 +63,7 @@
 
 		public function getByProduct($product_id)
 		{
-			return $this->getRow(['product_id' => $product_id]);
+			return $this->getRow(['product_id' => $product_id ]);
 		} 
 
 

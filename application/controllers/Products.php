@@ -89,12 +89,11 @@ class Products extends Admin_Controller
     */
 	public function create()
 	{
-
 		$this->form_validation->set_rules('product_name', 'Product name', 'trim|required');
 		$this->form_validation->set_rules('sku', 'SKU', 'trim|required');
 		$this->form_validation->set_rules('price', 'Price', 'trim|required');
 		$this->form_validation->set_rules('availability', 'Availability', 'trim|required');
-		
+	   	
 	
         if ($this->form_validation->run() == TRUE) {
             // true case
@@ -240,7 +239,6 @@ class Products extends Admin_Controller
 
                 $attributes_final_data[$k]['attribute_value'] = $value;
             }
-            
             // false case
             $this->data['attributes'] = $attributes_final_data;
             $this->data['brands'] = $this->model_brands->getActiveBrands();         

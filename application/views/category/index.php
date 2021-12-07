@@ -21,23 +21,13 @@
       <div class="col-md-12 col-xs-12">
 
         <div id="messages"></div>
+        <?php flash()?>
 
-        <?php if($this->session->flashdata('success')): ?>
-          <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <?php echo $this->session->flashdata('success'); ?>
-          </div>
-        <?php elseif($this->session->flashdata('error')): ?>
-          <div class="alert alert-error alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <?php echo $this->session->flashdata('error'); ?>
-          </div>
-        <?php endif; ?>
-
-        <?php if(in_array('createCategory', $user_permission)): ?>
+        <?php $type = e_user_type($this->data['user_data']);?>
+        <?php if(isEqual($type,'admin')) :?>
           <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Category</button>
           <br /> <br />
-        <?php endif; ?>
+        <?php endif?>
 
         <div class="box">
           <div class="box-header">
@@ -50,9 +40,7 @@
               <tr>
                 <th>Category Name</th>
                 <th>Status</th>
-                <?php if(in_array('updateCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
-                  <th>Action</th>
-                <?php endif; ?>
+                <th>Action</th>
               </tr>
               </thead>
 
@@ -71,8 +59,6 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-<?php if(in_array('createCategory', $user_permission)): ?>
 <!-- create brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="addModal">
   <div class="modal-dialog" role="document">
@@ -110,9 +96,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
-
-<?php if(in_array('updateCategory', $user_permission)): ?>
 <!-- edit brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="editModal">
   <div class="modal-dialog" role="document">
@@ -151,9 +134,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
-
-<?php if(in_array('deleteCategory', $user_permission)): ?>
 <!-- remove brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
   <div class="modal-dialog" role="document">
@@ -177,7 +157,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
 
 
 <script type="text/javascript">

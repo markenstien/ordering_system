@@ -132,6 +132,12 @@ class Model_orders extends Model_adapter
 		return false;
 	}
 
+
+	public function create($order_data)
+	{
+		dd($order_data);
+	}
+
 	public function createFromCart($order_data)
 	{
 		
