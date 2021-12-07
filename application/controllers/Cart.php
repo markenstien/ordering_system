@@ -71,16 +71,6 @@
 		{
 			if( isSubmitted() )
 			{
-
-				if( !isset($this->data['user_data']) )
-				{
-
-					$anchor = anchor('auth/login' , 'Click here to login and continue shopping');
-					flash_set("You must have an account to login ." . $anchor);
-
-					return redirect('cart/checkout');
-				}
-
 				$this->load->model('model_orders');
 
 				$this->model_orders->injectModels([
@@ -97,8 +87,16 @@
 				}
 			}
 
-			if( $this->session->userdata('logged_in') )
+			if( $this->session->userdata('logged_in') ){
 				$this->data['user'] = $this->session->userdata();
+			}else{
+				$anchor = anchor('auth/login' , 'Click here to login');
+				$register_anchor = anchor('auth/login' , 'Click here to Register');
+				flash_set("You must have an account to login ." . $anchor . ' ' . $register_anchor . ' ' .'and continue shopping');
+
+				return redirect('cart/index');
+			}
+
 
 			return $this->view_public('cart/checkout', $this->data);
 		}

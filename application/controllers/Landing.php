@@ -12,6 +12,8 @@
 			$this->load->model('model_products');
 			$this->load->model('model_product_bundle');
 			$this->load->model('model_product_bundle_item');
+
+			$this->load->model('model_category');
 		}
 
 		public function index()
@@ -40,13 +42,20 @@
 						]
 					]
 				]);
-			}else
+			}elseif(isset($_GET['categories']))
+			{
+				$categories = $_GET['categories'];
+
+				$this->data['products'] = $this->model_products->getByCategories($categories);
+			}
+			else
 			{
 				$this->data['products'] = $this->model_products->getAll();
 			}
 
-			$this->data['bundles']  = $this->model_product_bundle->getAllWithItems();
+			$this->data['categories'] = $this->model_category->getActiveCategroy();
 
+			$this->data['bundles']  = $this->model_product_bundle->getAllWithItems();
 			return $this->view_public('landing/index' , $this->data);
 		}
 

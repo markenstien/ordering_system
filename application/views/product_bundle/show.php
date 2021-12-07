@@ -106,7 +106,10 @@
                   <tbody>
                     <?php $total = 0?>
                     <?php foreach( $bundle_items as $key => $row) : ?>
-                      <?php $total += $row['price']?>
+                      <?php
+                        $total_amount = $row['price'] * $row['quantity'];
+                        $total += $total_amount;
+                      ?>
                       <tr>
                         <td><?php echo ++$key?></td>
                         <td><?php echo $row['product_name']?></td>

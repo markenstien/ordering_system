@@ -6,3 +6,11 @@ ALTER table orders
 ALTER TABLE orders 
 	add column delivery_status enum('pending' , 'for-delivery' , 'cancelled' , 'delivered' , 'walk-in') default 'pending';
 
+
+
+ALTER TABLE orders
+	add column remarks text;
+
+
+ALTER TABLE orders
+	add column order_status enum('completed' , 'cancelled') default 'completed';

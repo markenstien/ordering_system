@@ -19,7 +19,9 @@
 
 		public function index()
 		{
-			$this->data['supply_orders'] = $this->model_supply_order->getAll();
+			$this->data['supply_orders'] = $this->model_supply_order->getAll([
+				'supply_order.id' => 'id desc'
+			]);
 
 			return $this->render_template('supply_order/index' , $this->data);
 		}

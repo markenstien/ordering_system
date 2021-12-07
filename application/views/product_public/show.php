@@ -1,15 +1,42 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('bundles/product_search.css')?>">
+<style type="text/css">
+  .related-products {
+    width: 200px;
+    border: 1px solid #eee;
+    padding: 10px;
+  }
+  .related-products img {
+    width: 75px !important;
+    display: block;
+    margin: 0px auto !important;
+  }
+  .related-products label{
+    text-align: left !important;
+    font-size: .90em;
+  }
+</style>
 <div class="body">
   <?php require_once APPPATH.'/views/templates/partial/public_navigation.php'?>
   <div style="margin-bottom: 25px;"></div>
   <div class="container">
     <?php flash()?>
     <div class="row">
-      <div class="col-md-3">
-        <h4>Related Products</h4>        
-      </div>
+      <?php if($related_products) :?>
+        <div class="col-md-3">
+          <h4>Related Products</h4>
+          <?php foreach( $related_products as $row) : ?>
+            <div class="related-products">
+              <a href="<?php echo base_url('productPublic/show/'.$row['id'])?>" style="text-decoration:none; color: #000;">
+                <img src="<?php echo base_url($row['image'])?>"
+                    alt="<?php echo $row['name']?>" class="img-circle" width="100%"/>
+                <div><label><?php echo $row['name']?></label></div>
+              </a>
+            </div>
+          <?php endforeach?>     
+        </div>
+      <?php endif?>
 
-      <div class="col-md-6">
+      <div class="col">
         <form method="post" action="<?php echo isset($item) ? base_url('cart/updateItem/'.$item['id']) : base_url('cart/addItem') ?>">
           <div class="card">
             <div class="card-header">

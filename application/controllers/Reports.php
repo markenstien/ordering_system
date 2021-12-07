@@ -67,24 +67,41 @@ class Reports extends Admin_Controller
 				'model_order' => $this->model_orders,
 				'model_stock' => $this->model_stock,
 			]);
-			
 
 			$this->data['report'] = $this->model_reports->report($post , $post['type']);
 			$this->data['date'] = [
 				'start_date' => $post['start_date'],
 				'end_date'   => $post['end_date']
 			];
-			
 			$this->data['order_group'] = $post['order_group'];
+			if( isEqual($post['type'] , 'sales') )
+			{
+
+				// dd(strtotime($post['start_date']));
+
+				if( !isEqual($post['order_group'] , 'NO GROUP') )
+					$this->data['orders_grouped'] = $this->model_reports->customize_by_report_type( 
+						$this->model_reports->orders ?? [] , $post['order_group']);
+
+				return $this->render_clean_template('sales_report' , $this->data);
+			}
+
+			if( isEqual($post['type'] , 'inventory') )
+			{
+				// dd($this->data['report']);
+				$this->data['stocks'] = $this->model_reports->stocks ?? [];
+
+				if( $this->data['stocks'] )
+				$this->data['order_group'] = $this->model_reports->customize_by_type( $this->data['stocks'] , $post['order_group']);
 
 
-			$orders = $this->model_reports->customize_by_report_type( $this->model_reports->orders , 'DAILY');
+				// dd($this->data['order_group']);
 
-			if( !isEqual($post['order_group'] , 'NO GROUP') )
-				$this->data['orders_grouped'] = $this->model_reports->customize_by_report_type( 
-					$this->model_reports->orders ?? [] , $post['order_group']);
+				return $this->render_clean_template('inventory_report' , $this->data);
+			}
+			
 
-			return $this->render_clean_template('sales_report' , $this->data);
+			
 		}
 
 		return $this->render_template('reports/advance_filter' , $this->data);

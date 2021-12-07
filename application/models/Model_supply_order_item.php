@@ -43,7 +43,8 @@
 
 			$sql = "SELECT p.* , soi.supply_order_id , soi.quantity , 
 					soi.damaged_quantity, soi.damage_notes,
-					soi.created_at , soi.created_by, soi.id as id
+					soi.created_at , soi.created_by, soi.id as id,
+					p.id as product_id
 
 					FROM {$this->_table_name} as soi 
 					LEFT JOIN products as p 

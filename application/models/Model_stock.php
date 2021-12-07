@@ -71,7 +71,8 @@
 			if( isset($params['order']) )
 				$order = " ORDER BY {$params['order']}";
 
-			$sql = "SELECT stock.* , product.name as product_name 
+			$sql = "SELECT stock.* , product.name as product_name ,
+					product.min_stock , product.max_stock
 					FROM {$this->_table_name} as stock 
 					LEFT JOIN products as product 
 					ON product.id = stock.product_id

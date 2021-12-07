@@ -133,6 +133,22 @@ class Model_orders extends Model_adapter
 	}
 
 
+	public function cancel($order_data)
+	{
+		$cancel_is_ok = parent::update([
+			'order_status' => 'cancelled',
+			'remarks' => $order_data['remarks']
+		] , $order_data['order_id']);
+
+		if($cancel_is_ok){
+			$this->addMessage("Order cancellation succesful");
+			return true;
+		}else{
+			$this->addError("Cancellation failed");
+			return false;
+		}
+	}
+
 	public function create($order_data)
 	{
 		if( !isset($order_data['product']) || empty($order_data['product']) )

@@ -92,7 +92,7 @@
                   <label for="category">Category</label>
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                      <option value="<?php echo $v['id'] ?>" value="<?php echo $v['id']?>"><?php echo $v['name'] ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>

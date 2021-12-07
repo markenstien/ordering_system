@@ -28,13 +28,13 @@
               <div class="form-group row">
                 <div class="col-md-6">
                   <?php
-                    __( f_col(f_label('Start Date') , f_date('start_date' , '' , ['class' => 'form-control', 'requried' => true])) );
+                    __( f_col(f_label('Start Date') , f_date('start_date' , '' , ['class' => 'form-control', 'required' => true])) );
                   ?>
                 </div>
 
                 <div class="col-md-6">
                   <?php
-                    __( f_col(f_label('End Date') , f_date('end_date' , '' , ['class' => 'form-control', 'requried' => true])) );
+                    __( f_col(f_label('End Date') , f_date('end_date' , '' , ['class' => 'form-control', 'required' => true])) );
                   ?>
                 </div>
               </div>

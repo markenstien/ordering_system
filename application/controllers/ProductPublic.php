@@ -30,6 +30,8 @@
 			{
 				$this->data['product'] = $this->model_products->getProductData($id);
 			}
+
+			$this->data['related_products'] = $this->model_products->getRelatedProducts($id);
 			
 			return $this->view_public('product_public/show' , $this->data);
 		}

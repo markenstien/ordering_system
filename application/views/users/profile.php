@@ -55,6 +55,10 @@
                   <th>Address</th>
                   <td><?php echo $user_data['address']; ?></td>
                 </tr>
+                <tr>
+                  <th>Action</th>
+                  <td><a href="<?php echo base_url('users/edit/'.$user_data['id'])?>"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
               </table>
             </div>
             <!-- /.box-body -->

@@ -12,6 +12,48 @@ class Model_products extends Model_adapter
 		'availability' , 'min_stock' , 'max_stock'
 	];
 
+
+	/*
+	*do not include wuth such id
+	*/
+	public function getByCategories( $categories , $id = null)
+	{
+		$ret_val = [];
+
+		if( empty($categories) )
+			return [];
+		
+		foreach($categories as $key) 
+		{
+			$where_param = [
+				'category_id' => [
+					'condition' => 'like',
+					'value'  => "%{$key}%"
+				]
+			];
+
+			if( !is_null($id) ){
+				$where_param['id'] = [
+					'condition' => 'not equal',
+					'value'     => $id
+				];
+			}
+
+			$products = $this->getAll([
+				'where' => $where_param
+			]);
+
+			if($products)
+			{
+				foreach($products as $prod) 
+				{
+					$ret_val[$prod['id']] = $prod;
+				}
+			}
+		}
+		return $ret_val;
+	}
+
 	public function getAll( $params = [])
 	{
 		$where = null;
@@ -152,6 +194,15 @@ class Model_products extends Model_adapter
 		$_fillables = $this->getFillablesOnly($data);
 		$_fillables['sku'] = $this->generateSku();
 
+		//validate
+		$this->validateAllowOnlyPositiveNumber('Minimum Stock' , $_fillables['min_stock']);
+		$this->validateAllowOnlyPositiveNumber('Maximum Stock' , $_fillables['max_stock']);
+		$this->validateAllowOnlyPositiveNumber('Price' , $_fillables['price']);
+
+		//validation did not succeed
+		if( !empty($this->getErrors()) )
+			return false;
+
 		return parent::create($_fillables);
 	}
 
@@ -159,6 +210,21 @@ class Model_products extends Model_adapter
 	{
 		$_fillables = $this->getFillablesOnly($data);
 
+		//validate
+		$this->validateAllowOnlyPositiveNumber('Minimum Stock' , $_fillables['min_stock']);
+		$this->validateAllowOnlyPositiveNumber('Maximum Stock' , $_fillables['max_stock']);
+		$this->validateAllowOnlyPositiveNumber('Price' , $_fillables['price']);
+
+		//validation did not succeed
+		if( !empty($this->getErrors()) )
+			return false;
+
+		return parent::update($_fillables , $id);
+	}
+
+	public function update_image($data, $id)
+	{
+		$_fillables = $this->getFillablesOnly($data);
 		return parent::update($_fillables , $id);
 	}
 
@@ -191,4 +257,32 @@ class Model_products extends Model_adapter
 		return $sku;
 	}
 
+	public function validateAllowOnlyPositiveNumber($field , $number)
+	{
+		if( !is_numeric($number) ){
+			$this->addError("{$field} must be A valid number!");
+			return false;
+		}else{
+			if( floatval($number) < 1)
+			$this->addError("{$field} does not allow values less than 1");
+			return false;
+		}
+		
+		return true;
+	}
+
+	public function getRelatedProducts($id)
+	{
+		$product = $this->getProductData($id);
+
+		if(!$product){
+			$this->addError("Product not found!");
+			return false;
+		}
+
+		$categories = json_decode($product['category_id']);
+		$related_products = $this->getByCategories($categories , $id);
+
+		return $related_products;
+	}
 }

@@ -32,7 +32,7 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <table id="manageTable" class="table table-bordered table-striped">
+            <table id="manageTable" class="table table-bordered table-striped dataTable">
               <thead>
               <tr>
                 <th>Image</th>
@@ -40,6 +40,7 @@
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Qty</th>
+                <th>Remarks</th>
                 <th>Availability</th>
                 <?php if( isEqual( $type , 'admin') ): ?>
                   <th>Action</th>
@@ -57,15 +58,21 @@
                     <td><?php echo strtoupper($row['sku'])?></td>
                     <td><?php echo strtoupper($row['name'])?></td>
                     <td><?php echo strtoupper($row['price'])?></td>
+                    <td><?php echo is_null($row['stock_quantity']) ? '<label class="text-danger">NO STOCK</label>' : strtoupper($row['stock_quantity']) ?></td>
                     <td>
-                      (<?php echo is_null($row['stock_quantity']) ? $stock_link : strtoupper($row['stock_quantity']) ?>)
-                      <?php if( !is_null($row['stock_quantity']) && $row['stock_quantity'] <= $row['min_stock'] ):?>
-                        <label class="text-danger">Less than Minimum Stock Level</label>
-                      <?php endif?>
-
-                      <?php if( !is_null($row['stock_quantity']) && $row['stock_quantity'] > $row['max_stock'] ):?>
-                        <label class="text-warning">Over Maximum Stock Level</label>
-                      <?php endif?>
+                      <?php
+                        if( is_null($row['stock_quantity']) ){
+                          echo $stock_link;
+                        }else{
+                          if( $row['stock_quantity'] <= $row['min_stock'] ){
+                            echo '<label class="text-danger">Less than Minimum Stock Level</label>';
+                          }elseif($row['stock_quantity'] >= $row['max_stock']){
+                            echo '<label class="text-warning">Over Maximum Stock Level</label>';
+                          }else{
+                           echo '<label class="text-success">Good Stock Condition</label>';
+                          }
+                        }
+                      ?>
                     </td>
                     <td><?php echo strtoupper($row['availability'])?></td>
                     <td>

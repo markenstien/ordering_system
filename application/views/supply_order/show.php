@@ -93,6 +93,7 @@
                       <th>SKU</th>
                       <th>Quantity</th>
                       <th>Price</th>
+                      <th>Total Amount</th>
                       <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
                         <th>Action</th>
                       <?php endif?>
@@ -101,13 +102,17 @@
                     <tbody>
                       <?php $total = 0?>
                       <?php foreach( $order_items as $key => $item) :?>
-                        <?php $total += $item['price']?>
+                        <?php 
+                          $total_amount = $item['price'] * $item['quantity'];
+                          $total += $total_amount;
+                        ?>
                         <tr>
                           <td><?php echo ++$key?></td>
                           <td><?php echo $item['name']?></td>
                           <td><?php echo strtoupper($item['sku'])?></td>
                           <td><?php echo $item['quantity']?></td>
                           <td><?php echo $item['price']?></td>
+                          <td><?php echo $total_amount?></td>
                           <td>
                             <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
                               <?php

@@ -38,10 +38,12 @@
         <input class="form-control me-sm-2" type="text" placeholder="Search" name="key_word">
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
-      &nbsp;
-      <a href="<?php echo base_url('auth/login')?>" class="btn btn-info">Login</a>
-      &nbsp;
-      <a href="<?php echo base_url('users/register')?>" class="btn btn-info">register</a>
+      <?php if( !isset($this->data['user_data']) ):?>
+        &nbsp;
+        <a href="<?php echo base_url('auth/login')?>" class="btn btn-warning">Login</a>
+        &nbsp;
+        <a href="<?php echo base_url('users/register')?>" class="btn btn-warning">register</a>
+      <?php endif?>
     </div>
   </div>
 </nav>

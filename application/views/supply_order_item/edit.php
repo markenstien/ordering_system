@@ -28,13 +28,13 @@
                 <?php __( f_hidden('id' , $order_item['id']) )?>
                 <div class="form-group">
                   <?php
-                    __( f_col( f_label('Product') , f_select('product_id' , arr_layout_keypair($products , ['id' , 'name']) , $order_item['product_id'] , ['class' => 'form-control' , 'readonly' => true , 'disabled' => true]) ) );
+                    __( f_col( f_label('Product') , f_select('product_id' , arr_layout_keypair($products , ['id' , 'name']) , $order_item['product_id'] , ['class' => 'form-control' , 'readonly' => true , 'required' => true , 'disabled' => true]) ) );
                   ?>
                 </div>
 
                 <div class="form-group">
                   <?php
-                    __( f_col(f_label('Quantity') , f_text('quantity' , $order_item['quantity'] , ['class' => 'form-control'])) );
+                    __( f_col(f_label('Quantity') , f_text('quantity' , $order_item['quantity'] , ['class' => 'form-control' ,'required' => true ])) );
                   ?>
                 </div>
 

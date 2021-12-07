@@ -5,3 +5,6 @@ alter table users
 
 alter table users
 	add column is_verified boolean default true;
+
+alter table users
+	add column toc_agreed boolean default false;

@@ -68,7 +68,13 @@ class Model_reports extends Model_adapter
 
 		if( isEqual($type , 'sales') )
 			return $this->salesReport($dateRange['start_date'] , $dateRange['end_date']);
+
+		if( isEqual($type , 'inventory') ){
+			return $this->inventoryReport($dateRange['start_date'] , $dateRange['end_date']);
+		}
 	}
+
+	
 
 	public function salesReport($start_date , $end_date)
 	{
@@ -155,10 +161,10 @@ class Model_reports extends Model_adapter
 				}
 
 				sort_items($item_summarized , 'total_sales_amount' , 'DESC');
-			
+				
 				$ret_val['item_summarized'] = $item_summarized;
 
-				$ret_val['top_product'] = $item_summarized[1];
+				$ret_val['top_product'] = current($item_summarized);
 			}
 
 			
@@ -176,7 +182,175 @@ class Model_reports extends Model_adapter
 		}
 	}
 
+	public function inventoryReport($start_date , $end_date)
+	{
+
+		$stocks = $this->model_stock->getAll([
+			'where' => [
+				'date' => [
+					'condition' => 'between',
+					'value' => [$start_date , $end_date]
+				]
+			],
+
+			'order' => ' date desc'
+		]);
+
+		if(!$stocks)
+			return false;
+
+
+		$this->stocks = $stocks;
+
+		
+		$ret_val = $this->summarizeInventories($stocks);
+
+		return $ret_val;
+	}
+
 	/*
+	*grouped by product
+	*/
+	public function summarizeInventories($stocks)
+	{
+		$ret_val = [
+			'inventory_stocks_count' => 0,
+			'product_stock_variety_count' => 0,
+			'product_stock_summary' => 0,
+
+			'grouped_by_product' => []
+		];
+
+		$inventory_stocks_count = 0;
+
+		$grouped_by_product = [];
+
+		foreach($stocks as $row) 
+		{
+			$prod_id = $row['product_id'];
+
+			if( !isset($grouped_by_product[$prod_id]) )
+			{
+				$grouped_by_product[$prod_id] = [
+					'items' => [],
+					'name'  => $row['product_name'],
+					'min_stock'  => $row['min_stock'],
+					'max_stock'  => $row['max_stock'],
+					'transaction_count' => 0,
+					'total_stocks' => 0 
+				];
+			}
+			//push to items
+			$grouped_by_product[$prod_id]['items'][] = $row;
+			//increment transactions
+			$grouped_by_product[$prod_id]['transaction_count']++;
+			$grouped_by_product[$prod_id]['total_stocks'] += $row['quantity'];
+			// if( !in_array($row['product_id'], $product_varieties))
+			// 	array_push($product_varieties , $row['product_id']);
+
+			$inventory_stocks_count += $row['quantity'];
+		}
+		
+		$ret_val['grouped_by_product'] = $grouped_by_product;
+		$ret_val['inventory_stocks_count'] = $inventory_stocks_count;
+		$ret_val['product_stock_variety_count'] = count($grouped_by_product);
+
+		//get product-summary
+		$product_stock_summary = [];
+
+		foreach($grouped_by_product as $row) 
+		{
+			$product_stock_summary[$row['name']] = [
+				'total_stock_count' => $row['total_stocks'],
+				'min_stock' => $row['min_stock'],
+				'max_stock' => $row['max_stock']
+			];
+		}
+
+		$ret_val['product_stock_summary'] = $product_stock_summary;
+
+		return $ret_val;
+	}
+
+	/*
+	*inventory items
+	*/
+	public function customize_by_type( $items , $type )
+	{
+		$process_items = null;
+		if(!$items)
+			return false;
+
+		switch(strtolower($type))
+		{
+			case 'daily':
+				$prev_date = null;
+				foreach($items as $item) 
+				{
+					$date = $item['date'];
+					if( is_null($process_items) ){
+						$process_items[$date] = [];
+						$prev_date = $date;
+					}
+					if( $prev_date != $date )
+						$prev_date = $date;
+					$process_items[$prev_date][] = $item;
+				}			
+			break;
+
+			case 'monthly':
+				$prev_date = null;
+				foreach($items as $item) 
+				{
+					$date = $item['date'];
+
+					$month = date('F' , strtotime($date));
+
+					if( is_null($process_items) ){
+						$process_items[$month] = [];
+						$prev_date = $date;
+					}
+
+					if( date('m' , strtotime($prev_date)) != date('m' , strtotime($date)) )
+						$prev_date = $date;
+					$process_items[$month][] = $item;
+				}			
+			break;
+
+			case 'yearly':
+				$prev_date = null;
+				foreach($items as $item) 
+				{
+					$date = $item['date'];
+
+					$year = date('Y' , strtotime($date));
+					if( is_null($process_items) ){
+						$process_items[$year] = [];
+						$prev_date = $date;
+					}
+					if( date('y' , strtotime($prev_date)) != date('y' , strtotime($date)) )
+						$prev_date = $date;
+					$process_items[$year][] = $item;
+				}			
+			break;
+		}
+
+		if(is_array($process_items))
+		{
+			$items = [];
+
+			foreach($process_items as $key => $itemSets) {
+				$items[$key] = $this->summarizeInventories($itemSets);
+			}
+
+			return $items;
+		}
+
+		return false;
+	}
+
+	/*
+	*orders
 	*type can be daily , weekly , monthly
 	*/
 	public function customize_by_report_type($orders , $type)

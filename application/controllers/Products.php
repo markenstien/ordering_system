@@ -94,7 +94,8 @@ class Products extends Admin_Controller
 		$this->form_validation->set_rules('availability', 'Availability', 'trim|required');
 	   	
 	
-        if ($this->form_validation->run() == TRUE) {
+        if ($this->form_validation->run() == TRUE) 
+        {
             // true case
         	$upload_image = $this->upload_image();
 
@@ -117,7 +118,7 @@ class Products extends Admin_Controller
         		redirect('products/', 'refresh');
         	}
         	else {
-        		$this->session->set_flashdata('errors', 'Error occurred!!');
+        		flash_set( $this->model_products->getErrorString() , 'danger');
         		redirect('products/create', 'refresh');
         	}
         }
@@ -200,22 +201,23 @@ class Products extends Admin_Controller
                 'name' => $this->input->post('product_name'),
                 'sku' => $this->input->post('sku'),
                 'price' => $this->input->post('price'),
-                'description' => $this->input->post('description'),
                 'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
                 'category_id' => json_encode($this->input->post('category')),
                 'availability' => $this->input->post('availability'),
                 'max_stock' => $this->input->post('max_stock'),
                 'min_stock' => $this->input->post('min_stock'),
+                'description' => $this->input->post('description'),
             );
-            
+
+            $update = $this->model_products->update($data, $product_id);
+
             if($_FILES['product_image']['size'] > 0) {
                 $upload_image = $this->upload_image();
                 $upload_image = array('image' => $upload_image);
                 
-                $this->model_products->update($upload_image, $product_id);
+                $this->model_products->update_image($upload_image, $product_id);
             }
 
-            $update = $this->model_products->update($data, $product_id);
             if($update == true) {
                 $this->session->set_flashdata('success', 'Successfully updated');
                 redirect('products/', 'refresh');

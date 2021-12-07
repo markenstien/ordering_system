@@ -109,7 +109,8 @@
 
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
-                      <option <?php echo isEqual($v['id'] , $category_data) ? 'selected' : ''?>><?php echo $v['name']?></option>
+                      <option <?php echo isEqual($v['id'] , $category_data) ? 'selected' : ''?>
+                        value="<?php echo $v['id']?>"><?php echo $v['name']?></option>
                     <?php endforeach ?>
                   </select>
                 </div>

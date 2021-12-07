@@ -27,13 +27,14 @@
               <?php __(f_open(['method' => 'post' , 'action' => base_url('supplyOrderItem/add/'.$supply_order_id)]));?>
                 <div class="form-group">
                   <?php
-                    __( f_col( f_label('Product') , f_select('product_id' , arr_layout_keypair($products , ['id' , 'name']) ,'' , ['class' => 'form-control']) ) );
+                    __( f_col( f_label('Product') , f_select('product_id' , arr_layout_keypair($products , ['id' , 'name']) ,'' , 
+                      ['class' => 'form-control' , 'required' => true]) ) );
                   ?>
                 </div>
 
                 <div class="form-group">
                   <?php
-                    __( f_col(f_label('Quantity') , f_text('quantity' , '' , ['class' => 'form-control'])) );
+                    __( f_col(f_label('Quantity') , f_text('quantity' , '' , ['class' => 'form-control' , 'required' => true])) );
                   ?>
                 </div>
 

@@ -34,19 +34,24 @@ class Auth extends Admin_Controller
            		if($login) {
 
            			$logged_in_sess = array(
-           				'id' => $login['id'],
-				        'username'  => $login['username'],
-				        'email'     => $login['email'],
-				        'phone'     => $login['phone'],
-				        'firstname' => $login['firstname'],
-				        'lastname' => $login['lastname'],
-				        'address'  => $login['address'],
-				        'user_type'  => $login['user_type'],
+           				'id'           => $login['id'],
+				        'username'     => $login['username'],
+				        'email'        => $login['email'],
+				        'phone'        => $login['phone'],
+				        'firstname'    => $login['firstname'],
+				        'lastname'     => $login['lastname'],
+				        'address'      => $login['address'],
+				        'user_type'    => $login['user_type'],
 				        'is_verified'  => $login['is_verified'],
-				        'logged_in' => TRUE
+				        'toc_agreed'   => $login['toc_agreed'],
+				        'logged_in'    => TRUE
 					);
 
 					$this->session->set_userdata($logged_in_sess);
+
+					if(!$login['toc_agreed'])
+						return redirect('toc/loadToc');
+					
            			redirect('dashboard', 'refresh');
            		}
            		else {

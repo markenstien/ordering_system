@@ -68,6 +68,9 @@ class Orders extends Admin_Controller
 		$this->data['delivery'] = $delivery;
 
 
+
+		$this->data['is_editable'] = isEqual($order['order_status'] , 'completed') ? true : false;
+
 		return $this->render_template('orders/show' , $this->data);
 	}
 
@@ -128,6 +131,26 @@ class Orders extends Admin_Controller
 		} // /foreach
 
 		echo json_encode($result);
+	}
+
+	public function cancel()
+	{
+		if( isSubmitted() )
+		{
+			$post = $_POST;
+
+			$res = $this->model_orders->cancel( $post );
+
+			if($res) {
+				flash_set( $this->model_orders->getMessageString() );
+			}else{
+				flash_set( $this->model_orders->getErrorString() , 'danger' );
+			}
+
+			return redirect('orders/show/'.$post['order_id']);
+		}
+
+		// $this->model_orders->cancel($id);
 	}
 
 	/*

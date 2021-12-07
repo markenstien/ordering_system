@@ -43,16 +43,20 @@
 		public function getAll( $params = [])
 		{
 			$where = null;
+			$order = null;
 
 			if( isset($params['where']) )
 				$where =  " WHERE " .$this->conditionConvert( $params['where'] ) ;
+
+			if( isset($params['order']) )
+				$order =  " ORDER BY {$params['order']}";
 
 			return $this->queryResultArray(
 				"SELECT supply_order.* , sup.name as supplier 
 					FROM {$this->_table_name} as supply_order
 					LEFT JOIN suppliers as sup
 					ON sup.id = supply_order.supplier_id
-					{$where}"
+					{$where} {$order}"
 			);
 		}
 
@@ -84,7 +88,7 @@
 			foreach($items as $item) 
 			{
 				$stock_added = $this->model_stock->addStock([
-					'product_id' => $item['id'],
+					'product_id' => $item['product_id'],
 					'quantity'   => $item['quantity'],
 					'description' => 'From Supply Order #'.$supply_order['reference'],
 					'type'  => 'add',

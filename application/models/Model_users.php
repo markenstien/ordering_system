@@ -11,6 +11,7 @@
 			'email',
 			'firstname',
 			'lastname', 
+			'toc_agreed',
 			'phone' ,
 			'gender',
 			'user_type', 

@@ -37,7 +37,9 @@
 
             <div class="box-body">
               <form method="post" action="<?php base_url('supplyOrder/create') ?>">
-                
+                <?php
+                    __(f_hidden('status' , 'pending'));
+                  ?>
                 <div class="form-group">
                   <?php
                     __(f_col('title' , f_text('title' , '' ,['class' => 'form-control'])));
@@ -55,13 +57,6 @@
                     __(f_col('date' , f_date('date' , '' ,['class' => 'form-control'])));
                   ?>
                 </div>
-
-                <div class="form-group">
-                  <?php
-                    __(f_col('status' , f_select('status' ,['pending' , 'delivered','cancelled'], '' ,['class' => 'form-control'])));
-                  ?>
-                </div>
-
                 <div class="form-group">
                   <?php
                     __(f_col('budget' , f_text('budget' , '' ,['class' => 'form-control'])));
