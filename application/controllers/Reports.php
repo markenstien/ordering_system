@@ -81,7 +81,8 @@ class Reports extends Admin_Controller
 			$orders = $this->model_reports->customize_by_report_type( $this->model_reports->orders , 'DAILY');
 
 			if( !isEqual($post['order_group'] , 'NO GROUP') )
-				$this->data['orders_grouped'] = $this->model_reports->customize_by_report_type( $this->model_reports->orders , $post['order_group']);
+				$this->data['orders_grouped'] = $this->model_reports->customize_by_report_type( 
+					$this->model_reports->orders ?? [] , $post['order_group']);
 
 			return $this->render_clean_template('sales_report' , $this->data);
 		}

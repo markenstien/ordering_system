@@ -93,7 +93,7 @@
 							</div>
 						</div>
 
-					<?php if(isset($orders_grouped)) :?>
+					<?php if(isset($orders_grouped) && $orders_grouped) :?>
 						<!-- if and only grouped is cheked -->
 						<hr>
 						<?php require_once(APPPATH.DIRECTORY_SEPARATOR.'views/templates/partial/sales_report_grouped.php')?>

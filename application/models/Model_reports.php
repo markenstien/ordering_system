@@ -79,7 +79,7 @@ class Model_reports extends Model_adapter
 			'order' => 'date_time desc'
 		]);
 
-		
+
 		$this->orders = $orders;
 
 		return $this->summarizeOrders($orders);
@@ -182,6 +182,9 @@ class Model_reports extends Model_adapter
 	public function customize_by_report_type($orders , $type)
 	{
 		$ret_val = [];
+
+		if( is_null($orders) || empty($orders) )
+			return false;
 
 		switch(strtolower($type))
 		{
