@@ -128,10 +128,43 @@
 			return $user_ids;
 		}
 
-		public function message_operations( $message )
+		public function message_operations( $message , $attributes = [])
 		{
 			$operations_ids = $this->operations_ids();
 
-			$this->create_system( $message , $operations_ids );
+			$this->create_system( $message , $operations_ids , $attributes );
+		}
+
+		public function getNotifications( $user_id = null )
+		{
+			$ret_val = [];
+
+			if( ! is_null($user_id) )
+			{
+				$query = $this->db->query(
+					"SELECT sn.* FROM system_notifications as sn 
+						LEFT JOIN system_notification_recipients as snr 
+						ON sn.id = snr.notification_id
+
+						where snr.recipient_id = '{$user_id}'
+						order by sn.id desc"
+				);
+
+				$ret_val = $query->result_array();
+			}else
+			{
+				$ops_ids = $this->operations_ids();
+
+				$query =  $ret_val = $this->db->query(
+					"SELECT sn.* FROM system_notifications as sn 
+						LEFT JOIN system_notification_recipients as snr 
+						ON sn.id = snr.notification_id
+					where snr.recipient_id in '(".implode("','" , $ops_ids).")'
+					order by sn.id desc"
+				);
+				$ret_val = $query->result_array();
+			}
+
+			return $ret_val;
 		}
 	}

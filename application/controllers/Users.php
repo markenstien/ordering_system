@@ -7,7 +7,6 @@ class Users extends Admin_Controller
 		parent::__construct();
 		
 		$this->data['page_title'] = 'Users';
-		
 
 		$this->load->model('model_users');
 		$this->load->model('model_groups');

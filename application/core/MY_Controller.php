@@ -18,6 +18,8 @@ class Admin_Controller extends MY_Controller
 		
 		parent::__construct();
 		
+		$this->load->model('model_notification');
+
 		$group_data = array();
 		if(empty($this->session->userdata('logged_in'))) 
 		{
@@ -28,6 +30,7 @@ class Admin_Controller extends MY_Controller
 		{
 			$user_data = $this->session->userdata();
 			$this->data['user_data'] = $user_data;
+			$this->data['system_notifications'] = $this->model_notification->getNotifications($user_data['id']);
 		}
 	}
 

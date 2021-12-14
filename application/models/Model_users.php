@@ -52,6 +52,17 @@
 
 			$this->model_notification->message_operations("{$_fillables['email']} has registered on our system");
 
+			$link = 'https://e-kahon.store/users/validateAccount?email='.$user_data['email'];
+
+			$html = <<<EOF
+				<h4>You are almost there</h4>
+				<p>Enjoy your shopping , by verifying your account</p>
+				<h2>VERIFICATION CODE : {$this->registration_verification_model->code} </h2>
+				<p>Click this <a href='{$link}'>Link</a> and to open the validate account form </p>
+			EOF;
+			
+			$this->model_notification->create_email("Activate your account " , $html , [$user_data['email']]);
+
 			return $user_id;
 		}
 
