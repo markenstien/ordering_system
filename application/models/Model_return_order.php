@@ -194,7 +194,7 @@
 				{$return_order_process_text}
 			EOF;
 
-			$this->model_notification->create_email("Return Order Approved" , $steps_to_return);
+			$this->model_notification->create_email("Return Order Approved" , $steps_to_return , [$user_data['email']]);
 
 			send_sms("Order Return #{$return_order['reference']} has been approved" , [$user_data['phone']]);
 
