@@ -37,7 +37,7 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <table id="manageTable" class="table table-bordered table-striped">
+            <table id="manageTable" class="table table-bordered table-striped dataTable">
               <thead>
               <tr>
                 <th>#</th>
@@ -47,6 +47,7 @@
                 <th>Date Time</th>
                 <th>Total Amount</th>
                 <th>Paid status</th>
+                <th>Delivery Status</th>
                 <th>Origin</th>
                 <th>Action</th>
               </tr>
@@ -62,6 +63,7 @@
                     <td><?php echo date('Y-m-d' , $row['date_time'])?></td>
                     <td><?php echo $row['net_amount']?></td>
                     <td><?php echo $row['paid_status'] == 1 ? 'PAID' : 'UNPAID'?></td>
+                    <td><?php echo $row['delivery_status']?></td>
                     <td><?php echo $row['origin']?></td>
                     <td>
                       <?php echo btnLink('orders/show/'.$row['id'], 'View', 'view')?>
@@ -114,6 +116,7 @@
 
 
 <script type="text/javascript">
+
 // remove functions 
 function removeFunc(id)
 {

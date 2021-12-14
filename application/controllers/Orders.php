@@ -298,16 +298,37 @@ class Orders extends Admin_Controller
         $this->render_template('orders/edit', $this->data);
 	}
 
+
+	public function reOrder( $order_id )
+	{
+		if( isSubmitted() )
+		{
+			$order_id = $_POST['order_id'];
+
+			$res = $this->model_orders->reOrder($order_id);
+
+			if($res) {
+				flash_set("Return Order successfull {$this->model_orders->bill_no}");
+				return redirect('orders/show/'.$res);
+			}else{
+				flash_set("Return order error" , 'danger');
+			}
+		}
+			
+		$order = $this->model_orders->getOrdersData($order_id);
+
+		$this->data['order_id'] = $order_id;
+		$this->data['order'] = $order;
+
+		return $this->render_template('orders/return_order' , $this->data);
+	}
+
 	/*
 	* It removes the data from the database
 	* and it returns the response into the json format
 	*/
 	public function remove()
 	{
-		if(!in_array('deleteOrder', $this->permission)) {
-            redirect('dashboard', 'refresh');
-        }
-
 		$order_id = $this->input->post('order_id');
 
         $response = array();

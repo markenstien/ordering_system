@@ -9,8 +9,11 @@
 		if(is_null($name))
 			return $form_values;
 
-		if( !empty($form_values) )
-			return $form_values[$name] ?? $overwriteValue;
+		if( empty($form_values) )
+			return $overwriteValue;
+
+		if( isset($form_values[$name]) )
+			return $form_values[$name];
 
 		return $overwriteValue;
 	}
@@ -90,7 +93,7 @@
 	}
 
 
-	function f_textarea($name , $inputValue = null , $attributes = null)
+	function f_textarea($name , $inputValue = '' , $attributes = null)
 	{
 		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
 

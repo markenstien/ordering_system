@@ -50,7 +50,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Full Name') , f_text('customer_name' , $user['firstname'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe']) )
+                  f_col( f_label('Full Name') , f_text('customer_name' , $user['firstname'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe' , 'required' => true]) )
                 );
               ?>
             </div>
@@ -58,7 +58,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Phone') , f_text('customer_phone' , $user['phone'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx']) )
+                  f_col( f_label('Phone') , f_text('customer_phone' , $user['phone'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx' , 'required' => true]) )
                 );
               ?>
             </div>
@@ -66,7 +66,7 @@
             <div class="mb-3">
               <?php
                 __(
-                  f_col( f_label('Email') , f_text('customer_email' , $user['email'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com']) )
+                  f_col( f_label('Email') , f_text('customer_email' , $user['email'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com' , 'required' => true]) )
                 );
               ?>
             </div>
@@ -75,7 +75,7 @@
               <?php
                 __(
                   f_col( f_label('Address') , f_textarea('customer_address' , $user['address'] ?? '' , 
-                    ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3]) )
+                    ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]) )
                 );
               ?>
             </div>

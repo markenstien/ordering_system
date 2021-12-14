@@ -64,6 +64,11 @@
                   </tr>
 
                   <tr>
+                    <td>Order Status</td>
+                    <td><?php echo $order['order_status']?></td>
+                  </tr>
+
+                  <tr>
                     <td>Payment Status</td>
                     <td><?php echo $order['payment_status']?></td>
                   </tr>
@@ -77,11 +82,29 @@
                 </table>
               </div>
 
-              <?php if( isEqual($user_type, ['customer']) && $is_editable) :?> 
-                <?php if(isEqual($delivery['status'] ?? 'for-delivery', 'for-delivery')) :?>
-                  <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalCustomerCancelOrder" data-type="cancelled">Cancel Order</a>
+              <?php if( isEqual($user_type, ['customer']) && $is_editable && !$delivery) :?> 
+                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalCustomerCancelOrder" data-type="cancelled">Cancel Order</a>
+              <?php endif?>
+
+              <?php if( isEqual($user_type, ['customer']) ) :?> 
+                <?php if(isEqual($order['order_status'] , ['cancelled' , 'completed'] )) :?>
+                  <a href="<?php echo base_url('orders/reOrder/'.$order['id'])?>" class="btn btn-primary">Re-Order</a>
                 <?php endif?>
               <?php endif?>
+
+
+              <?php if( isEqual($user_type, ['customer']) && $is_editable) :?> 
+                <?php if(isEqual($order['payment_status'], 'unpaid')) :?>
+                  <a href="<?php echo base_url('/Payment/create/'.$order['id'])?>" class="btn btn-success">Create Payment</a>
+                <?php endif?>
+              <?php endif?>
+
+              <?php if( isEqual($user_type, ['customer'] )) :?> 
+                <?php if( $delivery && isEqual($delivery['status'] , 'delivered') ) :?>
+                  <a href="<?php echo base_url('/returnOrder/create/'.$order['id'])?>" class="btn btn-danger">Return Order</a>
+                <?php endif?>
+              <?php endif?>
+
             </div>
           </div>
 
@@ -276,33 +299,33 @@
 <?php endif?>
 
 <div class="modal fade" id="modalCustomerCancelOrder" tabindex="-1" role="dialog" aria-labelledby="modalCustomerCancelOrderLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">Customer Cancel Order Form</h3>
-        </div>
-        <div class="modal-body">
-          <form method="post" action="<?php echo base_url('orders/cancel')?>">
-            <input type="hidden" name="order_id" value="<?php echo $order['id']?>">
-            <div class="form-group">
-              <label>Reason</label>
-              <textarea class="form-control" rows="3" name="remarks" required placeholder="Describe your reason for cancelation"></textarea>
-            </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" name="cbox_confirm_cancel" value="1">
-                Confirm Order Cancellation
-              </label>
-            </div>
-            <input type="submit" name="" class="btn btn-primary" value="Cancel Order">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Customer Cancel Order Form</h3>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="<?php echo base_url('orders/cancel')?>">
+          <input type="hidden" name="order_id" value="<?php echo $order['id']?>">
+          <div class="form-group">
+            <label>Reason</label>
+            <textarea class="form-control" rows="3" name="remarks" required placeholder="Describe your reason for cancelation"></textarea>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="cbox_confirm_cancel" value="1">
+              Confirm Order Cancellation
+            </label>
+          </div>
+          <input type="submit" name="" class="btn btn-primary" value="Cancel Order">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function() {

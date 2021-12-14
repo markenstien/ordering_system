@@ -73,11 +73,3 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#companyNav").addClass('active');
-    $("#message").wysihtml5();
-  });
-</script>
-

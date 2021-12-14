@@ -94,6 +94,12 @@
                <li id="manageOrdersNav"><a href="<?php echo base_url('orders') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
               </ul>
             </li>
+
+            <li id="idStockNav">
+              <a href="<?php echo base_url('returnOrder/index') ?>">
+                <i class="fa fa-files-o"></i> <span>Return Order</span>
+              </a>
+            </li>
           <?php endif?>
 
           <?php if(isEqual($type,['admin'])) :?>
@@ -104,6 +110,14 @@
           </li>
           <?php endif?>
 
+          <?php if( isEqual($type , ['customer']) ) :?>
+            <li id="idOrdersNav">
+              <a href="<?php echo base_url('orders/index') ?>">
+                <i class="fa fa-files-o"></i> <span>Orders</span>
+              </a>
+            </li>
+          <?php endif?>
+          
           <?php if(isEqual($type,['admin' , 'customer'])) :?>
           <li id="idOrdersNav">
             <a href="<?php echo base_url('landing/index') ?>">
@@ -111,9 +125,9 @@
             </a>
           </li>
 
-          <li id="idOrdersNav">
-            <a href="<?php echo base_url('orders/index') ?>">
-              <i class="fa fa-files-o"></i> <span>Orders</span>
+          <li id="idStockNav">
+            <a href="<?php echo base_url('returnOrder/index') ?>">
+              <i class="fa fa-files-o"></i> <span>Return Order</span>
             </a>
           </li>
 
@@ -123,6 +137,7 @@
             </a>
           </li>
           <?php endif?>
+
           <?php if(isEqual($type,'admin')) :?>
             <li class="treeview" id="mainOrdersNav">
               <a href="#">

@@ -5,3 +5,6 @@ truncate supply_orders;
 truncate supply_order_items;
 truncate stocks;
 truncate cart_wish_items;
+truncate product_bundles;
+truncate product_bundle_items;
+truncate deliveries;

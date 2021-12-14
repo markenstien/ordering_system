@@ -8,11 +8,7 @@
 
   <script type="text/javascript">
     $( document).ready( function(e) {
-
-      if($('.dataTable'))
-      {
-        $('.dataTable').DataTable();
-      }
+      $('.dataTable').DataTable();
     })
   </script>
   <!-- Add the sidebar's background. This div must be placed

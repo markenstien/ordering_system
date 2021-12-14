@@ -78,6 +78,7 @@ class CI_Email {
 	 */
 	public $smtp_host	= '';
 
+	
 	/**
 	 * SMTP Username
 	 *

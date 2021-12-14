@@ -14,12 +14,88 @@ class Model_orders extends Model_adapter
 		'service_charge','vat_charge_rate',
 		'vat_charge','net_amount',
 		'discount','paid_status',
-		'user_id','	origin'
+		'order_status',
+		'user_id','origin'
 	];
 
 
+	public function reOrder($id)
+	{
+		$order = $this->get($id);
+
+		$order_data = [];
+
+		$this->bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+
+		$order_data['bill_no']  = $this->bill_no;
+		$order_data['customer_name'] = $order['customer_name'];
+		$order_data['customer_address'] = $order['customer_address'];
+		$order_data['customer_phone'] = $order['customer_phone'];
+		$order_data['customer_email'] = $order['customer_email'];
+		$order_data['date_time'] = strtotime(date('Y-m-d h:i:s a'));
+		$order_data['net_amount'] = $order['net_amount'];
+		$order_data['user_id'] = $order['user_id'];
+
+		$order_data['paid_status'] = 'unpaid';
+		$order_data['order_status'] = 'completed';
+		$order_data['delivery_status'] = 'pending';
+		$order_data['origin'] = 'online';
+
+
+		$_fillables = $this->getFillablesOnly($order_data);
+
+		//new order-id
+		$order_id = parent::create($_fillables);
+
+		$order_items = $this->getOrdersItemData( $id );
+
+		foreach($order_items as $index => $item) 
+		{
+			$qty = $item['qty'];
+			$product_id = $item['product_id'];
+
+			$order_item_data =  [
+				'order_id' => $order_id,
+				'product_id' => $product_id,
+				'qty' => $qty,
+				'rate'  => $item['rate'],
+				'amount' => $item['amount']
+			];
+
+			$insert_item = $this->dbinsert('orders_item',$order_item_data);
+
+			//deduct from stocks
+			$deduct_stock = $this->model_stock->addStock([
+				'quantity' => $qty,
+				'type'     => 'deduct',
+				'product_id' => $product_id,
+				'description' => ' Order from '.$this->bill_no,
+				'date' => date('Y-m-d H:i:s')
+			]);
+		}
+
+		return $order_id;
+	}
+
 	public function updateDeliveryStatus($status , $id)
 	{
+
+		$order = $this->getOrdersData($id);
+
+		$this->model_notification->create_system(
+			"Your order has been set to {$status}.
+			Order #{$order['bill_no']}",
+			[$order['user_id']]
+		);
+
+		$this->model_notification->message_operations(
+			"Your order has been set to {$status}.
+			Order #{$order['bill_no']}"
+		);
+
+		send_sms("Your order has been set to {$status}.
+			Order #{$order['bill_no']}" , [$order['customer_phone']]);
+		
 		return parent::update([
 			'delivery_status' => $status
 		] , $id);
@@ -255,11 +331,14 @@ class Model_orders extends Model_adapter
 				$res = parent::dbinsert('orders_item' , $order_item);
 			}
 
+			if( !empty($_fillables['customer_phone'])){
+				$customer_phone = trim($_fillables['customer_phone']);
+				send_sms("Your order has been placed , order No.#{$bill_no}", [$customer_phone]);
+			}
 			/*
 			*check cart-item
 			*token
 			*/
-
 			$this->cart_model->deleteCartItems();
 			$this->cart_model->killToken();
 

@@ -31,8 +31,37 @@
 
 			$res = parent::create($_fillables);
 
-			if($res) {
+			if($res) 
+			{
+				$order = $this->model_orders->getOrdersData( $_fillables['order_id'] );
 
+				$link = '/Orders/show/'.$order['id'];
+
+
+				$this->model_notification->create_system(
+					"Your order #{$order['bill_no']} is expected to be delivered on {$_fillables['date']}",
+					[$order['user_id']],
+					['href' => $link]
+				);
+
+				send_sms("Your order #{$order['bill_no']} is expected to be delivered on {$_fillables['date']}" , [$order['customer_phone']]);
+
+				$this->model_notification->create_email(
+					"Order Delivery Update",
+					"Your order #{$order['bill_no']} is expected to be delivered on {$_fillables['date']}. <br/>
+					Delivery #{$_fillables['reference']}, <br/>
+					Delivery Status {$_fillables['status']}",
+
+					[$order['customer_email']]
+				);
+
+				$this->model_notification->message_operations("Order #{$order['bill_no']}
+					has been set for-delivery on date {$_fillables['date']}");
+
+
+				$this->model_orders->injectModels([
+					'model_notification' => $this->model_notification
+				]);
 				$this->model_orders->updateDeliveryStatus($_fillables['status'], $delivery_data['order_id']);
 			}
 
@@ -96,6 +125,10 @@
 				$this->order_id = $delivery['order_id'];
 				
 				$delivery = parent::get($id);
+
+				$this->model_order->injectModels([
+						'model_notification' => $this->model_notification
+				]);
 				$this->model_order->updateDeliveryStatus($_fillables['status'], $delivery['order_id']);
 			}
 

@@ -11,6 +11,16 @@ class Users extends Admin_Controller
 
 		$this->load->model('model_users');
 		$this->load->model('model_groups');
+		$this->load->model('registration_verification_model');
+		$this->load->model('model_notification');
+
+
+		$this->model_notification->operations_ids();
+
+		$this->model_users->injectModels([
+			'registration_verification_model' => $this->registration_verification_model,
+			'model_notification'  => $this->model_notification
+		]);
 	}
 
 	

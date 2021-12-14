@@ -46,6 +46,37 @@
 
 			$res = $this->create($_fillables);
 
+
+			if( isset($_fillables['user_id']) )
+			{
+				$user = $this->model_user->getUserData( $_fillables['user_id'] );
+
+				$link = '/Payment/show/'.$res;
+
+				$user_message_data = [
+					"You just made a payment" , 
+					"You just made a payment amounting to {$_fillables['amount']}. 
+					Payment reference #{$_fillables['reference']}",
+					[$user['email']]
+				];
+
+				$this->model_notification->create_email(...$user_message_data);
+
+				$user_message_data = [
+					"You just made a payment amounting to {$_fillables['amount']}. Payment reference #{$_fillables['reference']}",
+					[$user['id']],
+					[
+						'href' => $link
+					]	
+				];
+
+				$this->model_notification->create_system(...$user_message_data);
+
+				$this->model_notification->message_operations("{$_fillables['acc_name']} has made a payment amounting to {$_fillables['amount']} " , [
+						'href' => $link
+					]);
+			}
+
 			return $res;
 		}
 		public function createPayment($payment_data)

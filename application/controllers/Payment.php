@@ -12,10 +12,15 @@
 			$this->load->model('model_orders');
 			$this->load->model('model_payment');
 			$this->load->model('model_stock');
+			$this->load->model('model_notification');
+			$this->load->model('model_users');
+
 
 			$this->model_payment->injectModels([
 				'model_orders' => $this->model_orders,
-				'model_stock'  => $this->model_stock
+				'model_stock'  => $this->model_stock,
+				'model_notification' => $this->model_notification,
+				'model_user' => $this->model_users
 			]);
 		}
 

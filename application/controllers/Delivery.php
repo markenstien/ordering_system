@@ -10,9 +10,11 @@
 
 			$this->load->model('model_delivery');
 			$this->load->model('model_orders');
+			$this->load->model('model_notification');
 
 			$this->model_delivery->injectModels([
-				'model_orders' => $this->model_orders
+				'model_orders' => $this->model_orders,
+				'model_notification' => $this->model_notification
 			]);
 		}	
 

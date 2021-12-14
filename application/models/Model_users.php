@@ -39,7 +39,20 @@
 				return false;
 			}
 
-			return parent::create($_fillables);
+			$user_id = parent::create($_fillables);
+
+			$this->registration_verification_model->create([
+				'user_id' => $user_id ,
+				'email'  => $user_data['email'],
+				'notify_model' => $this->model_notification
+			]);
+
+			$this->model_notification->create_system("Thank you for registering {$_fillables['email']} ", 
+				[$user_id]);
+
+			$this->model_notification->message_operations("{$_fillables['email']} has registered on our system");
+
+			return $user_id;
 		}
 
 		public function update($user_data , $id)
