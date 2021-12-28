@@ -160,7 +160,7 @@ hr {
                                   Invoice
                               </div>
 
-                              <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Bill#:</span> <?php echo $order['bill_no']?></div>
+                              <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">REFERENCE#:</span> <?php echo $order['bill_no']?></div>
 
                               <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> 
                                 <span class="text-600 text-90">Issue Date:</span>
@@ -205,24 +205,6 @@ hr {
                           </div>
 
                           <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
-                              <!-- <div class="row my-2">
-                                  <div class="col-7 text-right">
-                                      SubTotal
-                                  </div>
-                                  <div class="col-5">
-                                      <span class="text-120 text-secondary-d1">$2,250</span>
-                                  </div>
-                              </div>
-
-                              <div class="row my-2">
-                                  <div class="col-7 text-right">
-                                      Tax (10%)
-                                  </div>
-                                  <div class="col-5">
-                                      <span class="text-110 text-secondary-d1">$225</span>
-                                  </div>
-                              </div> -->
-
                               <div class="row my-2 align-items-center bgc-primary-l3 p-2">
                                   <div class="col-7 text-right">
                                       Total Amount

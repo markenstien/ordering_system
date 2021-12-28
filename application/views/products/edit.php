@@ -18,13 +18,15 @@
   <section class="content">
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      <div class="col-md-12 col-xs-12">
+      <div class="col-md-8 col-xs-12">
 
         <div id="messages"></div>
         <?php flash()?>
         <div class="box">
           <div class="box-header">
             <h3 class="box-title">Edit Product</h3>
+
+            <a href="<?php echo base_url('productPublic/show/'.$product_data['id'])?>">View On Catalog</a>
           </div>
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('products/update/'.$product_data['id']) ?>" method="post" enctype="multipart/form-data">
@@ -130,7 +132,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Back</a>
+                <a href="<?php echo base_url('products/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>
           <!-- /.box-body -->
@@ -138,6 +140,44 @@
         <!-- /.box -->
       </div>
       <!-- col-md-12 -->
+
+      <div class="col-md-4">
+        <div class="box">
+          <div class="box-header">
+            <h4 class="box-title">Product Images</h4>
+
+            <form method="post" action="<?php echo base_url('products/upload_images')?>" enctype="multipart/form-data">
+              <input type="hidden" name="product_id" value="<?php echo $product_data['id']?>">
+              <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="images[]" multiple>
+              </div>
+
+              <div class="form-group">
+                <input type="submit" name="" class="btn btn-primary btn-sm">
+              </div>
+            </form>
+            <?php if($images) :?>
+            <table class="table">
+              <tr>
+                <td>Image</td>
+                <th>Name</th>
+                <th>Delete</th>
+              </tr>
+              <?php foreach( $images as $key => $row) :?>
+                <tr>
+                  <td><img src="<?php echo base_url('assets/images/sample_image/'.$row['filename'])?>" style="width: 75px;"></td>
+                  <td><?php echo $row['filename']?></td>
+                  <td>
+                    <a href="<?php echo base_url('attachment/delete/'.$row['id'])?>">Delete</a>
+                  </td>
+                </tr>
+              <?php endforeach?>
+            </table>
+            <?php endif?>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- /.row -->
     

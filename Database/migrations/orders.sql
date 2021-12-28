@@ -14,3 +14,7 @@ ALTER TABLE orders
 
 ALTER TABLE orders
 	add column order_status enum('completed' , 'cancelled') default 'completed';
+
+
+alter table orders_item
+	add column attr_key_pair text;

@@ -41,7 +41,7 @@
               <thead>
               <tr>
                 <th>#</th>
-                <th>Bill no</th>
+                <th>Reference</th>
                 <th>Customer Name</th>
                 <th>Customer Phone</th>
                 <th>Date Time</th>

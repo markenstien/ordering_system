@@ -17,6 +17,8 @@ class Products extends Admin_Controller
 		$this->load->model('model_category');
 		$this->load->model('model_stores');
 		$this->load->model('model_attributes');
+
+        $this->load->model('model_attachment');
 	}
 
     /* 
@@ -146,17 +148,83 @@ class Products extends Admin_Controller
         }	
 	}
 
+
+    public function upload_images()
+    {
+        if( isSubmitted() )
+        {   
+
+            $product_id = $_POST['product_id']; 
+
+            $datas = [];
+   
+            $count = count($_FILES['images']['name']);
+            
+            if(!$count){
+                flash_set("No images found");
+                return redirect('products/edit/'.$product_id);
+            }
+            for($i=0;$i<$count;$i++){
+            
+                if(!empty($_FILES['images']['name'][$i])){
+            
+                  $_FILES['file']['name'] = $_FILES['images']['name'][$i];
+                  $_FILES['file']['type'] = $_FILES['images']['type'][$i];
+                  $_FILES['file']['tmp_name'] = $_FILES['images']['tmp_name'][$i];
+                  $_FILES['file']['error'] = $_FILES['images']['error'][$i];
+                  $_FILES['file']['size'] = $_FILES['images']['size'][$i];
+          
+                  $config['upload_path'] = 'assets/images/sample_image'; 
+                  $config['allowed_types'] = 'jpg|jpeg|png|gif';
+
+                  $config['file_name'] = $_FILES['images']['name'][$i];
+           
+                  $this->load->library('upload',$config); 
+            
+                  if($this->upload->do_upload('file')){
+                    $uploadData = $this->upload->data();
+                    $filename = $uploadData['file_name'];
+           
+                    $datas['totalFiles'][] = $filename;
+                  }
+                }
+            }
+
+            foreach($datas['totalFiles'] as $data) {
+                $this->model_attachment->create([
+                    'filename' => $data,
+                    'global_key' => 'PRODUCT_IMAGE',
+                    'global_id' => $product_id
+                ]);    
+            }
+
+            flash_set("Product Images Uploaded");
+            return redirect('products/update/'.$product_id);
+        }
+    }
+
+    private function set_upload_options()
+    {   
+        //upload an image options
+        $config = array();
+        // assets/images/product_image
+        $config['upload_path'] = 'assets/images/sample_image';
+        $config['file_name'] =  uniqid();
+        $config['allowed_types'] = 'gif|jpg|png';
+
+
+        return $config;
+    }
+
+
     /*
     * This function is invoked from another function to upload the image into the assets folder
     * and returns the image path
     */
 	public function upload_image()
     {
-    	// assets/images/product_image
-        $config['upload_path'] = 'assets/images/product_image';
-        $config['file_name'] =  uniqid();
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = '1000';
+    	
+        $config = $this->set_upload_options();
 
         // $config['max_width']  = '1024';s
         // $config['max_height']  = '768';
@@ -227,9 +295,15 @@ class Products extends Admin_Controller
                 redirect('products/update/'.$product_id, 'refresh');
             }
         }
-        else {
+        else 
+        {
             // attributes 
             $attribute_data = $this->model_attributes->getActiveAttributeData();
+
+            $images = $this->model_attachment->getRowArray([
+                'global_key' => 'PRODUCT_IMAGE',
+                'global_id'  => $product_id
+            ]);
 
             $attributes_final_data = array();
             foreach ($attribute_data as $k => $v) {
@@ -243,8 +317,8 @@ class Products extends Admin_Controller
             $this->data['attributes'] = $attributes_final_data;
             $this->data['brands'] = $this->model_brands->getActiveBrands();         
             $this->data['category'] = $this->model_category->getActiveCategroy();           
-            $this->data['stores'] = $this->model_stores->getActiveStore();          
-
+            $this->data['stores'] = $this->model_stores->getActiveStore();
+            $this->data['images'] = $images;
             $product_data = $this->model_products->getProductData($product_id);
             $this->data['product_data'] = $product_data;
             $this->render_template('products/edit', $this->data); 

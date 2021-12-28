@@ -116,4 +116,29 @@
 		{
 			return strtoupper(generateRandomString(12));
 		}
+
+		public function reOrder($supply_order_id)
+		{
+			$supply_order = $this->get( $supply_order_id );
+			$supply_order['status'] = 'pending';
+
+			$supply_order_id_new = $this->create( $supply_order );
+
+			$items = $this->model_supply_order_item->getByOrder( $supply_order_id_new);
+
+			if(!$items) 
+			{
+				foreach($items as $key => $row) 
+				{
+					$this->model_supply_order_item->dbinsert('supply_order_items', [
+						'supply_order_id' => $supply_order_id_new,
+						'product_id' => $row['product_id'],
+						'quantity' => $row['quantity'],
+						'supplier_price' => $row['supplier_price']
+					]);
+				}
+			}
+
+			return $supply_order_id_new;
+		}
 	}

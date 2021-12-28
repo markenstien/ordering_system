@@ -22,6 +22,17 @@ class Users extends Admin_Controller
 		]);
 	}
 
+	public function validateAccount()
+	{
+		if( !isset($_GET['email']) ){
+			echo die("INVALID REQUEST");
+		}
+
+		$email = trim($_GET['email']);
+
+		
+	}
+
 	
 	public function index()
 	{

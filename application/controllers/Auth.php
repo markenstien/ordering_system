@@ -10,6 +10,7 @@ class Auth extends Admin_Controller
 		parent::__construct();
 
 		$this->load->model('model_auth');
+		$this->load->model('model_cart_wish');
 	}
 
 	/* 
@@ -52,6 +53,19 @@ class Auth extends Admin_Controller
 					if(!$login['toc_agreed'])
 						return redirect('toc/loadToc');
 					
+
+					if( isset($_SESSION['cart_token']) )
+					{
+						//update this session
+						$this->model_cart_wish->dbupdate($this->model_cart_wish->_table_name,[
+							'user_id' => $login['id']
+						] , $this->model_cart_wish->conditionConvert([
+							'session' => $_SESSION['cart_token']
+						]) );
+
+						return redirect('cart/index' , 'refresh');
+					}
+
            			redirect('dashboard', 'refresh');
            		}
            		else {

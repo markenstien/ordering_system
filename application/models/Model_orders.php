@@ -25,7 +25,7 @@ class Model_orders extends Model_adapter
 
 		$order_data = [];
 
-		$this->bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+		$this->bill_no = 'REF-ORDER-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
 
 		$order_data['bill_no']  = $this->bill_no;
 		$order_data['customer_name'] = $order['customer_name'];
@@ -235,7 +235,7 @@ class Model_orders extends Model_adapter
 
 
 		$datetime = strtotime(date('Y-m-d h:i:s a'));
-		$bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+		$bill_no = 'REF-ORDER-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
 
 		$_fillables = $this->getFillablesOnly($order_data);
 		$_fillables['date_time'] = $datetime;
@@ -537,8 +537,8 @@ class Model_orders extends Model_adapter
 	public function countTotalPaidOrders()
 	{
 		return parent::queryResultSingle(
-			"SELECT count(id) as total_orders FROM orders WHERE paid_status = 1"
-		)->total_orders ?? 0;
+			"SELECT count(id) as total_orders FROM orders WHERE paid_status = true"
+		)['total_orders'] ?? 0;
 
 		// $sql = "SELECT * FROM orders WHERE paid_status = ?";
 		// $query = $this->db->query($sql, array(1));

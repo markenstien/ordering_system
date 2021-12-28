@@ -77,12 +77,21 @@
                         <?php if(!empty($product['attr_extracted'])) :?>
                           <div class="form-group">
                             <?php foreach($product['attr_extracted'] as $attributes) :?>
+                              <?php $attr_name = $attributes['attribute']['name']?>
                               <div class="form-group">
                                 <label><?php echo $attributes['attribute']['name']?></label>
                                 <div style="border: 2px solid #eee; padding: 5px;" class="mb-2 mt-2">
                                   <?php foreach($attributes['values'] as $row) :?>
+                                    <?php
+                                      $is_checked = false;
+
+                                      if( isset($item['attr_key_pair']->$attr_name) ){
+                                        $is_checked = $item['attr_key_pair']->$attr_name == $row['value'] ? true : false;
+                                      }
+                                    ?>
                                     <label>
-                                      <input type="radio" name="attr[<?php echo $row['attribute_parent_id']?>][]" value="<?php echo $row['id']?>">
+                                      <input type="radio" name="attr[<?php echo $attr_name?>]" 
+                                      value="<?php echo $row['value']?>" <?php echo $is_checked ? 'checked' : ''?>>
                                       <?php echo $row['value']?>
                                     </label>
                                   <?php endforeach?>

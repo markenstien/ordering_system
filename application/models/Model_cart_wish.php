@@ -33,6 +33,10 @@
 			$_fillables = $this->getFillablesOnly($item_data);
 			//check if has stock
 
+			if( isset($item_data['attr']) ) 
+				$_fillables['attr_key_pair'] = json_encode( $item_data['attr'] );
+
+			
 			if( !$this->stock->canSupplyOrderQuantity($_fillables['product_id'], $_fillables['quantity']) ){
 				$this->addError($this->stock->getErrorString());
 				return false;
@@ -43,6 +47,9 @@
 		public function updateItem($item_data , $id)
 		{
 			$_fillables = $this->getFillablesOnly($item_data);
+
+			if( isset($item_data['attr']) ) 
+				$_fillables['attr_key_pair'] = json_encode( $item_data['attr'] );
 
 			return $this->update( $_fillables , $id);
 		}
@@ -106,8 +113,10 @@
 		public function getItem($id)
 		{
 			return $this->getAll([
-				'ci.id' => $id,
-				'session' => $this->getToken()
+				'where' => [
+					'ci.id' => $id,
+					'session' => $this->getToken()
+				]
 			])[0] ?? false;
 		}
 
@@ -188,6 +197,10 @@
 
 					{$where} {$order}"
 			);
+
+			foreach($results as $key => $res) {
+				$results[$key]['attr_key_pair'] = json_decode($res['attr_key_pair']);
+			}
 
 			return $results;
 		}

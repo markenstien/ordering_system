@@ -9,3 +9,6 @@ create table cart_wish_items(
 	session varchar(100),
 	created_at timestamp default now()
 );
+
+alter table cart_wish_items
+	add column attr_key_pair text;

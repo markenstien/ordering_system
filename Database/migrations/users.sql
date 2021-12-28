@@ -8,3 +8,12 @@ alter table users
 
 alter table users
 	add column toc_agreed boolean default false;
+
+
+
+alter table users
+	add column adrs_street text,
+	add column adrs_block_no text,
+	add column adrs_barangay text,
+	add column adrs_city text,
+	add column adrs_zip text;

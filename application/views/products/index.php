@@ -23,6 +23,7 @@
          
         <?php if( isEqual( $type , 'admin') ): ?>
           <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
+          <a href="<?php echo base_url('category/index') ?>" class="btn btn-primary">Category</a>
           <br /> <br />
         <?php endif; ?>
 
@@ -79,8 +80,6 @@
                       <?php
                           if( isEqual($type , 'admin'))
                             echo btnLink('products/update/'.$row['id'], "Edit", "edit");
-
-                          echo btnLink('products/show/'.$row['id'], "View", "view");
                       ?>
                     </td>
                   </tr>

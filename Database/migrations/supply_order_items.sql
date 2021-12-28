@@ -8,3 +8,6 @@ create table supply_order_items(
 	created_by int(10),
 	created_at timestamp default now()
 );
+
+alter table supply_order_items
+	add column supplier_price decimal(10 ,2) after quantity;

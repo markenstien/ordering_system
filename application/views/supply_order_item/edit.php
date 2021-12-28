@@ -38,9 +38,15 @@
                   ?>
                 </div>
 
+                 <div class="form-group">
+                  <?php
+                    __( f_col(f_label('Supplier Price') , f_text('supplier_price' , $order_item['supplier_price'] , ['class' => 'form-control' , 'required' => true])) );
+                  ?>
+                </div>
+
                 <div class="form-group">
                   <?php
-                   __( f_submit('' , 'Add Product') )
+                   __( f_submit('' , 'Update Item') )
                   ?>
                 </div>
               <?php __(f_close()); ?>

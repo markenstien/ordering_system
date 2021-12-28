@@ -10,8 +10,10 @@
 		<div class="col-md-8 mx-auto">
 			<div class="content">
 				<div class="mt-2 text-center">
+					<div style="margin-bottom:12px"><img src="<?php echo base_url('assets/images/bnk_logo_sm.png')?>" style="width: 100px;"></div>
 					<h3>Sales Report</h3>
 					As of <?php echo date('Y-m-d H:i:s')?>
+					<div>Report Created By : <?php echo $user_data['firstname'] . ' ' .$user_data['lastname'] ?></div>
 					<hr>
 					<div class="header-sub-items">
 						<p>From : <?php echo $date['start_date']?> to <?php echo $date['end_date']?></p>

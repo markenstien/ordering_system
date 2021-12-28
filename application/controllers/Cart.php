@@ -27,7 +27,7 @@
 				$user = $this->session->userdata();
 
 				$this->model_cart_wish->injectModels(['stock' => $this->model_stock]);
-
+				
 				$res = $this->model_cart_wish->addItem( $_POST );
 
 				flash_set( "Product Added to cart! ");

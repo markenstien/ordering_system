@@ -68,6 +68,10 @@
                       btnLink("supplyOrder/cancel/".$supply_order['id'] , 'Cancell' , 'danger' , 'fa fa-times'),
                       btnLink("supplyOrder/edit/".$supply_order['id'] , 'Edit' , 'Edit')
                     ]);
+                  }else{
+                    array_push($buttons , [
+                      btnLink("supplyOrder/reOrder/".$supply_order['id'] , 'Re-Order' , 'warning' , 'fa fa-refresh'),
+                    ]);
                   }
               ?>
             </div>
@@ -103,7 +107,9 @@
                       <?php $total = 0?>
                       <?php foreach( $order_items as $key => $item) :?>
                         <?php 
-                          $total_amount = $item['price'] * $item['quantity'];
+                          $market_price = $item['supplier_price'] ?? 0;
+                          $total_amount =  $market_price * $item['quantity'];
+
                           $total += $total_amount;
                         ?>
                         <tr>
@@ -111,8 +117,11 @@
                           <td><?php echo $item['name']?></td>
                           <td><?php echo strtoupper($item['sku'])?></td>
                           <td><?php echo $item['quantity']?></td>
-                          <td><?php echo $item['price']?></td>
-                          <td><?php echo $total_amount?></td>
+                          <td>
+                            <div> Supplier : <?php echo $item['supplier_price']?></div>
+                            <div> <small>Market : <?php amountHTML( $item['price'])?></small> </div>
+                          </td>
+                          <td><?php amountHTML($total_amount)?></td>
                           <td>
                             <?php if( !isEqual($supply_order['status'] , ['cancelled' , 'delivered']) ) :?>
                               <?php
@@ -128,7 +137,7 @@
                     </tbody>
                   </table>
                 </div>
-                <h4>Total : <?php echo $total?></h4>
+                <h4>Total : <?php amountHTML($total)?></h4>
               <?php endif?>
             </div>
           </div>

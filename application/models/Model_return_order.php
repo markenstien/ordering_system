@@ -143,7 +143,7 @@
 				return false;
 			}
 
-			$link = '/returnOrder/show/'.$return_order_id['id'];
+			$link = '/returnOrder/show/'.$return_order_data['id'];
 
 			$this->model_notification->message_operations("Order Return #{$return_order['reference']} has been invalidated view to check reason" , [
 				'href' => $link
@@ -178,7 +178,7 @@
 				return false;
 			}
 
-			$link = '/returnOrder/show/'.$return_order_id['id'];
+			$link = '/returnOrder/show/'.$return_order_data['id'];
 
 			$this->model_notification->message_operations("Order Return #{$return_order['reference']} has been approved" , [
 				'href' => $link

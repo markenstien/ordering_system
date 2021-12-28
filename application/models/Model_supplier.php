@@ -11,9 +11,19 @@
 			'contact_name' , 'website'
 		];
 
-		public function getAll($where = [])
-		{
-			return $this->getRowArray();
+		public function getAll($params = [])
+		{	
+			$where = null;
+			$order = null;
+
+			if( isset($params['where']) ) {
+				$where = $params['where'];
+			}
+			if( isset($params['order']) ){
+				$order = $params['order'];
+			}
+			
+			return $this->getRowArray( $where , '*' , $order );
 		}
 
 		public function update($data , $id)

@@ -37,7 +37,8 @@
 			if( isSubmitted() )
 			{
 				$res = $this->model_supply_order_item->updateCustom([
-					'quantity' => $_POST['quantity']
+					'quantity' => $_POST['quantity'],
+					'supplier_price' => $_POST['supplier_price']
 				],  $id);
 
 				if($res) {

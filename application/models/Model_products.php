@@ -98,11 +98,17 @@ class Model_products extends Model_adapter
 				'where' => " product.id = '{$id}' "
 			])[0] ?? false;
 
-			//get attributes
+			if( !$product )
+				return false;
 
-			$attributes = $this->extractAttributes($product['attribute_value_id']);
-			$categories = $this->extractCategories($product['category_id']);
+			$attributes = [];
+			$categories = [];
 
+			if( $product['attribute_value_id'])
+				$attributes = $this->extractAttributes($product['attribute_value_id']);
+			
+			if( $product['category_id'])
+				$categories = $this->extractCategories($product['category_id']);
 
 			$product['category_extracted'] = $categories;
 			$product['attr_extracted'] = $attributes;
@@ -281,6 +287,7 @@ class Model_products extends Model_adapter
 		}
 
 		$categories = json_decode($product['category_id']);
+		
 		$related_products = $this->getByCategories($categories , $id);
 
 		return $related_products;

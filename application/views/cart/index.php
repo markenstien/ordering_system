@@ -213,7 +213,16 @@ ul {
                                     <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
                                         <div class="cart_item_name cart_info_col">
                                             <div class="cart_item_title">Name</div>
-                                            <div class="cart_item_text"><?php echo $row['name']?></div>
+                                            <div class="cart_item_text">
+                                                <?php echo $row['name']?>
+                                                <?php if(!is_null($row['attr_key_pair'])) :?>
+                                                    <div>
+                                                        <?php foreach( (array) $row['attr_key_pair'] as $attr_key => $attr_item) : ?>
+                                                            <small><?php echo $attr_key .':'. $attr_item?></small>
+                                                        <?php endforeach?>
+                                                    </div>
+                                                <?php endif?>
+                                            </div>
                                         </div>
                                         <!-- <div class="cart_item_color cart_info_col">
                                             <div class="cart_item_title">Color</div>

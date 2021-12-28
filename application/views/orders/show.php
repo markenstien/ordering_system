@@ -36,7 +36,7 @@
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <tr>
-                    <td>Bill No</td>
+                    <td>Reference</td>
                     <td><a href="<?php echo base_url("orders/show/{$order['id']}")?>"><?php echo $order['bill_no']?></a></td>
                   </tr>
                   <tr>

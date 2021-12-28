@@ -30,6 +30,7 @@
                 <table class="table table-bordered dataTable">
                   <thead>
                     <th>#</th>
+                    <th>Reference</th>
                     <th>Title</th>
                     <th>Supplier</th>
                     <th>Budget</th>
@@ -39,8 +40,9 @@
                   </thead>
 
                   <tbody>
-                    <?php foreach($supply_orders as $row) :?>
+                    <?php foreach($supply_orders as $key => $row) :?>
                       <tr>
+                        <td><?php echo ++$key?></td>
                         <td><?php echo $row['reference']?></td>
                         <td><?php echo $row['title']?></td>
                         <td><?php echo $row['supplier']?></td>

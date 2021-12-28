@@ -26,13 +26,12 @@
 					echo die("CART ITEM DOES NOT EXISTS");
 
 				$this->data['product'] = $this->model_products->getProductData($this->data['item']['product_id']);
+				$this->data['related_products'] = $this->model_products->getRelatedProducts($this->data['item']['product_id']);
 			}else
 			{
 				$this->data['product'] = $this->model_products->getProductData($id);
+				$this->data['related_products'] = $this->model_products->getRelatedProducts($id);
 			}
-
-			$this->data['related_products'] = $this->model_products->getRelatedProducts($id);
-			
 			return $this->view_public('product_public/show' , $this->data);
 		}
 	}

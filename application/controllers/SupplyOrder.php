@@ -15,12 +15,16 @@
 			$this->load->model('model_stock');
 
 			$this->data['suppliers'] = $this->model_supplier->getAll();
+
+			$this->model_supply_order->injectModels([
+				'model_supply_order_item' => $this->model_supply_order_item
+			]);
 		}
 
 		public function index()
 		{
 			$this->data['supply_orders'] = $this->model_supply_order->getAll([
-				'supply_order.id' => 'id desc'
+				'order' => 'supply_order.id desc'
 			]);
 
 			return $this->render_template('supply_order/index' , $this->data);
@@ -92,10 +96,10 @@
 
 			if($res) {
 				flash_set( $this->model_supply_order->getMessageString() );
-				return redirect('stocks/index');
 			}else{
 				flash_set($this->model_supply_order->getErrorString() , 'danger');
 			}
+			return redirect('supplyOrder/show/'.$supply_order_id);
 		}
 
 		public function cancel($supply_order_id)
@@ -107,5 +111,15 @@
 			flash_set("Supply cancelled");
 
 			return redirect('supplyOrder/show/'.$supply_order_id);
+		}
+
+		public function reOrder($supply_order_id)
+		{
+			$res = $this->model_supply_order->reOrder( $supply_order_id );
+
+			if($res) {
+				flash_set("Supply Order Re-Created");
+				return redirect("SupplyOrder/show/".$res);
+			}
 		}
 	}

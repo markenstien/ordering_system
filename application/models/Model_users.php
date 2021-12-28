@@ -57,8 +57,7 @@
 			$html = <<<EOF
 				<h4>You are almost there</h4>
 				<p>Enjoy your shopping , by verifying your account</p>
-				<h2>VERIFICATION CODE : {$this->registration_verification_model->code} </h2>
-				<p>Click this <a href='{$link}'>Link</a> and to open the validate account form </p>
+				<p>Click this <a href='{$link}'>Link</a> To Activate your account  </p>
 			EOF;
 			
 			$this->model_notification->create_email("Activate your account " , $html , [$user_data['email']]);

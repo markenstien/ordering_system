@@ -8,7 +8,7 @@
 
 
 		public $_fillables = [
-			'id' , 'supply_order_id' , 'quantity'
+			'id' , 'supply_order_id' , 'quantity' , 'supplier_price'
 		];
 
 		public function addItem($supply_order_id , $item_data)
@@ -16,7 +16,8 @@
 			$res = $this->create([
 				'supply_order_id' => $supply_order_id,
 				'product_id'  => $item_data['product_id'],
-				'quantity'    => $item_data['quantity']
+				'quantity'    => $item_data['quantity'],
+				'supplier_price' => $item_data['supplier_price']
 			]);
 
 
@@ -41,7 +42,7 @@
 			if( isset($params['where']) )
 				$where = " WHERE ". $this->conditionConvert( $params['where'] );
 
-			$sql = "SELECT p.* , soi.supply_order_id , soi.quantity , 
+			$sql = "SELECT p.* , soi.supply_order_id , soi.quantity , soi.supplier_price,
 					soi.damaged_quantity, soi.damage_notes,
 					soi.created_at , soi.created_by, soi.id as id,
 					p.id as product_id
