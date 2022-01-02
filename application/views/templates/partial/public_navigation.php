@@ -15,24 +15,11 @@
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Categories</a>
-        </li>
         <?php if( isset( $_SESSION['cart_token']) ):?>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url('cart/index')?>">Cart</a>
           </li>
         <?php endif?>
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li> -->
       </ul>
       <form class="d-flex">
         <input class="form-control me-sm-2" type="text" placeholder="Search" name="key_word">

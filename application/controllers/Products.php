@@ -17,8 +17,11 @@ class Products extends Admin_Controller
 		$this->load->model('model_category');
 		$this->load->model('model_stores');
 		$this->load->model('model_attributes');
-
         $this->load->model('model_attachment');
+
+        $this->model_products->injectModels([
+            'attachment' => $this->model_attachment
+        ]);
 	}
 
     /* 

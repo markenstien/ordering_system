@@ -8,7 +8,8 @@
 			'id', 'product_id', 'quantity',
 			'user_id' , 'cart_type',
 			'product_type', 'session',
-			'created_at'
+			'created_at',
+			'attr_key_pair'
 		];
 
 		public function __construct()
@@ -25,7 +26,7 @@
 		{
 			$token = $this->getToken();
 
-			if( !$this->productExistInCartError($item_data['product_id'], $token) ) 
+			if( $this->productExistInCartError($item_data['product_id'], $token) ) 
 				return false;
 
 			$item_data['session'] = $token;
@@ -52,6 +53,25 @@
 				$_fillables['attr_key_pair'] = json_encode( $item_data['attr'] );
 
 			return $this->update( $_fillables , $id);
+		}
+
+		public function updateMultiple( $item_data )
+		{
+			$is_ok = true;
+
+			if( isset($item_data['item']) )
+			{
+				$item = $item_data['item'];
+
+				foreach($item as $key => $row) 
+				{
+					$is_ok = $this->update([
+						'quantity' => intval($row['quantity'])
+					] , $row['id']);
+				}
+			}
+
+			return $is_ok;
 		}
 
 		/*
@@ -164,6 +184,7 @@
 
 		public function productExistInCartError($product_id , $session)
 		{
+
 			$exists = parent::getRow([
 				'product_id' => $product_id,
 				'session'    => $session,
@@ -171,10 +192,10 @@
 
 			if($exists){
 				$this->addError("Product Already exists in cart");
-				return false;
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 
 

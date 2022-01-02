@@ -107,9 +107,7 @@
 	function f_label($html , $for = null, $attributes = null)
 	{
 		$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
-
 		$html = ucwords($html);
-
 		return <<<EOF
 			<label {$attributes} for="{$for}">
 				{$html}

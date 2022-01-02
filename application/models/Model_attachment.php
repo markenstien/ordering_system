@@ -17,6 +17,14 @@
 			'created_by' , 'created_at'
 		];
 
+		public function getproductGalleries($product_id)
+		{
+			return $this->getRowArray([
+				'global_key' => 'PRODUCT_IMAGE',
+				'global_id'  => $product_id
+			]);
+		}
+
 		public function getToc()
 		{
 			return $this->getRow([

@@ -1,17 +1,41 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('bundles/bootstrap.min.css')?>">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <title><?php echo $this->data['page_title'] ?? $this->data['company_name']?></title>
-  </head>
-  <body>
-    
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><?php echo $page_title ?? $company_name?></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="icon" href="<?php echo base_url('tmp/assets/images/favicon.ico')?>">
+
+    <!-- CSS
+        ============================================ -->
+
+    <!-- Bootstrap Css -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/vendor/bootstrap.min.css')?>">
+
+    <!-- Icons Css -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/vendor/linearicons.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/vendor/fontawesome-all.min.css')?>">
+
+    <!-- Animation Css -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/plugins/animation.min.css')?>">
+
+    <!-- Slick Slier Css -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/plugins/slick.min.css')?>">
+
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/plugins/magnific-popup.css')?>">
+
+    <!-- Easyzoom CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/plugins/easyzoom.css')?>">
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="<?php echo base_url('tmp/assets/css/style.css')?>">
+
+</head>
+
+<body class="box-home">
+    <div class="page-box">

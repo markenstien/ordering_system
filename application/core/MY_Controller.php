@@ -19,7 +19,7 @@ class Admin_Controller extends MY_Controller
 		parent::__construct();
 		
 		$this->load->model('model_notification');
-
+		$this->load->model('model_cart_wish');
 		$group_data = array();
 		if(empty($this->session->userdata('logged_in'))) 
 		{
@@ -32,6 +32,8 @@ class Admin_Controller extends MY_Controller
 			$this->data['user_data'] = $user_data;
 			$this->data['system_notifications'] = $this->model_notification->getNotifications($user_data['id']);
 		}
+
+		$this->data['cart_items'] = $this->model_cart_wish->getActiveCart();
 	}
 
 	public function logged_in()
@@ -65,6 +67,7 @@ class Admin_Controller extends MY_Controller
 	public function view_public($page = null , $data = array() )
 	{
 		$this->load->view('templates/public_header',$data);
+		$this->load->view('templates/partial/public_header');
 		$this->load->view($page, $data);
 		f_clean();
 		$this->load->view('templates/public_footer',$data);

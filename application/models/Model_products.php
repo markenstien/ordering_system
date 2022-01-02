@@ -13,6 +13,18 @@ class Model_products extends Model_adapter
 	];
 
 
+	public function getRandom()
+	{
+		return $this->getAll([
+			'where' => [
+				'product.id' => [
+					'condition' => 'in',
+					'value' => [1 , 2 , 3]
+				]
+			]
+		]);
+	}
+
 	/*
 	*do not include wuth such id
 	*/
@@ -112,6 +124,7 @@ class Model_products extends Model_adapter
 
 			$product['category_extracted'] = $categories;
 			$product['attr_extracted'] = $attributes;
+			$product['galleries'] = $this->attachment->getproductGalleries($id);
 			
 			return $product;
 		}

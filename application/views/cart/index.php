@@ -1,275 +1,217 @@
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('bundles/product_search.css')?>">
-<style type="text/css">
-  * {
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
-    text-shadow: rgba(0, 0, 0, .01) 0 0 1px
-}
+<div class="site-wrapper-reveal border-bottom">
 
-body {
-    font-family: 'Rubik', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    background: #E0E0E0;
-    color: #000000
-}
-
-ul {
-    list-style: none;
-    margin-bottom: 0px
-}
-
-.button {
-    display: inline-block;
-    background: #0e8ce4;
-    border-radius: 5px;
-    height: 48px;
-    -webkit-transition: all 200ms ease;
-    -moz-transition: all 200ms ease;
-    -ms-transition: all 200ms ease;
-    -o-transition: all 200ms ease;
-    transition: all 200ms ease
-}
-
-.button a {
-    display: block;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 48px;
-    color: #FFFFFF;
-    padding-left: 35px;
-    padding-right: 35px
-}
-
-.button:hover {
-    opacity: 0.8
-}
-
-.cart_section {
-    width: 100%;
-    padding-top: 93px;
-    padding-bottom: 111px
-}
-
-.cart_title {
-    font-size: 30px;
-    font-weight: 500
-}
-
-.cart_items {
-    margin-top: 8px
-}
-
-.cart_list {
-    border: solid 1px #e8e8e8;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-    background-color: #fff
-}
-
-.cart_item {
-    width: 100%;
-    padding: 15px;
-    padding-right: 46px
-}
-
-.cart_item_image {
-    width: 133px;
-    height: 133px;
-    float: left
-}
-
-.cart_item_image img {
-    max-width: 100%
-}
-
-.cart_item_info {
-    width: calc(100% - 133px);
-    float: left;
-    padding-top: 18px
-}
-
-.cart_item_name {
-    margin-left: 7.53%
-}
-
-.cart_item_title {
-    font-size: 14px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.5)
-}
-
-.cart_item_text {
-    font-size: 18px;
-    margin-top: 35px
-}
-
-.cart_item_text span {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 11px;
-    -webkit-transform: translateY(4px);
-    -moz-transform: translateY(4px);
-    -ms-transform: translateY(4px);
-    -o-transform: translateY(4px);
-    transform: translateY(4px)
-}
-
-.cart_item_price {
-    text-align: right
-}
-
-.cart_item_total {
-    text-align: right
-}
-
-.order_total {
-    width: 100%;
-    height: 60px;
-    margin-top: 30px;
-    border: solid 1px #e8e8e8;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-    padding-right: 46px;
-    padding-left: 15px;
-    background-color: #fff
-}
-
-.order_total_title {
-    display: inline-block;
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.5);
-    line-height: 60px
-}
-
-.order_total_amount {
-    display: inline-block;
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 26px;
-    line-height: 60px
-}
-
-.cart_buttons {
-    margin-top: 60px;
-    text-align: right
-}
-
-.cart_button_clear {
-    display: inline-block;
-    border: none;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 48px;
-    color: rgba(0, 0, 0, 0.5);
-    background: #FFFFFF;
-    border: solid 1px #b2b2b2;
-    padding-left: 35px;
-    padding-right: 35px;
-    outline: none;
-    cursor: pointer;
-    margin-right: 26px
-}
-
-.cart_button_clear:hover {
-    border-color: #0e8ce4;
-    color: #0e8ce4
-}
-
-.cart_button_checkout {
-    display: inline-block;
-    border: none;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 48px;
-    color: #FFFFFF;
-    padding-left: 35px;
-    padding-right: 35px;
-    outline: none;
-    cursor: pointer;
-    vertical-align: top
-}
-</style>
-<div class="body">
-  <?php require_once APPPATH.'/views/templates/partial/public_navigation.php'?>
-  <div class="container">
-    <div class="cart_section">
-        <div class="container-fluid">
+    <!-- cart start -->
+    <div class="cart-main-area  section-space--ptb_90">
+        <div class="container">
+            <?php flash()?>
+            <?php if($cart_items) :?>
             <div class="row">
-                <div class="col-lg-10 offset-lg-1">
-                    <?php flash()?>
-                    <div class="cart_container">
-                      <?php if($cart_items) :?>
-                        <div class="cart_title">Shopping Cart<small> (<?php echo count($cart_items) ?> item in your cart) </small></div>
-                        <div class="cart_items">
-                            <ul class="cart_list">
-                              <?php $total = 0?>
-                              <?php foreach( $cart_items as $row ) : ?>
-                                <?php $total += $row['price'] * $row['quantity']?>
-                                <li class="cart_item clearfix">
-                                    <div class="cart_item_image"><img src="<?php echo base_url($row['image'])?>" alt=""></div>
-                                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                                        <div class="cart_item_name cart_info_col">
-                                            <div class="cart_item_title">Name</div>
-                                            <div class="cart_item_text">
-                                                <?php echo $row['name']?>
-                                                <?php if(!is_null($row['attr_key_pair'])) :?>
-                                                    <div>
-                                                        <?php foreach( (array) $row['attr_key_pair'] as $attr_key => $attr_item) : ?>
-                                                            <small><?php echo $attr_key .':'. $attr_item?></small>
-                                                        <?php endforeach?>
-                                                    </div>
+                <form action="<?php echo base_url('cart/updateMultiple')?>" method="post">
+                <div class="col-lg-12">
+                        <div class="table-content table-responsive cart-table-content header-color-gray">
+                            <table>
+                                <thead>
+                                    <tr class="bg-gray">
+                                        <th></th>
+                                        <th></th>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-price"> Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $cart_total_amount = 0?>
+                                    <?php foreach( $cart_items as $key => $row) :?>
+                                        <?php $item_price = $row['price'] * $row['quantity']?>
+                                        <?php $cart_total_amount += $item_price?>
+                                        <input type="hidden" name="item[<?php echo $row['id']?>][id]" value="<?php echo $row['id']?>">
+                                        <tr>
+                                            <td></td>
+                                            <td class="product-img">
+                                                <a href="<?php echo base_url('productPublic/show/'.$row['id'])?>?is_cart_item=true"><img src="<?php echo base_url($row['image'])?>" alt=""
+                                                    style="width: 100%;"></a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a href="#"><?php echo $row['name']?></a>
+                                                <?php if( isset($row['attr_key_pair']) ) :?>
+                                                   <label> <?php
+                                                        $key_pair = (array) $row['attr_key_pair'];
+                                                        echo implode(',' , $key_pair);
+                                                    ?></label>
                                                 <?php endif?>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="cart_item_color cart_info_col">
-                                            <div class="cart_item_title">Color</div>
-                                            <div class="cart_item_text"><span style="background-color:#999999;"></span>Silver</div>
-                                        </div> -->
-                                        <div class="cart_item_quantity cart_info_col">
-                                            <div class="cart_item_title">Quantity</div>
-                                            <div class="cart_item_text"><?php echo $row['quantity']?></div>
-                                        </div>
-                                        <div class="cart_item_price cart_info_col">
-                                            <div class="cart_item_title">Price</div>
-                                            <div class="cart_item_text"><?php amountHTML($row['price'])?></div>
-                                        </div>
-                                        <div class="cart_item_total cart_info_col">
-                                            <div class="cart_item_title">Total</div>
-                                            <div class="cart_item_text"><?php amountHTML($row['price'] * $row['quantity']) ?></div>
-                                        </div>
-                                    </div>
-                                </li>
-                                    <a href="<?php echo base_url('productPublic/show/'.$row['id'].'?is_cart_item=true')?>">
-                                    <i class="fa fa-edit"></i> Edit</a> | 
-                                    
-                                    <a href="<?php echo base_url('cart/delete/'.$row['id'])?>" class="text-danger">
-                                    <i class="fa fa-trash"></i> Delete</a>
-                              <?php endforeach?>
-                            </ul>
+                                            </td>
+
+                                            <td class="product-price"><span class="amount">PHP <?php echo amountHTML($row['price'])?></span></td>
+
+                                            <td class="cart-quality">
+                                                <div class="quickview-quality quality-height-dec2">
+                                                    <div class="cart-plus-minus">
+                                                        <input class="cart-plus-minus-box" type="text" name="item[<?php echo $row['id']?>][quantity]" value="<?php echo $row['quantity']?>">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="price-total">
+                                                <span class="amount">PHP <?php echo amountHTML($item_price)?></span>
+                                            </td>
+                                            <td class="product-remove">
+                                                <a href="<?php echo base_url('cart/delete/'.$row['id'])?>"><i class="icon-cross2"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach?>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="order_total">
-                            <div class="order_total_content text-md-right">
-                                <div class="order_total_title">Order Total:</div>
-                                <div class="order_total_amount"><?php amountHTML($total) ?></div>
+                    
+                        <div class="shoping-update-area row">
+                            <div class="continue-shopping-butotn col-6 mt-30">
+                                <a href="<?php echo base_url('landing/catalog')?>" class="btn btn--lg btn--black"><i class="icon-arrow-left"></i> Continue Shopping </a>
+                            </div>
+                            <div class="update-cart-button col-6 text-end mt-30">
+                                <button type="submit" class="btn btn--lg btn--border_1">Update cart</button>
                             </div>
                         </div>
-                        <div class="cart_buttons">
-                            <a href="<?php echo base_url('landing/index')?>" class="btn btn-primary">Continue Shopping</a>
-                            
-                            <a href="<?php echo base_url('cart/checkout')?>" class="btn btn-success">Check Out</a>
+                    </form>
+                    <div class="cart-buttom-area">
+                        <div class="row">
+                            <div class="col-lg-6">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="cart_totals section-space--mt_60 ms-md-auto">
+                                    <div class="grand-total-wrap">
+                                        <div class="grand-total-content">
+                                            <ul>
+                                                <li>Total <span>PHP <?php echo amountHTML($cart_total_amount)?></span> </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="grand-btn mt-30">
+                                        <a href="<?php echo base_url('cart/checkout')?>" class="btn--black btn--full text-center btn--lg">Proceed to checkout</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                      <?php else:?>
-                        <h2>No Items on your cart</h2>
-                        <a href="<?php echo base_url('landing/index')?>">Add Items to your cart</a>
-                      <?php endif?>
                     </div>
+                </div>
+                <?php else:?>
+                    <p>No Items <a href="<?php echo base_url('landing/catalog')?>">Add now</a></p>
+                <?php endif?>
+            </div>
+        </div>
+    </div>
+    <!-- cart end -->
+
+</div>
+
+<!--====================  footer area ====================-->
+<div class="footer-area-wrapper">
+    <div class="footer-area section-space--ptb_120">
+        <div class="container">
+            <div class="row footer-widget-wrapper">
+                <div class="col-lg-4 col-md-4 col-sm-6 footer-widget">
+                    <h6 class="footer-widget__title mb-20">Address</h6>
+                    <ul class="footer-widget__list">
+                        <li><i class="icon_pin"></i> Helendo, Chicago, USA 2018</li>
+                        <li> <i class="icon_phone"></i><a href="tel:846677028028" class="hover-style-link">+846677028028</a></li>
+
+                    </ul>
+                    <ul class="list footer-social-networks mt-25">
+
+                        <li class="item">
+                            <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+                                <i class="social social_facebook"></i>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                                <i class="social social_twitter"></i>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                                <i class="social social_tumblr"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 footer-widget">
+                    <h6 class="footer-widget__title mb-20">Help & Information</h6>
+                    <ul class="footer-widget__list">
+                        <li><a href="#" class="hover-style-link">Help & Contact Us</a></li>
+                        <li><a href="#" class="hover-style-link">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover-style-link">Online Stores</a></li>
+                        <li><a href="#" class="hover-style-link">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 footer-widget">
+                    <h6 class="footer-widget__title mb-20">About Us</h6>
+                    <ul class="footer-widget__list">
+                        <li><a href="#" class="hover-style-link">About Us</a></li>
+                        <li><a href="#" class="hover-style-link">What We Do</a></li>
+                        <li><a href="#" class="hover-style-link">FAQ Page</a></li>
+                        <li><a href="#" class="hover-style-link">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 footer-widget">
+                    <h6 class="footer-widget__title mb-20">Newsletter</h6>
+                    <div class="footer-widget__newsletter mt-30">
+                        <input type="text" placeholder="Your email address">
+                        <button class="submit-button"><i class="icon-arrow-right"></i></button>
+                    </div>
+                    <ul class="footer-widget__footer-menu  section-space--mt_60 d-none d-lg-block">
+                        <li><a href="#">Term & Condition</a></li>
+                        <li><a href="#">Policy</a></li>
+                        <li><a href="#">Map</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-  </div>
+    <div class="footer-copyright-area section-space--pb_30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-5 text-center text-md-start">
+                    <ul class="footer-widget__footer-menu">
+                        <li><a href="#">Term & Condition</a></li>
+                        <li><a href="#">Policy</a></li>
+                        <li><a href="#">Map</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-2 text-center">
+                    <div class="footer-logo">
+                        <a href="#"><img src="assets/images/logo/logo.svg" alt="Logo images"></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 order-md-3">
+                    <div class="footer-bottom-social">
+                        <h6 class="title">Follow Us On Social</h6>
+                        <ul class="list footer-social-networks ">
+                            <li class="item">
+                                <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+                                    <i class="social social_facebook"></i>
+                                </a>
+                            </li>
+                            <li class="item">
+                                <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                                    <i class="social social_twitter"></i>
+                                </a>
+                            </li>
+                            <li class="item">
+                                <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                                    <i class="social social_tumblr"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="copyright-text text-center  section-space--mt_40">&copy; 2021 Helendo. <a  href="https://hasthemes.com/" target="_blank">All Rights Reserved.</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<!--====================  End of footer area  ====================-->

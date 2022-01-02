@@ -1,91 +1,127 @@
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('bundles/product_search.css')?>">
-<div class="body">
-  <?php require_once APPPATH.'/views/templates/partial/public_navigation.php'?>
-  <div style="margin-bottom:30px"></div>
-  <div class="container">
-    <?php flash()?>
-      <div class="row">
-        <div class="col-md-4 order-md-2 mb-4">
-          <?php if( $cart_items ):?>
-            <div class="card">
-              <div class="card-header">
-                <h4 class="card-title">Cart Items</h4>
-              </div>
-              
-              <div class="card-body">
-                <ul class="list-group mb-3">
-                  <?php $total = 0?>
-                  <?php foreach($cart_items as $row) :?>
-                    <?php $total += $row['price'] * $row['quantity']?>
-
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                      <div>
-                        <h6 class="my-0"><?php echo $row['name']?></h6>
-                        <small class="text-muted">PHP<?php echo $row['price']?>(<?php echo $row['quantity']?>)</small>
-                        <div>
-                          <a href="<?php echo base_url('productPublic/show/'.$row['id'].'?is_cart_item=true')?>"><i class="fa fa-edit"></i>Edit </a>
-                          <a href="<?php echo base_url('cart/delete/'.$row['id'])?>" class="text-danger"><i class="fa fa-trash"></i> Delete </a> &nbsp;
+<style type="text/css">
+    label{
+        margin-bottom: 0px !important;
+    }
+    .form-group{
+        margin-bottom: 15px;
+    }
+</style>
+<div class="checkout-main-area section-space--ptb_90">
+    <div class="container">
+        <div class="checkout-wrap">
+            <form method="post" action="<?php echo base_url('cart/checkout')?>" class="needs-validation">
+                <?php if( isset($user) ) :?>
+                  <input type="hidden" name="user_id" value="<?php echo $user['id']?>">
+                <?php endif?>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="billing-info-wrap mr-100">
+                            <h6 class="mb-20">Billing Details</h6>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <?php
+                                            __(
+                                              f_col( f_label('Full Name') , f_text('customer_name' , $user['firstname'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe' , 'required' => true]) )
+                                            );
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <?php
+                                            __(
+                                              f_col( f_label('Phone') , f_text('customer_phone' , $user['phone'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx' , 'required' => true]) )
+                                            );
+                                       ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <?php
+                                            __(
+                                              f_col( f_label('Email') , f_text('customer_email' , $user['email'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com' , 'required' => true]) )
+                                            );
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <?php
+                                            __(
+                                              f_col( f_label('Address') , f_textarea('customer_address' , $user['address'] ?? '' , 
+                                                ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]) )
+                                            );
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="additional-info-wrap">
+                                <h6 class="mb-10">Additional information</h6>
+                                <label>Order notes (optional)</label>
+                                <textarea placeholder="Notes about your order, e.g. special notes for delivery. " name="message"></textarea>
+                            </div>
                         </div>
-                      </div>
-                      <span class="text-muted">PHP <?php echo $row['quantity'] * $row['price']?></span>
-                    </li>
-                  <?php endforeach?>
-                </ul>
-              </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="your-order-wrappwer tablet-mt__60 small-mt__60">
+                            <h6 class="mb-20">Your order</h6>
+                            <div class="your-order-area">
+                                <div class="your-order-wrap gray-bg-4">
+                                    <div class="your-order-info-wrap">
+                                        <div class="your-order-info">
+                                            <ul>
+                                                <li>Product <span>Total</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-middle">
+                                            <?php $total = 0?>
+                                            <ul>
+                                                <?php foreach($cart_items as $row) :?>
+                                                    <?php 
+                                                        $item_total = $row['price'] * $row['quantity'];
+                                                        $total += $item_total;
+                                                    ?>
+                                                    <li> 
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <?php echo $row['name']?> <small>(<?php echo $row['price']?> X <?php echo $row['quantity']?>  )</small> 
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <span> PHP <?php echo amountHTML($item_total) ?> </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach?>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-info order-total">
+                                            <ul>
+                                                <li><strong>Total</strong> <span>PHP <?php echo amountHTML($total)?> </span></li>
+                                            </ul>
+                                        </div>
 
-              <div class="card-footer">
-                <h4>Total : <?php echo amountHTML($total)?></h4>
-              </div>
-            </div>
-          <?php endif?>
+                                        <div class="payment-area mt-30">
+                                            <div class="single-payment">
+                                                <h6 class="mb-10">Check payments</h6>
+                                                <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                                            </div>
+                                            <div class="single-payment mt-20">
+                                                <h6 class="mb-10">What is PayPal?</h6>
+                                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="place-order mt-30">
+                                <button type="submit" class="btn--full btn--black btn--lg text-center">Place Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Billing address</h4>
-
-          
-          <form method="post" action="<?php echo base_url('cart/checkout')?>" class="needs-validation">
-            <?php if( isset($user) ) :?>
-              <input type="hidden" name="user_id" value="<?php echo $user['id']?>">
-            <?php endif?>
-            <div class="mb-3">
-              <?php
-                __(
-                  f_col( f_label('Full Name') , f_text('customer_name' , $user['firstname'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. Jhon Doe' , 'required' => true]) )
-                );
-              ?>
-            </div>
-
-            <div class="mb-3">
-              <?php
-                __(
-                  f_col( f_label('Phone') , f_text('customer_phone' , $user['phone'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. 09xxxxxxxxxxx' , 'required' => true]) )
-                );
-              ?>
-            </div>
-
-            <div class="mb-3">
-              <?php
-                __(
-                  f_col( f_label('Email') , f_text('customer_email' , $user['email'] ?? '' , ['class' => 'form-control' , 'placeholder' => 'eg. custoemr@email.com' , 'required' => true]) )
-                );
-              ?>
-            </div>
-
-            <div class="mb-3">
-              <?php
-                __(
-                  f_col( f_label('Address') , f_textarea('customer_address' , $user['address'] ?? '' , 
-                    ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]) )
-                );
-              ?>
-            </div>
-
-            <?php if( isset($user) ) :?>
-              <input type="hidden" name="user_id" value="<?php echo $this->session->userdata('id')?>">
-            <?php endif?>
-            <input type="submit" name="" class="btn btn-primary" value="Checkout">
-          </form>
-        </div>
-      </div>
-  </div>
+    </div>
 </div>

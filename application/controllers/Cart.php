@@ -8,8 +8,6 @@
 			parent::__construct();
 
 			$this->data['title'] = 'Cart Items';
-
-			$this->load->model('model_cart_wish');
 			$this->load->model('model_stock');
 
 			//if user is logged-in
@@ -29,7 +27,7 @@
 				$this->model_cart_wish->injectModels(['stock' => $this->model_stock]);
 				
 				$res = $this->model_cart_wish->addItem( $_POST );
-
+				
 				flash_set( "Product Added to cart! ");
 
 				if(!$res){
@@ -51,6 +49,19 @@
 				flash_set("Cart item failed to update");
 
 			return redirect('cart/index');
+		}
+
+		public function updateMultiple()
+		{
+			if ( isSubmitted() )
+			{
+
+				$is_ok = $this->model_cart_wish->updateMultiple( $_POST );
+				if( $is_ok ){
+					flash_set("Cart Updated");
+					return redirect('cart/index');
+				}
+			}
 		}
 
 		public function delete($id)
