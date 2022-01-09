@@ -40,7 +40,7 @@
                 </tr>
 
                 <tr>
-                  <td colspan="2">Customer</td>
+                  <td colspan="2"> <strong>Customer</strong> </td>
                 </tr>
                 <tr>
                   <td>Name</td>

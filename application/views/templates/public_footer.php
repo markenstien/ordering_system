@@ -1,3 +1,58 @@
+<!--====================  footer area ====================-->
+<div class="footer-area-wrapper">
+    <div class="footer-area section-space--ptb_120">
+        <div class="container">
+            <div class="row footer-widget-wrapper">
+                <div class="col-lg-4 col-md-4 col-sm-6 footer-widget">
+                    <h6 class="footer-widget__title mb-20">Address</h6>
+                    <ul class="footer-widget__list">
+                        <li><i class="icon_pin"></i> Project 8 Quezon City , &copy; <?php echo date('Y')?></li>
+                        <li> <i class="icon_phone"></i><a href="tel:846677028028" class="hover-style-link">09994208238</a></li>
+
+                    </ul>
+                    <ul class="list footer-social-networks mt-25">
+                        <li class="item">
+                            <a href="https://www.facebook.com/bakenwrap07" target="_blank" aria-label="Facebook">
+                                <i class="social social_facebook"></i>Bake And Wrap
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright-area section-space--pb_30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-2 text-center">
+                    <div class="footer-logo">
+                        <a href="#"><img src="<?php echo base_url('assets/images/bnk_logo_sm.png')?>" alt="Logo images"></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 order-md-3">
+                    <div class="footer-bottom-social">
+                        <h6 class="title">Follow Us On Social</h6>
+                        <ul class="list footer-social-networks">
+                            <li class="item">
+                                <a href="https://www.facebook.com/bakenwrap07" target="_blank" aria-label="Facebook">
+                                    <i class="social social_facebook"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="copyright-text text-center  section-space--mt_40">&copy; 2021 Helendo. <a  href="https://hasthemes.com/" target="_blank">All Rights Reserved.</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--====================  End of footer area  ====================-->
+
+
 
 <!--====================  search overlay ====================-->
 <div class="search-overlay" id="search-overlay">

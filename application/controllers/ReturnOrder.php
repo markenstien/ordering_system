@@ -22,10 +22,18 @@
 
 		public function index()
 		{
-			$order_returns = $this->model_return_order->getAll([
+			$fetch_parameters = [
 				'order' => 'ret.id desc'
-			]);
+			];
 
+			if( isEqual($this->data['user_data']['user_type'] , 'customer') ){
+				$fetch_parameters['where'] = [
+					'user_id' => $this->data['user_data']['id']
+				];
+			}
+
+			$order_returns = $this->model_return_order->getAll($fetch_parameters);
+			
 			$this->data['order_returns'] = $order_returns;
 			$this->data['page_title'] = 'Return Order Items';
 
@@ -108,7 +116,7 @@
 		public function show($id)
 		{
 			$return_order = $this->model_return_order->getComplete($id);
-
+			
 			$this->data['page_title'] = ' Return Order Preview';
 			$this->data['return_order'] = $return_order;
 			$this->data['return_order_items'] = $return_order['items'];

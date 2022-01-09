@@ -24,6 +24,7 @@
         <?php if( isEqual( $type , 'admin') ): ?>
           <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
           <a href="<?php echo base_url('category/index') ?>" class="btn btn-primary">Category</a>
+          <a href="<?php echo base_url('attributes/index') ?>" class="btn btn-primary">Attributes</a>
           <br /> <br />
         <?php endif; ?>
 

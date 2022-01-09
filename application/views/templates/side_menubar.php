@@ -4,12 +4,14 @@
       <?php $type = e_user_type($this->data['user_data']);?>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        
-          <li id="dashboardMainMenu">
-            <a href="<?php echo base_url('dashboard') ?>">
-              <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            </a>
-          </li>
+          
+          <?php if(isEqual($type,'admin')) :?>
+            <li id="dashboardMainMenu">
+              <a href="<?php echo base_url('dashboard') ?>">
+                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+              </a>
+            </li>
+          <?php endif?>
 
           <?php if(isEqual($type,'admin')) :?>
             <li class="treeview" id="mainUserNav">

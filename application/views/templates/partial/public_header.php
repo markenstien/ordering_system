@@ -17,7 +17,7 @@
 
                     <div class="col-lg-3 col-lg-3 col-6">
                         <div class="header-right-items content__hidden d-none d-md-block">
-                            <a href="#" class=""><span class="phone-number font-lg-p"> <i class="icon-telephone"></i> +8 (268) 654 - 587- 68 </span></a>
+                            <a href="#" class=""><span class="phone-number font-lg-p"> <i class="icon-telephone"></i> 09994208238</span></a>
                         </div>
                         <div class="logo__hidden text-start">
                             <a href="#"><img src="assets/images/logo/logo.svg" alt=""></a>
@@ -51,6 +51,11 @@
                                         <a class="nav-link" href="<?php echo base_url('users/register')?>">Register</a>
                                     </li>
                                   <?php endif?>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="<?php echo base_url('about/index')?>">About
+                                      </a>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>

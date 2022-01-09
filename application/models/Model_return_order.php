@@ -63,7 +63,7 @@
 			$order = null;
 
 			if( isset($params['where']) )
-				$where = " WHERE .".$this->conditionConvert($params['where']);
+				$where = " WHERE ".$this->conditionConvert($params['where']);
 
 			if( isset($params['order']) )
 				$order = " ORDER BY {$params['order']}";
@@ -197,8 +197,6 @@
 			$this->model_notification->create_email("Return Order Approved" , $steps_to_return , [$user_data['email']]);
 
 			send_sms("Order Return #{$return_order['reference']} has been approved" , [$user_data['phone']]);
-
-
 			
 			return $res;
 		}

@@ -39,7 +39,6 @@
                     <td><?php echo $row['email']?></td>
                     <td><?php echo $row['contact_name']?></td>
                     <td>
-                      <?php btnLink("supplier/show/{$row['id']}" , 'View' , 'view')?>
                       <?php btnLink("supplier/edit/{$row['id']}" , 'Edit' , 'edit')?>
                     </td>
                   </tr>
