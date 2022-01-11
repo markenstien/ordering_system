@@ -54,7 +54,7 @@ class Auth extends Admin_Controller
 						return redirect('toc/loadToc');
 					
 
-					if( isset($_SESSION['cart_token']) )
+					if( isset($_SESSION['cart_token']) && ! $login['user_type'] == 'admin')
 					{
 						//update this session
 						$this->model_cart_wish->dbupdate($this->model_cart_wish->_table_name,[
