@@ -26,7 +26,7 @@
                                         <?php foreach($row['items'] as $itemKey => $itemRow) :?>
                                             <?php
                                                 $no_stock = false;
-                                                if( $itemRow['stocks'] > $itemRow['min_stock']) {
+                                                if( $itemRow['stocks'] < $itemRow['min_stock']) {
                                                     $no_stock_item = true;
                                                     $no_stock = true;
                                                 }
