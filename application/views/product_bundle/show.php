@@ -131,7 +131,7 @@
                   </tbody>
                 </table>
               </div>
-              <h4>Total : <s><?php echo amountHTML($total)?></s> <?php echo amountHTML($total - $bundle['discount'])?> </h4>
+              <h4>Total : <s><?php echo amountHTML($total)?></s> <?php echo amountHTML($bundle['price_public'] - $bundle['discount'])?> </h4>
             </div>
           </div>
           <!-- /.box -->
