@@ -54,6 +54,10 @@ class Users extends Admin_Controller
 	public function sendEmailVerification($id)
 	{
 		$this->model_users->sendEmailVerification($id);
+
+		flash_set('verification sent to your email');
+
+		return redirect('auth/login');
 	}
 
 	public function create()
