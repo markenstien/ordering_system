@@ -124,7 +124,7 @@ hr {
 
 </style>
 <div id="bill-container">
-    <h2 class="text-center">ORDER INVOICE</h2>
+    <h2 class="text-center">INVOICE</h2>
   <div class="row">
       <div class="col-sm-6">
           <div>
@@ -148,11 +148,8 @@ hr {
       <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
           <hr class="d-sm-none" />
           <div class="text-grey-m2">
-              <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
-                  Invoice
-              </div>
 
-              <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">REFERENCE#:</span> <?php echo $order['bill_no']?></div>
+              <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Invoice#:</span> <?php echo $order['bill_no']?></div>
 
               <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> 
                 <span class="text-600 text-90">Issue Date:</span>
@@ -202,8 +199,13 @@ hr {
                       Total Amount
                   </div>
                   <div class="col-5">
-                      <span class="text-150 text-success-d3 opacity-2">PHP <?php amountHTML($total) ?></span>
-                      <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $total?>">
+                      <span class="text-150 text-success-d3 opacity-2">PHP <?php amountHTML($order['net_amount']) ?></span>
+                      
+                      <?php if($order['discount']) : ?>
+                          <div><small>Discount : <?php echo $order['discount']?> </small></div>
+                      <?php endif?>
+
+                      <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $order['net_amount']?>">
                       <input type="hidden" name="bill_id" id="bill_id" value="<?php echo $order['id']?>">
                       <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_data['id'] ?? 0?>">
                   </div>

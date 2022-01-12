@@ -60,7 +60,11 @@
                   </tr>
                   <tr>
                     <td>Net Amount</td>
-                    <td><?php echo $order['net_amount']?></td>
+                    <td><?php echo $order['net_amount']?>
+                      <?php if($order['discount']):?>
+                          (-<?php echo $order['discount']?>)->discount  
+                      <?php endif?>
+                    </td>
                   </tr>
 
                   <tr>

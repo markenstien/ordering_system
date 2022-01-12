@@ -93,17 +93,12 @@
 		public function getAllWithItems( $params = [] )
 		{
 			$bundles = $this->getAll( $params  );
-
-			$ret_val = [];
-
-			foreach($bundles as $row) 
+			
+			foreach($bundles as $key => $row) 
 			{
-				$bundle = $row;
-				$bundle['items'] = $this->model_bundle_item->getByBundle($row['id']);
-
-				$ret_val[] = $row; 
+				$bundles[$key]['items'] = $this->model_bundle_item->getByBundle($row['id']);
 			}
 
-			return $ret_val;
+			return $bundles;
 		}
 	}

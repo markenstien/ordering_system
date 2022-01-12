@@ -30,7 +30,15 @@ class Users extends Admin_Controller
 
 		$email = trim($_GET['email']);
 
-		
+		$is_ok = $this->model_users->verifyAccountByEmail($email);
+
+		if( $is_ok ){
+			flash_set($this->model_users->getMessageString());
+		}else{
+			flash_set( $this->model_users->getErrorString() , 'danger');
+		}
+
+		return redirect('auth/login');
 	}
 
 	
@@ -41,6 +49,11 @@ class Users extends Admin_Controller
 		$this->data['users'] = $users;
 
 		$this->render_template('users/index', $this->data);
+	}
+
+	public function sendEmailVerification($id)
+	{
+		$this->model_users->sendEmailVerification($id);
 	}
 
 	public function create()

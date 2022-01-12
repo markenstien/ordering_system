@@ -1,4 +1,16 @@
 <!-- Content Wrapper. Contains page content -->
+
+<?php
+ $order_date = date('Y-m-d' , $order['date_time']);
+ $date_now = date('Y-m-d');
+
+ $date1 = date_create( $order_date );
+ $date2 = date_create( $date_now );
+
+ $diff = date_diff($date1,$date2);
+
+ $days_count = abs($diff->format("%a days"));
+?>
 <div class="content-wrapper">
   <?php flash()?>
   <!-- Content Header (Page header) -->
@@ -93,22 +105,26 @@
                 </tbody>
               </table>
 
-              <div>
-                <label>Reason</label>
-                <?php
-                  echo f_textarea('reason' , '' , 
-                    ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]);
-                ?>
-              </div>
+              <?php if( intval($days_count) < 5) :?>
+                <div>
+                  <label>Reason</label>
+                  <?php
+                    echo f_textarea('reason' , '' , 
+                      ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]);
+                  ?>
+                </div>
 
-              <label>
-                <input type="checkbox" name="certify" required>
-                I Certify that the return reason given is true and correct
-              </label>
+                <label>
+                  <input type="checkbox" name="certify" required>
+                  I Certify that the return reason given is true and correct
+                </label>
 
-              <div class="form-group">
-                <input type="submit" name="" class="btn btn-primary" value="Return Items">
-              </div>
+                <div class="form-group">
+                  <input type="submit" name="" class="btn btn-primary" value="Return Items">
+                </div>
+              <?php else:?>
+                <p class="text-danger"> <strong>Cannot Return Order Over 5 Days.</strong> </p>
+              <?php endif?>
             </form>
           </div>
         </div>

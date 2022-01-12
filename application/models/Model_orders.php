@@ -19,8 +19,12 @@ class Model_orders extends Model_adapter
 	];
 
 
-	public function reOrder($id)
+	public function reOrder($id , $items = [])
 	{
+		if( empty($items) ){
+			$this->addError("No items found.");
+			return false;
+		}
 		$order = $this->get($id);
 
 		$order_data = [];
@@ -44,15 +48,19 @@ class Model_orders extends Model_adapter
 
 		$_fillables = $this->getFillablesOnly($order_data);
 
+
 		//new order-id
 		$order_id = parent::create($_fillables);
 
-		$order_items = $this->getOrdersItemData( $id );
+		// $order_items = $this->getOrdersItemData( $id );
 
-		foreach($order_items as $index => $item) 
+		$net_amount = 0;
+
+		foreach($items as $index => $item) 
 		{
 			$qty = $item['qty'];
 			$product_id = $item['product_id'];
+			$net_amount += $item['amount'];
 
 			$order_item_data =  [
 				'order_id' => $order_id,
@@ -73,6 +81,10 @@ class Model_orders extends Model_adapter
 				'date' => date('Y-m-d H:i:s')
 			]);
 		}
+
+		parent::update([
+			'net_amount' => $net_amount
+		] , $order_id);
 
 		return $order_id;
 	}
@@ -284,6 +296,50 @@ class Model_orders extends Model_adapter
 		return false;
 	}
 
+	public function createFromBundle($order_data , $bundle_with_items)
+	{
+		$total_amount = $bundle_with_items['price_public'] - $bundle_with_items['discount'];
+
+		$date = strtotime(date('Y-m-d h:i:s a'));
+
+		$bill_no = 'INV-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+
+		$_fillables = $this->getFillablesOnly($order_data);
+
+		$_fillables['date_time'] = $date;
+		$_fillables['bill_no']  = $bill_no;
+		$_fillables['gross_amount'] = $total_amount;
+		$_fillables['net_amount'] = $total_amount;
+		$_fillables['paid_status'] = 0;
+		$_fillables['origin'] = 'online';
+		$_fillables['discount'] = $bundle_with_items['discount'];
+
+		$order_id = parent::create ( $_fillables );
+			
+		foreach($bundle_with_items['items'] as $row) 
+		{
+			$order_item = [
+				'order_id' => $order_id,
+				'product_id' => $row['id'],
+				'qty'      => $row['quantity'],
+				'rate'     => $row['price'],
+				'amount'   => $row['price'] * $row['quantity']
+			];
+
+			$res = parent::dbinsert('orders_item' , $order_item);
+		}
+
+		if( !empty($_fillables['customer_phone'])){
+			$customer_phone = trim($_fillables['customer_phone']);
+			send_sms("Your order has been placed , order No.#{$bill_no}", [$customer_phone]);
+		}
+
+		flash_set("Add payment to complete order");
+		
+		return $order_id;
+
+	}
+
 	public function createFromCart($order_data)
 	{
 		
@@ -305,7 +361,7 @@ class Model_orders extends Model_adapter
 
 			$date = strtotime(date('Y-m-d h:i:s a'));
 
-			$bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+			$bill_no = 'INV-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
 
 			$_fillables = $this->getFillablesOnly($order_data);
 

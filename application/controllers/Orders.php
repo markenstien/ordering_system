@@ -305,17 +305,17 @@ class Orders extends Admin_Controller
 		{
 			$order_id = $_POST['order_id'];
 
-			$res = $this->model_orders->reOrder($order_id);
+			$res = $this->model_orders->reOrder($order_id , $_POST['items']);
 
 			if($res) {
 				flash_set("Return Order successfull {$this->model_orders->bill_no}");
 				return redirect('orders/show/'.$res);
 			}else{
-				flash_set("Return order error" , 'danger');
+				flash_set( $this->model_orders->getErrorString() , 'danger');
 			}
 		}
 			
-		$order = $this->model_orders->getOrdersData($order_id);
+		$order = $this->model_orders->getOrderWithItems($order_id);
 
 		$this->data['order_id'] = $order_id;
 		$this->data['order'] = $order;

@@ -27,6 +27,26 @@
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('orders/reOrder/'.$order_id) ?>" method="post" class="form-horizontal">
             <input type="hidden" name="order_id" value="<?php echo $order['id']?>">
+            <table class="table table-bordered">
+              <tr>
+                <td>Name</td>
+                <td>Rate</td>
+                <td>Quantity</td>
+              </tr>
+              <?php foreach($order['items'] as $key => $row): ?>
+                <?php $amount = $row['rate'] * $row['qty'] ?>
+                <input type="hidden" name="items[<?php echo $key?>][product_id]" value="<?php echo $row['product_id']?>">
+                <input type="hidden" name="items[<?php echo $key?>][rate]" value="<?php echo $row['rate']?>">
+                <input type="hidden" name="items[<?php echo $key?>][amount]" value="<?php echo $amount?>">
+                <tr>
+                  <td><?php echo $row['name']?></td>
+                  <td><?php echo amountHTML($row['rate'])?></td>
+                  <td>
+                    <input type="" name="items[<?php echo $key?>][qty]" class="form-control" value="<?php echo $row['qty']?>">
+                  </td>
+                </tr>
+              <?php endforeach?>
+            </table>
             <div class="box-body">
               <div class="text-center">
                 <p>Are you sure you want to re-order</p>

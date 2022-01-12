@@ -41,6 +41,11 @@
                                       <a class="nav-link" href="<?php echo base_url('landing/catalog')?>">Catalog
                                       </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="<?php echo base_url('bundles/index')?>">Bundle
+                                      </a>
+                                    </li>
                                     <?php if( !isset($this->data['user_data']) ):?>
                                     &nbsp;
                                     <li class="nav-item">

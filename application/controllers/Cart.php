@@ -15,6 +15,7 @@
 				$this->model_cart_wish->setUser( $this->session->userdata() );
 
 			$this->data['cart_items'] = $this->model_cart_wish->getActiveCart();
+			$this->load->model('model_orders');
 		}
 
 
@@ -82,8 +83,6 @@
 		{
 			if( isSubmitted() )
 			{
-				$this->load->model('model_orders');
-
 				$this->model_orders->injectModels([
 					'cart_model' => $this->model_cart_wish,
 					'model_stock' => $this->model_stock
@@ -109,6 +108,56 @@
 			}
 
 
+			if( isset($_GET['bundle_id']) )
+			{
+				$this->load->model('model_product_bundle');
+				$this->load->model('Model_product_bundle_item');
+
+				$this->model_product_bundle->injectModels([
+					'model_bundle_item' => $this->Model_product_bundle_item
+				]);
+
+				$bundle = $this->model_product_bundle->getAllWithItems([
+					'where' => ['id' => $_GET['bundle_id']]
+				])[0];
+
+				$this->data = array_merge( $this->data , [
+					'bundle' => $bundle
+				]);
+
+				return $this->view_public('cart/checkout_bundle', $this->data);
+			}
+
+
 			return $this->view_public('cart/checkout', $this->data);
+		}
+
+		public function checkout_bundle()
+		{
+			$bundle_id = $_GET['bundle_id'];
+
+			$this->load->model('model_product_bundle');
+			$this->load->model('Model_product_bundle_item');
+
+			$this->model_product_bundle->injectModels([
+				'model_bundle_item' => $this->Model_product_bundle_item
+			]);
+
+
+			$bundle = $this->model_product_bundle->getAllWithItems([
+				'where' => ['id' => $_GET['bundle_id']]
+			])[0];
+
+
+			$post = $_POST;
+			$post['bundle_id'] = $bundle_id;
+
+			$res = $this->model_orders->createFromBundle($post , $bundle);
+
+			if($res){
+				return redirect('payment/create/'.$res);
+			}else{
+				return redirect('cart/checkout?bundle_id='.$bundle_id);
+			}
 		}
 	}

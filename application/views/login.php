@@ -46,6 +46,7 @@
     } ?>
 
     <form action="<?php echo base_url('auth/login') ?>" method="post">
+      <?php flash()?>
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="email" id="email" placeholder="Email" autocomplete="off">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

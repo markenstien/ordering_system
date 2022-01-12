@@ -5,6 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Auth extends Admin_Controller 
 {
 
+	public $error = '';
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -29,10 +31,20 @@ class Auth extends Admin_Controller
             // true case
            	$email_exists = $this->model_auth->check_email($this->input->post('email'));
 
-           	if($email_exists == TRUE) {
+           	if($email_exists == TRUE) 
+           	{
            		$login = $this->model_auth->login($this->input->post('email'), $this->input->post('password'));
 
-           		if($login) {
+           		if($login) 
+           		{
+
+           			if( !$login['is_verified'] )
+           			{
+           				$href = base_url('users/sendEmailVerification/'.$login['id']);
+           				$link = "<a href='{$href}'> Resend Verification </a>";
+           				flash_set("verify your account using your email {$link}");
+           				return redirect('auth/login');
+           			}
 
            			$logged_in_sess = array(
            				'id'           => $login['id'],
