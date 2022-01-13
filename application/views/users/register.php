@@ -2,7 +2,9 @@
   <div class="site-wrapper-reveal">
       <div class="hero-box-area">
           <div class="container">
+            <br>
             <div class="col-md-8 mx-auto">
+              <h2>Register User</h2>
             <?php flash()?>
             <?php
               __([
