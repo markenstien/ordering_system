@@ -70,7 +70,7 @@
 		{
 			$this->model_product_bundle->injectModels([
 				'model_product' => $this->model_products,
-				'model_bundle_items' => $this->model_product_bundle_item
+				'model_bundle_item' => $this->model_product_bundle_item
 			]);
 
 			$this->model_product_bundle->removePublicPrice($id);
