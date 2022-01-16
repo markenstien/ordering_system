@@ -36,8 +36,8 @@
                                 <?php foreach($product['attr_extracted'] as $attributes) :?>
                                   <?php $attr_name = $attributes['attribute']['name']?>
                                   <div class="form-group">
-                                    <label><?php echo $attributes['attribute']['name']?></label>
-                                    <div style="border: 2px solid #eee; padding: 5px;" class="mb-2 mt-2">
+                                    <label style="font-weight: bold;"><?php echo $attributes['attribute']['name']?></label>
+                                    <div style="padding: 5px;">
                                       <?php foreach($attributes['values'] as $row) :?>
                                         <?php
                                           $is_checked = false;
@@ -46,10 +46,10 @@
                                             $is_checked = $item['attr_key_pair']->$attr_name == $row['value'] ? true : false;
                                           }
                                         ?>
-                                        <label>
+                                        <label style="border:1px solid #eee; padding: 4px;">
                                           <input type="radio" name="attr[<?php echo $attr_name?>]" 
                                           value="<?php echo $row['value']?>" <?php echo $is_checked ? 'checked' : ''?>>
-                                          <?php echo $row['value']?>
+                                          <span class="badge text-primary"><?php echo $row['value']?></span>
                                         </label>
                                       <?php endforeach?>
                                     </div>
@@ -77,16 +77,30 @@
                                         <div class="quickview-button">
                                             <div class="quickview-cart button">
                                                 <button type="submit" role="button" class="btn--lg btn--black font-weight--reguler text-white">
-                                                    <?php echo isset($item) ? 'Update Cart Item' : 'Add to Cart'?>
+                                                    <i class="p-icon icon-bag2"></i>  <?php echo isset($item) ? 'Update Cart Item' : 'Add to Cart'?>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 <?php else:?>
-                                 <span class="ribbon out-of-stock ">
-                                    Out Of Stock 
-                                 </span>
+                                <h4 class="ribbon out-of-stock text-danger"> Out Of Stock </h4>
                                 <?php endif?>
+
+                                <div class="product_meta mt-30">
+                                    <div class="sku_wrapper item_meta">
+                                        <span class="label"> SKU: </span>
+                                        <span class="sku"> <?php echo $product['sku']?> </span>
+                                    </div>
+                                    <?php if( isset($product['category_extracted']) && !empty($product['category_extracted'])) :?>
+                                        <div class="tagged_as item_meta">
+                                            <span class="label">Categories: </span>
+                                            <?php foreach($product['category_extracted'] as $key => $row) :?>
+                                                <?php $category = urlencode($row['id'])?>
+                                                <a href="#"><?php echo $row['name']?></a>
+                                            <?php endforeach?>
+                                        </div>
+                                    <?php endif?>
+                                </div>
                            </div>
                        </form>
                     </div>
@@ -104,7 +118,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-lg-7 order-md-1 order-2">
                                             <div class="details mt-30">
-                                                <h5 class="mb-10">Detail</h5>
+                                                <h5 class="mb-10"><i class="fa fa-info-circle"></i> Detail</h5>
                                                 <?php echo $product['description']?>
                                             </div>
                                         </div>

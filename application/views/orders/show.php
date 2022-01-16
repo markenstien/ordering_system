@@ -316,7 +316,7 @@
 
                     <tr>
                       <td>
-                        <?php if( !isEqual($user_data['user_type'] , ['admin' , 'employee']) && isEqual($payment_gcash['validation_status'],'pending') ) :?>
+                        <?php if( isEqual($user_data['user_type'] , ['admin' , 'employee']) && isEqual($payment_gcash['validation_status'],'pending') ) :?>
                           <form method="post" action="<?php echo base_url('payment/gcash_valid_invalid')?>">
                             <input type="hidden" name="id" value="<?php echo $payment_gcash['id']?>">
 
@@ -324,7 +324,7 @@
                             <input type="submit" name="invalid" class="btn btn-danger btn-sm"   value="Invalid">
                           </form>
                         <?php endif?>
-                        <?php if( isEqual($payment_gcash['validation_status'] , 'pending') ) : ?>
+                        <?php if( isEqual($payment_gcash['validation_status'] , 'pending')) : ?>
                           <br>
                           <a href="<?php echo base_url('payment/gcash_edit/'.$payment_gcash['id'])?>" class="btn btn-primary btn-sm">Edit</a>
                           <a href="<?php echo base_url('payment/gcash_delete/'.$payment_gcash['id'])?>" class="btn btn-danger btn-sm">Delete</a>

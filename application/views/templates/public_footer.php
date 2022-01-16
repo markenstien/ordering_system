@@ -122,7 +122,7 @@
                                 style="width: 100px;">
                         </a>
                         <div class="product-item_content">
-                            <a class="product-item_title" href="product-details.html">Plant pots</a>
+                            <a class="product-item_title" href="#"><?php echo $row['name']?></a>
                             <label>Qty : <span><?php echo $row['quantity']?></span> * <?php amountHTML($row['price'])?></label>
                             <label class="product-item_quantity">Total: <span>PHP <?php echo amountHTML( $row['price'] * $row['quantity']) ?></span></label>
                         </div>
@@ -138,7 +138,7 @@
             <a href="<?php echo base_url('cart/index')?>" class="btn btn--full btn--border_1">View cart</a>
         </div>
         <div class="minicart-btn_area">
-            <a href="checkout.html" class="btn btn--full btn--black">Checkout</a>
+            <a href="<?php echo base_url('cart/checkout')?>" class="btn btn--full btn--black">Checkout</a>
         </div>
     </div>
 </div>
