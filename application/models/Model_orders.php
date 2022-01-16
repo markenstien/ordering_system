@@ -14,7 +14,7 @@ class Model_orders extends Model_adapter
 		'service_charge','vat_charge_rate',
 		'vat_charge','net_amount',
 		'discount','paid_status',
-		'order_status',
+		'order_status','remarks',
 		'user_id','origin'
 	];
 
@@ -91,18 +91,21 @@ class Model_orders extends Model_adapter
 
 	public function updateDeliveryStatus($status , $id)
 	{
-
 		$order = $this->getOrdersData($id);
+
+		$href = '/orders/show/'.$id;
 
 		$this->model_notification->create_system(
 			"Your order has been set to {$status}.
 			Order #{$order['bill_no']}",
-			[$order['user_id']]
+			[$order['user_id']],
+			['href' => $href]
 		);
 
 		$this->model_notification->message_operations(
 			"Your order has been set to {$status}.
-			Order #{$order['bill_no']}"
+			Order #{$order['bill_no']}",
+			['href' => $href]
 		);
 
 		send_sms("Your order has been set to {$status}.
@@ -296,8 +299,38 @@ class Model_orders extends Model_adapter
 		return false;
 	}
 
+	public function checkItemsStockAvailability($items)
+	{
+		$errors = [];
+
+		foreach($items as $key => $row)
+		{
+			$stock_available_for_order = $row['stocks'];
+			// $row['min_stock'];
+
+			if( $stock_available_for_order < $row['quantity'] ){
+				array_push($errors, "{$row['product_name']} has no stocks available");
+			}
+		}
+
+		if(!empty($errors))
+		{
+			$this->addError( implode(',' , $errors));
+			return false;
+		}
+
+		return true;
+	}
+
 	public function createFromBundle($order_data , $bundle_with_items)
 	{
+		/*
+		*check products if with stocks
+		*/
+		if( ! $this->checkItemsStockAvailability($bundle_with_items['items']) )
+			return false;
+
+
 		$total_amount = $bundle_with_items['price_public'] - $bundle_with_items['discount'];
 
 		$date = strtotime(date('Y-m-d h:i:s a'));
@@ -314,8 +347,9 @@ class Model_orders extends Model_adapter
 		$_fillables['origin'] = 'online';
 		$_fillables['discount'] = $bundle_with_items['discount'];
 
+		
 		$order_id = parent::create ( $_fillables );
-			
+		
 		foreach($bundle_with_items['items'] as $row) 
 		{
 			$order_item = [

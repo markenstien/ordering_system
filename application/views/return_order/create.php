@@ -106,7 +106,18 @@
               </table>
 
               <?php if( intval($days_count) < 5) :?>
-                <div>
+                <small class="text-danger">Order will not be returnable after 5 business days</small>
+
+                <div class="form-group">
+                  <label>Return Order Category</label>
+                  <?php
+                    echo f_select('return_category' ,['refund' , 'replacement' , 'double order' , 'incorrect order' , 'have a better deal from other merchant'] ,'' , 
+                      ['class' => 'form-control' , 'placeholder' => 'Complete Address' , 'rows' => 3 , 'required' => true]);
+                  ?>
+                </div>
+
+
+                <div class="form-group">
                   <label>Reason</label>
                   <?php
                     echo f_textarea('reason' , '' , 

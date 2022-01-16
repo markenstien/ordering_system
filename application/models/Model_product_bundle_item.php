@@ -58,7 +58,21 @@
 				return false;
 			}
 			//check if product-already existed 
-			return $this->create( $_fillables );
+
+			$is_ok =  $this->create( $_fillables );
+
+			$this->model_product_bundle->updateRealTimePrice( $bundle_item_data['bundle_id'] );
+
+			return $is_ok;
+		}
+
+		public function update($data , $id)
+		{
+			$item = parent::get($id);
+
+			$is_ok = parent::update($data , $id);
+			$this->model_product_bundle->updateRealTimePrice( $item['bundle_id'] );
+			return $is_ok;
 		}
 
 		public function getByProduct($product_id)
@@ -72,5 +86,6 @@
 			$item = $this->get($id);
 			$this->bundle_id = $item['bundle_id'];
 			$this->delete($id);
+			$this->model_product_bundle->updateRealTimePrice( $item['bundle_id'] );
 		}
 	}

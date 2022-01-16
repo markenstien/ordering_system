@@ -26,36 +26,38 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="userTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Type</th>
-                  <th>Verification</th>
-                  <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                  <?php if($users): ?>                  
-                    <?php foreach ($users as $key => $row): ?>
-                      <tr>
-                        <td><?php echo $row['username']?></td>
-                        <td><?php echo $row['email']?></td>
-                        <td><?php echo $row['firstname'] . ' ' .$row['lastname']?></td>
-                        <td><?php echo $row['phone'] . ' ' .$row['lastname']?></td>
-                        <td><?php echo $row['user_type']?></td>
-                        <td><?php echo $row['verification_status']?></td>
-                        <td>
-                          <?php echo btnLink('users/edit/'.$row['id'] , 'Edit' , 'edit')?>
-                        </td>
-                      </tr>
-                    <?php endforeach ?>
-                  <?php endif; ?>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table id="userTable" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Type</th>
+                    <th>Verification</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <?php if($users): ?>                  
+                      <?php foreach ($users as $key => $row): ?>
+                        <tr>
+                          <td><?php echo $row['username']?></td>
+                          <td><?php echo $row['email']?></td>
+                          <td><?php echo $row['firstname'] . ' ' .$row['lastname']?></td>
+                          <td><?php echo $row['phone'] . ' ' .$row['lastname']?></td>
+                          <td><?php echo $row['user_type']?></td>
+                          <td><?php echo $row['verification_status']?></td>
+                          <td>
+                            <?php echo btnLink('users/edit/'.$row['id'] , 'Edit' , 'edit')?>
+                          </td>
+                        </tr>
+                      <?php endforeach ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <!-- /.box-body -->
           </div>

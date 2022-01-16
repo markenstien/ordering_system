@@ -9,17 +9,19 @@
 			'reference',
 			'status' , 'reason',
 			'updated_by' , 'returned_amount',
+			'return_category',
 			'remarks' , 'created_at'
 		];
 
 		public function create( $return_data )
-		{
+		{	
 			$return_items = $return_data['return_items'];
 			$_fillables = $this->getFillablesOnly($return_data);
 
 			$_fillables['reference'] = $this->generateReference();
 			//return data
 
+			
 			$return_order_id = parent::create( $_fillables );
 
 

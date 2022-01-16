@@ -51,16 +51,16 @@
 			{
 				$user = $this->model_user->getUserData( $_fillables['user_id'] );
 
-				$link = '/Payment/show/'.$res;
+				$link = '/orders/show/'.$_fillables['order_id'];
 
 				$user_message_data = [
 					"You just made a payment" , 
 					"You just made a payment amounting to {$_fillables['amount']}. 
 					Payment reference #{$_fillables['reference']}",
-					[$user['email']]
+					[$user['email']],
 				];
 
-				$this->model_notification->create_email(...$user_message_data);
+				// $this->model_notification->create_email(...$user_message_data);
 
 				$user_message_data = [
 					"You just made a payment amounting to {$_fillables['amount']}. Payment reference #{$_fillables['reference']}",

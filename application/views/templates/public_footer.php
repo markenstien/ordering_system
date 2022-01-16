@@ -105,40 +105,41 @@
 <?php $over_all_total = 0?>
 <!--  offcanvas Minicart Start -->
 <div class="offcanvas-minicart_wrapper" id="miniCart">
-<div class="offcanvas-menu-inner">
-    <div class="close-btn-box">
-        <a href="#" class="btn-close"><i class="icon-cross2"></i></a>
-    </div>
-    <div class="minicart-content">
-        <ul class="minicart-list">
-            <?php $total = 0?>
-            <?php foreach( $cart_items as $row ) : ?>
-                <?php $total += $row['price'] * $row['quantity']?>
-                <?php $over_all_total += $total?>
-                <li class="minicart-product">
-                    <a class="product-item_remove" href="<?php echo base_url('cart/delete/'.$row['id'])?>"><i class="icon-cross2"></i></a>
-                    <a href="<?php echo base_url('productPublic/show/'.$row['id'])?>?is_cart_item" class="product-item_img">
-                        <img class="img-fluid" src="<?php echo base_url($row['image'])?>" alt="Product Image"
-                            style="width: 100px;">
-                    </a>
-                    <div class="product-item_content">
-                        <a class="product-item_title" href="product-details.html">Plant pots</a>
-                        <label>Qty : <span><?php echo $row['quantity']?></span> * <?php amountHTML($row['price'])?></label>
-                        <label class="product-item_quantity">Total: <span>PHP <?php echo amountHTML( $row['price'] * $row['quantity']) ?></span></label>
-                    </div>
-                </li>
-            <?php endforeach?>
-        </ul>
-    </div>
-    <div class="minicart-item_total">
-        <span class="font-weight--reguler">Subtotal:</span>
-        <span class="ammount font-weight--reguler">PHP <?php echo amountHTML($over_all_total)?></span>
-    </div>
-    <div class="minicart-btn_area">
-        <a href="<?php echo base_url('cart/index')?>" class="btn btn--full btn--border_1">View cart</a>
-    </div>
-    <div class="minicart-btn_area">
-        <a href="checkout.html" class="btn btn--full btn--black">Checkout</a>
+    <div class="offcanvas-menu-inner">
+        <div class="close-btn-box">
+            <a href="#" class="btn-close"><i class="icon-cross2"></i></a>
+        </div>
+        <div class="minicart-content">
+            <ul class="minicart-list">
+                <?php $total = 0?>
+                <?php foreach( $cart_items as $row ) : ?>
+                    <?php $total += $row['price'] * $row['quantity']?>
+                    <?php $over_all_total += $total?>
+                    <li class="minicart-product">
+                        <a class="product-item_remove" href="<?php echo base_url('cart/delete/'.$row['id'])?>"><i class="icon-cross2"></i></a>
+                        <a href="<?php echo base_url('productPublic/show/'.$row['id'])?>?is_cart_item" class="product-item_img">
+                            <img class="img-fluid" src="<?php echo base_url($row['image'])?>" alt="Product Image"
+                                style="width: 100px;">
+                        </a>
+                        <div class="product-item_content">
+                            <a class="product-item_title" href="product-details.html">Plant pots</a>
+                            <label>Qty : <span><?php echo $row['quantity']?></span> * <?php amountHTML($row['price'])?></label>
+                            <label class="product-item_quantity">Total: <span>PHP <?php echo amountHTML( $row['price'] * $row['quantity']) ?></span></label>
+                        </div>
+                    </li>
+                <?php endforeach?>
+            </ul>
+        </div>
+        <div class="minicart-item_total">
+            <span class="font-weight--reguler">Subtotal:</span>
+            <span class="ammount font-weight--reguler">PHP <?php echo amountHTML($over_all_total)?></span>
+        </div>
+        <div class="minicart-btn_area">
+            <a href="<?php echo base_url('cart/index')?>" class="btn btn--full btn--border_1">View cart</a>
+        </div>
+        <div class="minicart-btn_area">
+            <a href="checkout.html" class="btn btn--full btn--black">Checkout</a>
+        </div>
     </div>
 </div>
 

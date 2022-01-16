@@ -38,7 +38,7 @@ class Model_adapter extends Model_datahelper
 
 	public function getRow($condition , $orderby = null)
 	{
-		return $this->dbrow($this->_table_name, $this->conditionConvert($condition) );
+		return $this->dbrow($this->_table_name, $this->conditionConvert($condition)  , '*' , $orderby);
 	}
 
 	public function getRowArray($condition = null, $fields = '*' , $orderby= null , $limit = null , $offset = null)

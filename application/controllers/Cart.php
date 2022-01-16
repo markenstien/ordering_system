@@ -121,6 +121,16 @@
 					'where' => ['id' => $_GET['bundle_id']]
 				])[0];
 
+
+				if($bundle){
+					$is_ok = $this->model_orders->checkItemsStockAvailability( $bundle['items'] );
+
+					if(!$is_ok){
+						flash_set( $this->model_orders->getErrorString() , 'danger');
+						return redirect('bundles/index');
+					}
+				}
+
 				$this->data = array_merge( $this->data , [
 					'bundle' => $bundle
 				]);
@@ -154,9 +164,15 @@
 
 			$res = $this->model_orders->createFromBundle($post , $bundle);
 
-			if($res){
+			if($res)
+			{
+				$this->model_cart_wish->deleteCartItems();
+				$this->model_cart_wish->killToken();
+				
 				return redirect('payment/create/'.$res);
-			}else{
+			}else
+			{
+				flash_set( $this->model_orders->getErrorString() , 'danger');
 				return redirect('cart/checkout?bundle_id='.$bundle_id);
 			}
 		}

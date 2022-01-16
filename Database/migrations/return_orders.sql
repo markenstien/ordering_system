@@ -12,3 +12,6 @@ create table return_orders(
 	rermarks text,
 	created_at timestamp default now()
 );
+
+alter table return_orders
+	add column return_category varchar(50);

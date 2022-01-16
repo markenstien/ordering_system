@@ -70,12 +70,13 @@
 		{	
 			$total_amount = 0;
 
-			$products = $this->model_bundle_items->getByBundle($id);
+			$products = $this->model_bundle_item->getByBundle($id);
 
 			foreach($products as $product) {
-				$total_amount += $product['price'];
+				$total_amount += $product['price'] * $product['quantity'];
 			}
 
+			
 			$this->update(['price' => $total_amount] , $id);
 		}
 

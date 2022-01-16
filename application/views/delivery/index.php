@@ -25,7 +25,7 @@
 
             <div class="box-body">
               <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-bordered dataTable">
                   <thead>
                     <th>Reference</th>
                     <th>Bill No</th>

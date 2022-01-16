@@ -20,9 +20,18 @@ class Orders extends Admin_Controller
 		$this->load->model('model_delivery');
 		$this->load->model('model_payment');
 
+		$this->load->model('model_payment_gcash');
+		$this->load->model('model_notification');
+
+
 		$this->model_orders->injectModels([
 			'model_stock' => $this->model_stock,
 			'model_payment' => $this->model_payment
+		]);
+
+		$this->model_payment_gcash->injectModels([
+			'model_payment' => $this->model_payment,
+			'model_notification' => $this->model_notification
 		]);
 	}
 
@@ -67,7 +76,7 @@ class Orders extends Admin_Controller
 		$this->data['payment'] = $this->model_payment->getAll(['where' => ['payment.order_id' => $id]])[0] ?? false;
 		$this->data['delivery'] = $delivery;
 
-
+		$this->data['payment_gcash'] = $this->model_payment_gcash->getByOrder( $order['id'] );
 
 		$this->data['is_editable'] = isEqual($order['order_status'] , 'completed') ? true : false;
 

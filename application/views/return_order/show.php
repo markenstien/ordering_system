@@ -38,6 +38,10 @@
                   <td>Status</td>
                   <td><?php echo $return_order['status']?></td>
                 </tr>
+                <tr>
+                  <td>Return Category</td>
+                  <td><?php echo $return_order['return_category']?></td>
+                </tr>
 
                 <tr>
                   <td colspan="2"> <strong>Customer</strong> </td>

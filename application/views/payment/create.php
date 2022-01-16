@@ -124,7 +124,15 @@ hr {
 
 </style>
 <div id="bill-container">
-    <h2 class="text-center">INVOICE</h2>
+    <div class="text-center">
+        <h2>INVOICE</h2>
+
+        <?php if(isset($user_data) ):?>
+            <a href="<?php echo base_url("/orders/show/{$order['id']}")?>" style="text-decoration:underline; color: #000;">Show Order</a>
+        <?php endif?>
+    </div>
+    
+    <?php flash()?>
   <div class="row">
       <div class="col-sm-6">
           <div>
@@ -216,15 +224,128 @@ hr {
       <hr />
       <div>
           <div class="card-footer text-center">
-             <span class="text-secondary-d1 text-105">Thank you for your business</span>
               <?php if( isEqual($order['paid_status'], 0) ) :?>
                 <br><br><br>
-                   <div id="paypal-button-container"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Pay Via Card/Paypal</h4>
+                        <div id="paypal-button-container"></div>
+                    </div>
+
+                     <div class="col-md-6">
+                        <h4>Pay Via Gcash</h4>
+                        <img src="<?php echo base_url('assets/images/gcash_qr.png')?>">
+                        <p>
+                            Don't Know how to pay gcash using QR code? 
+                            refer  <a href="https://help.gcash.com/hc/en-us/articles/360017722773-How-do-I-pay-using-the-QR-" target="_blank">
+                                <span style="color:#000;text-decoration: underline;">here</span>.
+                            </a>
+                        </p>
+
+                        <a href="#gCashPaymentAttachment" class="btn btn-primary toolbar-btn header-icon" 
+                        data-toggle="modal" data-target="#exampleModal">Attach payment proof</a>
+                    </div>
+                </div>
+                   
               <?php endif?>
           </div>
       </div>
   </div>
 </div>
+
+
+
+<!--- PAYMENT PROOF MODAL -->
+
+<div class="offcanvas-minicart_wrapper" id="gCashPaymentAttachment">
+    <div class="offcanvas-menu-inner">
+        
+        <div class="close-btn-box">
+            <a href="#" class="btn-close"><i class="icon-cross2"></i></a>
+        </div>
+        <div class="offcanvas-content">
+            <div class="row">
+                <div class="col"><h4>Gcash Payment Attachment</h4></div>
+                <div class="col"><img src="https://business.inquirer.net/wp-content/blogs.dir/5/files/2020/07/gcash-logo.png" style="width:50px"></div>
+            </div>
+            <hr>
+            <?php
+                echo f_open([
+                    'method' => 'post',
+                    'action' => base_url('Payment/submit_payment_gcash'),
+                    'enctype' => 'multipart/form-data'
+                ] , true);
+            ?>
+
+            <input type="hidden" name="amount" value="<?php echo $order['net_amount']?>">
+            <input type="hidden" name="method" value="online">
+            <input type="hidden" name="order_id" value="<?php echo $order['id']?>">
+            <input type="hidden" name="user_id" value="<?php echo $user_data['id']?>">
+
+
+            <div class="form-group">
+                <?php
+                    echo f_label('Account Name');
+                    echo f_text('account_name' , '' , [
+                        'class' => 'form-control',
+                        'required' => true
+                    ]);
+                ?>
+            </div>
+
+            <div class="form-group">
+                <?php
+                    echo f_label('Account Number');
+                    echo f_text('account_number' , '' , [
+                        'class' => 'form-control',
+                        'required' => true
+                    ]);
+                ?>
+            </div>
+
+            <div class="form-group">
+                <?php
+                    echo f_label('Amount');
+                    echo f_text('amount_paid' , '' , [
+                        'class' => 'form-control',
+                        'required' => true
+                    ]);
+
+                    echo "Total Amount to pay {$order['net_amount']}";
+                ?>
+            </div>
+
+            <div class="form-group">
+                <?php
+                    echo f_label('GCASH-Reference Number');
+                    echo f_text('reference_number' , '' , [
+                        'class' => 'form-control',
+                        'required' => true
+                    ]);
+                ?>
+            </div>
+
+            <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="payment_image" class="form-control" required>
+            </div>
+
+            <hr>
+
+            <label>
+                <input type="checkbox" name="" required>
+                Tick the box to agree that you have paid the total amount of 
+                <strong>PHP <?php echo amountHTML($order['net_amount']) ?></strong>
+            </label>
+
+            <div class="form-group">
+                <input type="submit" name="btn_send_payment" class="btn btn-primary" value="Send Payment">
+            </div>
+            <?php echo f_close() ?>
+        </div>
+    </div>
+</div>
+
 <?php
   $thank_you_url =  base_url('payment/thank_you_page');
   $catch_payment_url = site_url('payment/submit_payment');

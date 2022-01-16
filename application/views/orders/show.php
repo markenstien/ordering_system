@@ -233,6 +233,12 @@
                       <td>Amount</td>
                       <td><?php echo $payment['amount']?></td>
                     </tr>
+                    <?php if( !empty($payment['org'])) :?>
+                      <tr>
+                        <td>Organization</td>
+                        <td><?php echo $payment['org']?></td>
+                      </tr>
+                    <?php endif?>
                     <tr>
                       <td>Method</td>
                       <td><?php echo $payment['method']?></td>
@@ -252,6 +258,79 @@
                         <td><?php echo $payment['acc_name']?></td>
                       </tr>
                     <?php endif?>
+
+                    <?php if( !empty($payment['notes'])) :?>
+                      <tr>
+                        <td>Notes</td>
+                        <td><?php echo $payment['notes']?></td>
+                      </tr>
+                    <?php endif?>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <?php endif?>
+
+          <?php if( $payment_gcash) :?>
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Payment GCASH Attachment</h3>
+              </div>
+
+              <div class="box-body">
+                <div class="table-bordered">
+                  <table class="table-bordered table">
+                    <tr>
+                      <td>Reference</td>
+                      <td><?php echo $payment_gcash['reference']?></td>
+                    </tr>
+                    <tr>
+                      <td>GCASH-Reference</td>
+                      <td><?php echo $payment_gcash['reference_number']?></td>
+                    </tr>
+
+                    <tr>
+                      <td>Account Name</td>
+                      <td><?php echo $payment_gcash['account_name']?></td>
+                    </tr>
+
+                    <tr>
+                      <td>Account Number</td>
+                      <td><?php echo $payment_gcash['account_number']?></td>
+                    </tr>
+
+                    <tr>
+                      <td>Amount Paid</td>
+                      <td><?php echo $payment_gcash['amount_paid']?></td>
+                    </tr>
+
+                    <tr>
+                      <td>Image</td>
+                      <td><img src="<?php echo base_url($payment_gcash['image_src'])?>"></td>
+                    </tr>
+
+                    <tr>
+                      <td>Status</td>
+                      <td><?php echo $payment_gcash['validation_status']?></td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <?php if( !isEqual($user_data['user_type'] , ['admin' , 'employee']) && isEqual($payment_gcash['validation_status'],'pending') ) :?>
+                          <form method="post" action="<?php echo base_url('payment/gcash_valid_invalid')?>">
+                            <input type="hidden" name="id" value="<?php echo $payment_gcash['id']?>">
+
+                            <input type="submit" name="valid"  class="btn btn-primary btn-sm"  value="Valid">
+                            <input type="submit" name="invalid" class="btn btn-danger btn-sm"   value="Invalid">
+                          </form>
+                        <?php endif?>
+                        <?php if( isEqual($payment_gcash['validation_status'] , 'pending') ) : ?>
+                          <br>
+                          <a href="<?php echo base_url('payment/gcash_edit/'.$payment_gcash['id'])?>" class="btn btn-primary btn-sm">Edit</a>
+                          <a href="<?php echo base_url('payment/gcash_delete/'.$payment_gcash['id'])?>" class="btn btn-danger btn-sm">Delete</a>
+                        <?php endif?>
+                      </td>
+                    </tr>
                   </table>
                 </div>
               </div>

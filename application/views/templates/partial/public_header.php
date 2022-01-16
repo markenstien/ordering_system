@@ -1,6 +1,5 @@
 <!--====================  header area ====================-->
     <div class="header-area header-area--default">
-
         <!-- Header Bottom Wrap Start -->
         <header class="header-area  header_height-90 header-sticky">
             <div class="container">
@@ -13,18 +12,19 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-6">
                         <div class="header-right-side text-end">
-                            <?php if( isset($this->data['user_data']) ):?>
-                                <div class="header-right-items  d-none d-md-block">
-                                    <a href="<?php echo base_url('users/profile')?>">Profile <i class="icon-user"></i></a>
+                            <?php if( isset($user_data) ):?>
+                                <div class="header-right-items" title="Profile">
+                                    <a href="<?php echo base_url('users/profile')?>">
+                                        <i class="icon-user"></i></a>
                                 </div>
                             <?php endif?>
 
-                            <div class="header-right-items">
+                            <div class="header-right-items" title="Catalog">
                                 <a href="<?php echo base_url('landing/catalog')?>">
                                     <i class="icon-list"></i></a>
                             </div>
 
-                            <div class="header-right-items">
+                            <div class="header-right-items" title="Bundles">
                                 <a href="<?php echo base_url('bundles/index')?>">
                                     <i class="icon-box"></i>
                                 </a>
@@ -32,7 +32,7 @@
 
                              <?php if( $cart_items ) :?>
                                 <div class="header-right-items">
-                                    <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon">
+                                    <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon" title="Cart">
                                         <i class="icon-bag2"></i>
                                         <span class="item-counter"><?php echo count( $cart_items )?></span>
                                     </a>

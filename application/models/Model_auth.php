@@ -34,15 +34,14 @@ class Model_auth extends CI_Model
 			if($query->num_rows() == 1) {
 				$result = $query->row_array();
 				$hash_password = password_verify($password, $result['password']);
-				
+
+
 				if($hash_password === true) {
 					return $result;	
 				}
 				else {
 					return false;
 				}
-
-				
 			}
 			else {
 				return false;

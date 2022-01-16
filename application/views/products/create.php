@@ -28,7 +28,7 @@
             <h3 class="box-title">Add Product</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('users/create') ?>" method="post" enctype="multipart/form-data">
+          <form role="form" action="<?php base_url('products/create') ?>" method="post" enctype="multipart/form-data">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>

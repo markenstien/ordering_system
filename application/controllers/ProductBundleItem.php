@@ -13,6 +13,14 @@
 			$this->load->model('model_product_bundle_item');
 			$this->load->model('model_products');
 
+			$this->model_product_bundle_item->injectModels([
+				'model_product_bundle' => $this->model_product_bundle
+			]);
+
+			$this->model_product_bundle->injectModels([
+				'model_bundle_item' => $this->model_product_bundle_item
+			]);
+			
 			$this->data['products'] = $this->model_products->getAll();
 		}
 

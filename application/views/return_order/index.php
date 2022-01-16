@@ -23,12 +23,13 @@
       </div>
 
       <div class="box-body">
-        <div class="table table-bordered">
+        <div class="table-responsive">
           <table class="table table-bordered dataTable">
             <thead>
               <th>#</th>
               <th>Reference</th>
               <th>Status</th>
+              <th>Return category</th>
               <th>Remarks</th>
               <th>Customer</th>
               <th>Action</th>
@@ -40,7 +41,8 @@
                   <td><?php echo ++$key?></td>
                   <td><?php echo $or['reference']?></td>
                   <td><?php echo $or['status']?></td>
-                  <td style="width:30%"><?php echo $or['rermarks']?></td>
+                  <td><?php echo $or['return_category'] ?? 'Not Available on Previous Version' ?></td>
+                  <td style="width:30%"><?php echo $or['rermarks'] ?? 'Waiting For Staffs Remarks' ?></td>
                   <td><?php echo $or['firstname'] . ' ' .$or['lastname']?></td>
                   <td>
                     <?php echo btnLink('returnOrder/show/'.$or['id'] , 'Show')?>
