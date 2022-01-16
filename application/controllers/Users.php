@@ -119,6 +119,11 @@ class Users extends Admin_Controller
 			}
 		}
 
+		$this->data['user_data_edit'] = $this->data['user_data'];
+
+		if( !is_null($id) )
+			$this->data['user_data_edit'] = $this->model_users->get( $id );
+
 		$this->render_template('users/edit', $this->data);	
 	}
 

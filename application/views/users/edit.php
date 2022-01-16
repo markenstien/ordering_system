@@ -24,26 +24,26 @@
             <div class="box-header">
               <h3 class="box-title">Edit User</h3>
             </div>
-            <form role="form" action="<?php echo base_url('users/edit/'.$user_data['id']) ?>" method="post">
+            <form role="form" action="<?php echo base_url('users/edit/'.$user_data_edit['id']) ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
                   <label for="fname">First name</label>
-                  <input type="text" class="form-control" id="fname" name="firstname" placeholder="First name" value="<?php echo $user_data['firstname'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="fname" name="firstname" placeholder="First name" value="<?php echo $user_data_edit['firstname'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                   <label for="lname">Last name</label>
-                  <input type="text" class="form-control" id="lname" name="lastname" placeholder="Last name" value="<?php echo $user_data['lastname'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="lname" name="lastname" placeholder="Last name" value="<?php echo $user_data_edit['lastname'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                   <label for="phone">Phone</label>
-                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="<?php echo $user_data['phone'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="<?php echo $user_data_edit['phone'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                   <label for="phone">Address</label>
-                  <input type="text" class="form-control" id="address" name="address" placeholder="Phone" value="<?php echo $user_data['address'] ?>" autocomplete="off">
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Phone" value="<?php echo $user_data_edit['address'] ?>" autocomplete="off">
                 </div>
 
                 <div class="form-group">
